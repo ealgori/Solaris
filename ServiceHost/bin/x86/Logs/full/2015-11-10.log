@@ -1,0 +1,1 @@
+ 13:24:10.4452  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn

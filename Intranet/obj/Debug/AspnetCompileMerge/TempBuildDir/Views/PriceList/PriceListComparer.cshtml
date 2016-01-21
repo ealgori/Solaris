@@ -1,0 +1,95 @@
+﻿@model List<DbModels.Models.SubContractor>
+@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    ViewBag.Title = "PriceListComparer";
+}
+<script src="@Url.Content("~/Scripts/Site/PriceListComparer.js")" type="text/javascript"></script>
+@using (Html.BeginForm("PriceListComparer", "PriceList", FormMethod.Post,
+                                      new { enctype = "multipart/form-data", id="compareForm" }))
+{ 
+    <div class="widget-content">
+ <h1 class="page-header">Форма сравнения прайслистов.</h1>
+        <div class="row">
+            <div class="span8">
+                <div class="widget-content">
+                           <div class="bs-docs-section">
+  <h3>Выбор опорного прайслиста</h3>
+  <p>Пожалуйста выберите подрядчика, а затем опорный прайслист. Так же на этой форме возможно утвреждение опорных прайслистов и их удаление.</p>
+</div>
+                    
+                    @Html.DropDownList("firstSubc", new SelectList(Model, "Id", "Name",""))
+                    <br>
+                    <form name="f">
+                        <table class="table table-bordered" style="margin-top:10px" >
+                            <thead>
+                                <tr bgcolor="#B4FFD2">
+                                    <th></th>
+                                    <th>Имя</th>
+                                    <th>Подписан</th>
+                                    <th>Утвержден</th>
+                                </tr>
+                            </thead>
+                            <tbody id="firstSubcPLs">
+                            </tbody>
+                        </table>
+
+                    </form>
+
+                </div>
+            </div>
+            <div class="span8">
+                <div class="widget-content">
+
+                           <div class="bs-docs-section">
+  <h3>Выбор прайслиста для анализа</h3>
+  <p>Пожалуйста выберите подрядчика, а затем прайслист для анализа. Это может быть опорный либо обыкновенный прайслист того же, либо другого подрядчика.</p>
+</div>
+                   
+
+                    @Html.DropDownList("secondSubc", new SelectList(Model, "Id", "Name"))
+                   
+                  @*  <form name ="s">*@
+                        <table class="table table-bordered" style="margin-top:10px">
+                            <thead>
+                                <tr bgcolor="#B4DBFF">
+                                    <th></th>
+                                     <th>Имя</th>
+                                    <th style=" width: 100px; ">Подписан</th>
+                                    <th>Утвержден</th>
+                                </tr>
+                            </thead>
+                            <tbody id="secondSubcPLs">
+                            </tbody>
+                        </table>
+
+                   @* </form>*@
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+         <br>
+        <div class="row">
+            <div class="span8">
+            </div>
+
+            <div class="span2">
+                <button id="Sendbtn" type="button" class="btn btn-success">Выполнить сравнение</button>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+<script>
+    var getPriceListsUrl = '@Url.Action("GetSubcPriceLists", "PriceList")';
+    var approveDisapproveUrl = '@Url.Action("ApproveDisapprove", "PriceList")';
+    var deletePlUrl = '@Url.Action("DeleteCompPL","PriceList")';
+    var downloadUrl = '@Url.Action("Download", "Import")' + '/';
+    var crossedItemUrl = '@Url.Action("GetCrossedPlists","PriceList")';
+</script>

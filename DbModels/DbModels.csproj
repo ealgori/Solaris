@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DbModels</RootNamespace>
+    <AssemblyName>DbModels</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EFCache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=46c4868af4307d2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Cache.1.0.0\lib\net45\EFCache.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="DataContext\Context.cs" />
+    <Compile Include="DataContext\DBInit.cs" />
+    <Compile Include="DataContext\DbInitConstants.cs" />
+    <Compile Include="DataContext\Repositories\Abstract\IRepository.cs" />
+    <Compile Include="DataContext\Repositories\ActRepository.cs" />
+    <Compile Include="DataContext\Repositories\AgreementRepository.cs" />
+    <Compile Include="DataContext\Repositories\AVRItemRepository.cs" />
+    <Compile Include="DataContext\Repositories\AVRRepository.cs" />
+    <Compile Include="DataContext\Repositories\PriceListRepository.cs" />
+    <Compile Include="DataContext\Repositories\TORepository.cs" />
+    <Compile Include="DataContext\Repositories\VCREquestRepository.cs" />
+    <Compile Include="DomainModels\Base\SAPCode.cs" />
+    <Compile Include="DomainModels\DbTasks\DBTask.cs" />
+    <Compile Include="DomainModels\DbTasks\DbTaskParameters.cs" />
+    <Compile Include="DomainModels\DbTasks\SHCImport.cs" />
+    <Compile Include="DomainModels\DbTasks\Log.cs" />
+    <Compile Include="DomainModels\DbTasks\TaskLog.cs" />
+    <Compile Include="DomainModels\HeadersMap\DbHeader.cs" />
+    <Compile Include="DomainModels\HeadersMap\InputFile.cs" />
+    <Compile Include="DomainModels\SAT\SATAct.cs" />
+    <Compile Include="DomainModels\SAT\SATActFile.cs" />
+    <Compile Include="DomainModels\SAT\SATActItem.cs" />
+    <Compile Include="DomainModels\SAT\SATPrepricedItem.cs" />
+    <Compile Include="DomainModels\SAT\SATSubregions.cs" />
+    <Compile Include="DomainModels\SAT\SATTO.cs" />
+    <Compile Include="DomainModels\SAT\SATTOItem.cs" />
+    <Compile Include="DomainModels\Metadata\FKAttribute.cs" />
+    <Compile Include="DomainModels\Metadata\ExcludeAttribute.cs" />
+    <Compile Include="DomainModels\ShClone\ShAct.cs" />
+    <Compile Include="DomainModels\ShClone\ShAddAgreement.cs" />
+    <Compile Include="DomainModels\ShClone\ShAVR.cs" />
+    <Compile Include="DomainModels\ShClone\ShAvrFull.cs" />
+    <Compile Include="DomainModels\ShClone\ShAVRItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShCloneUpdateLog.cs" />
+    <Compile Include="DomainModels\ShClone\ShContact.cs" />
+    <Compile Include="DomainModels\ShClone\ShFIX.cs" />
+    <Compile Include="DomainModels\ShClone\ShFOL.cs" />
+    <Compile Include="DomainModels\ShClone\ShLimit.cs" />
+    <Compile Include="DomainModels\ShClone\ShMatToItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShPriceListItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShFiles.cs" />
+    <Compile Include="DomainModels\ShClone\ShSITE.cs" />
+    <Compile Include="DomainModels\ShClone\ShSostavRabotTO.cs" />
+    <Compile Include="DomainModels\ShClone\ShSostavRabotTOItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShTO.cs" />
+    <Compile Include="DomainModels\ShClone\ShTOItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShVCRequest.cs" />
+    <Compile Include="DomainModels\ShClone\ShVidTO.cs" />
+    <Compile Include="DomainModels\ShClone\ShVidTOItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShWIHRequest.cs" />
+    <Compile Include="DomainModels\ShClone\ShInvoice.cs" />
+    <Compile Include="DomainModels\Solaris\Activity.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\AVRPOR.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\PORActivity.cs" />
+    <Compile Include="DomainModels\Solaris\PriceListMap.cs" />
+    <Compile Include="DomainModels\Solaris\PurchaseRequest.cs" />
+    <Compile Include="DomainModels\WIH\WIHRequest.cs" />
+    <Compile Include="Migrations\Configuration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DomainModels\Solaris\Entity.cs" />
+    <Compile Include="DomainModels\Solaris\ImportFilesModels\Import.cs" />
+    <Compile Include="DomainModels\Solaris\ImportFilesModels\ImportFile.cs" />
+    <Compile Include="DomainModels\Solaris\ImportFilesModels\ImportFileLog.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\POR.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\PORItem.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\PORNetwork.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\PORStatus.cs" />
+    <Compile Include="DomainModels\Solaris\Pors\Status.cs" />
+    <Compile Include="DomainModels\Solaris\PriceList.cs" />
+    <Compile Include="DomainModels\Solaris\PriceListRevision.cs" />
+    <Compile Include="DomainModels\Solaris\PriceListRevisionItem.cs" />
+    <Compile Include="DomainModels\Solaris\Project.cs" />
+    <Compile Include="DomainModels\Solaris\SAPCode.cs" />
+    <Compile Include="DomainModels\Solaris\SubContractor.cs" />
+    <Compile Include="SharedModels\ActItemModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
+      <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
+      <Name>CommonFunctions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

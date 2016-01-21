@@ -1,0 +1,64 @@
+﻿@model Intranet.Models.NewPORItemViewModel
+<tr pk='@Model.Id' class="TableRow">
+   @* @Html.HiddenFor(m => m.PriceSH)*@
+    @Html.HiddenFor(m => m.AVRItemId)
+    <td style="background: #EFFFEF;">
+        @Html.EditorFor(m => Model.SHDescription, "DisabledTextArea", new { @class = "ShDescription sh-font" })
+    </td>
+    <td style="background: #EFFFEF;">
+        @if (!string.IsNullOrEmpty(Model.ECRType))
+        {
+            @Html.EditorFor(m => Model.PositionId, "DisabledText", new { @class = "TableRow ShPosition sh-font" })
+        }
+        else
+        {
+           // @Html.EditorFor(m => Model.PositionId, "ClassText", new { @class = "TableRow  sh-font" }) 
+            @Html.DropDownListFor(m => Model.PositionId, new List<SelectListItem>());
+        }
+        @Html.ValidationMessageFor(m => Model.PositionId)
+    </td>
+    <td style="background: #ECF3FF;">
+        @if (!string.IsNullOrEmpty(Model.ECRType))
+        {
+            @Html.TextBoxFor(m => Model.PricePerItem, new { @class = "span2-special sh-font", @Value = Model.PricePerItemSH, @readonly = "true" })
+        }
+        else
+        {
+            @Html.EditorFor(m => Model.PricePerItem, "DisabledText", new { @class = "span2-special sh-font" })
+        }
+    </td>
+    <td style="background: #ECF3FF;">
+        @Html.EditorFor(m => Model.Quantity, "DisabledText", new { @class = "ShQuantity sh-font" })
+    </td>
+    <td style="background: #ECF3FF;">
+        @Html.EditorFor(m => Model.Koeff, "ClassText", new { @class = "sh-font" })
+    </td>
+    <td style="background: #ECF3FF;">
+        @if (!string.IsNullOrEmpty(Model.ECRType))
+        {
+            @Html.TextBoxFor(m => Model.Price, new { @class = "span2-special sh-font", @Value = Model.PriceSH, @readonly = "true" })
+        }
+        else
+        {
+            @Html.EditorFor(m => Model.Price, "DisabledText", new { @class = "span2-special sh-font" })
+        }
+    </td>
+    <td style="background: #FFFFED;">
+        @Html.EditorFor(m => Model.PricePerItemSH, "DisabledText", new { @class = "span2-special sh-font" })
+    </td>
+     <td style="background: #FFFFED;">
+        @Html.EditorFor(m => Model.PriceSH, "DisabledText", new { @class = "span2-special sh-font" })
+    </td>
+    @*    <td>
+        @Html.EditorFor(m => Model.Unit, "ClassText", new { @class = "span2" })
+    </td>
+    <td>
+        @Html.EditorFor(m => Model.Site, "DisabledText", new { @class = "span2" })
+    </td>
+    <td>
+        @Html.EditorFor(m => Model.SiteFix, "DisabledText", new { @class = "span2" })
+    </td>
+    <td>
+        @Html.EditorFor(m => Model.SiteFol, "DisabledText", new { @class = "span2" })
+    </td>*@
+</tr>

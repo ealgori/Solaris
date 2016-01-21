@@ -1,0 +1,3 @@
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\TestProject\obj\Release\TestProject.csprojResolveAssemblyReference.cache
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\TestProject\obj\Release\Interop.Redemption.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\TestProject\obj\Release\TestProject.csproj.ResolveComReference.cache

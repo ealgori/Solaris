@@ -1,0 +1,26 @@
+namespace DbModels.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class fdfasdffflfp : DbMigration
+    {
+        public override void Up()
+        {
+            CreateTable(
+                "dbo.Activities",
+                c => new
+                    {
+                        ActivityName = c.String(nullable: false, maxLength: 128),
+                        TOType = c.String(),
+                    })
+                .PrimaryKey(t => t.ActivityName);
+            
+        }
+        
+        public override void Down()
+        {
+            DropTable("dbo.Activities");
+        }
+    }
+}

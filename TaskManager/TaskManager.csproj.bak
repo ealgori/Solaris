@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D5B012D-9AA4-4329-A518-7531012750E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaskManager</RootNamespace>
+    <AssemblyName>TaskManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EFExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>\\RU00112284\p\Soft\Libs\EFExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0-rc1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-rc1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>\\RU00112284\p\Soft\Libs\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember">
+      <HintPath>\\RU00112284\p\Soft\Libs\FastMember.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>\\RU00112284\p\Soft\Libs\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>\\RU00112284\p\Soft\Libs\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>\\RU00112284\p\Soft\Libs\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnidecodeSharpFork">
+      <HintPath>\\RU00112284\p\Soft\Libs\UnidecodeSharpFork.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Handlers\ConvertHandlers\Abstract\AConvertSubHandler.cs" />
+    <Compile Include="Handlers\EmailHandlers\Abstract\AEmailHandler.cs" />
+    <Compile Include="Handlers\EmailHandlers\Models\BaseEmailHandler.cs" />
+    <Compile Include="Handlers\FileIOHandlers\Abstract\AFileIOHandler.cs" />
+    <Compile Include="Handlers\FileIOHandlers\FileHeader.cs" />
+    <Compile Include="Handlers\FileIOHandlers\Models\TextFileIOHandler.cs" />
+    <Compile Include="Handlers\FileIOHandlers\Setter.cs" />
+    <Compile Include="Handlers\ImportHandlers\Abstract\AImportHandler.cs" />
+    <Compile Include="Handlers\ImportHandlers\Models\ImportHandler.cs" />
+    <Compile Include="Handlers\ImportHandlers\Models\Models\ExcelExport\NPOIExcelExport.cs" />
+    <Compile Include="Handlers\ImportHandlers\Models\Models\ExcelExport\NPOIReportService.cs" />
+    <Compile Include="Handlers\ImportHandlers\Models\Models\ImportClasses\SurfaceImporter.cs" />
+    <Compile Include="Handlers\TaskHandlers\Abstract\ATaskHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Acts\ActsInvoiceLinkingHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAIQuantifier.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoImport.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoReport.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\ActCreateAutoimportHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\AgreementAIHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\AISyberiaHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\AVRRecipientsHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\TOApproveHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\TOImportHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomAiHandlers\InvoiceUpdateImportHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomFiHandlers\AVRFIHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomFiHandlers\TOIFIHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLCustomFiHandlers\TOItemFilesDownloadHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLFIQuantifier.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\BackUps\BackUpHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Billing\DataToSH.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionConstants.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler2.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler3.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSignedHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSWBSRequest.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSyncHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\POR\PORtoShHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PO\FSOPORtoODHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PO\PORecallHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PO\PORRecalledHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PO\PORtoODHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PO\POSyncHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PrintOut\APrintOutHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerSupplement.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerWorkOrder.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\SAT\ActPrintToSHHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\SAT\ActToSHHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\SAT\TOToSHHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\ShClone\ShCloneBulkCopyHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Site\SiteIndexerHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Solaris\AVRSynchronizationHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Solaris\PriceListRefreshHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Solaris\SAPSendHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Solaris\SubcontractorSyncHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\TOH\TOImport.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\TOH\TOItemOtchetPredostHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\TOH\TORefresh.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\TOH\TOTotalAmmountUpdate.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORDelRequests.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORRequests.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHSAPCodeRequest.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\WIHAnalyzer.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\WIHTrashCleaner.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WoTotal\WoTotalHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\EpplusService.cs" />
+    <Compile Include="Service\SHPORService.cs" />
+    <Compile Include="Service\SHWOService.cs" />
+    <Compile Include="Service\WIHService.cs" />
+    <Compile Include="TaskFactory.cs" />
+    <Compile Include="TaskLogger\TaskLogger.cs" />
+    <Compile Include="TaskManager.cs" />
+    <Compile Include="TaskModel\TaskBase.cs" />
+    <Compile Include="TaskParamModels\ConvertHandlerParams\ConvertHandlerParams.cs" />
+    <Compile Include="TaskParamModels\DbTaskParams\DbTaskParams.cs" />
+    <Compile Include="TaskParamModels\FileHandlerParams\FileHandlerParams.cs" />
+    <Compile Include="TaskParamModels\FileHandlerParams\FileParams.cs" />
+    <Compile Include="TaskParamModels\FileHandlerParams\ObjectParams.cs" />
+    <Compile Include="TaskParamModels\ImportHandlerParams\ImportHandlerParams.cs" />
+    <Compile Include="TaskParamModels\ImportHandlerParams\ImportParams.cs" />
+    <Compile Include="TaskParamModels\EmailHandlerParams\EmailHandlerParams.cs" />
+    <Compile Include="TaskParamModels\EmailHandlerParams\EmailParams.cs" />
+    <Compile Include="TaskParamModels\TaskParameters.cs" />
+    <Compile Include="TaskParamModels\TaskParams\TaskHandlerParams.cs" />
+    <Compile Include="TaskQuantifier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Handlers\TaskHandlers\Models\POR\POR to SH Handler.doc" />
+    <None Include="packages.config" />
+    <None Include="Templates\PrintOut.xlsx" />
+    <None Include="Templates\PrintOutWorkOrder.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\IFS Resources project2\OHDB-Vimpelcome\WIHInteract\WIHInteract.csproj">
+      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
+      <Name>WIHInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj">
+      <Project>{a6550831-f322-4fbb-bede-831ae9492ac1}</Project>
+      <Name>AutoImport.Rev3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
+      <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
+      <Name>CommonFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Visual Studio 2010\Projects\SHInteract\SHInteract\SHInteract.csproj">
+      <Project>{B6678255-E5B3-4270-B604-D51ADF577D4C}</Project>
+      <Name>SHInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
+      <Project>{CD807A95-25EB-4F71-A017-E537D58DE0AF}</Project>
+      <Name>NpoiInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SurfaceImporter\SurfaceImporter\SurfaceImporter.csproj">
+      <Project>{1982540b-ed94-49f8-b370-f66ff01e8373}</Project>
+      <Name>SurfaceImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj">
+      <Project>{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}</Project>
+      <Name>RedemptionInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbModels\DbModels.csproj">
+      <Project>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</Project>
+      <Name>DbModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelParser\ExcelParser.csproj">
+      <Project>{2BB1ECEC-2250-42E4-BC13-3708BD47B365}</Project>
+      <Name>ExcelParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TaskParamModels\NewFolder1\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

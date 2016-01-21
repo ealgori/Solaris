@@ -1,0 +1,21 @@
+﻿
+    @{
+        if (ViewBag.Path != null)
+        {
+            <ul class="breadcrumb">
+            @foreach (var item in ViewBag.Path)
+            {
+                if (string.IsNullOrEmpty(@item.Path))
+                {
+                <li class="active">@item.Name</li>
+                }
+                else
+                {
+                      <li><a href="@item.Path">@item.Name</a> <span class="divider">/</span></li>
+                }
+               
+            }
+            </ul>
+        }
+        
+    }

@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    ViewBag.Title = "POR DEL Creation";
+
+}
+@model List<Intranet.Models.AddAgreementModel>
+
+
+    <!DOCTYPE HTML>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title></title>
+    </head>
+    <body>
+        <div class="span8">
+            <label> Add agreement list</label>
+            <table class="table table-striped table-hover">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="success">
+                            <td class="span4">@item.Name</td>
+                            <td class="td-actions span2">
+                                <a class="btn btn-mini" href="PrintDraftPorDel?addAgreement=@item.Name">
+                                    POR
+                                    @*<i class="btn-icon-only  icon-envelope"></i>*@
+                                </a>
+                                <a class="btn btn-mini" href="PrintDraftTorDel?addAgreement=@item.Name">
+                                    TOR
+                                    @*<i class="btn-icon-only  icon-envelope"></i>*@
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </body>
+</html>

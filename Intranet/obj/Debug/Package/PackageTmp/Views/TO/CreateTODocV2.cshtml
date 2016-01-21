@@ -1,0 +1,362 @@
+﻿@using Intranet.Models
+@model Intranet.Models.TOViewModel
+@{
+    ViewBag.Title = "TO Creation";
+    // Layout = null;
+    Layout = "~/Views/Shared/_layoutBootstrap3.cshtml";
+}
+
+<link href='@Url.Content("~/Content/bootstrap3.css")' rel="stylesheet" />
+<link href='@Url.Content("~/Content/siteBoot3.css")' rel="stylesheet" />
+@*<link href='@Url.Content("~/Content/bootstrap-combobox.css")' rel="stylesheet" />*@
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-8 column">
+            <form role="form">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">TO</label>
+                    <div  id="to"></div>
+                    @*<input type="email" class="form-control" id="to" />*@
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-4 column">
+        </div>
+    </div>
+    <div id="details">
+
+
+
+    </div>
+</div>
+
+
+
+<script src="@Url.Content("~/Scripts/TOCreation/ToCreation.js")"></script>
+@*<script type="text/javascript">
+        var PositionList;
+        window.toListUrl = '@Url.Action("TOList", "Json")';
+        var toPositionUrl = '@Url.Action("TOPositionList", "Json")';
+        var toDataUrl = '@Url.Action("GetTODataById", "TO")';
+        var priceListUrl = '@Url.Action("GetPriceListItemPrice", "Json")';
+    </script>*@
+
+
+
+<script type="text/x-handlebars-template" id="to-combo-template">
+    <select class="form-control" id="to-select">
+        {{#each items}}
+        <option  value="#to/{{avr}}">{{text}}</option>
+        {{/each}}
+     </select>
+       
+
+</script>
+
+<script type="text/x-handlebars-template" id="detail-template">
+
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+            <table class="table detail">
+
+                <tbody>
+                    <tr>
+
+                        <td>
+                            Activity
+                        </td>
+                        <td>
+                            {{Activity}}
+                        </td>
+
+                    </tr>
+                    <tr class="active">
+
+                        <td>
+                            Дата выпуска заказа (Заполняется в СХ){{date2}}
+                        </td>
+                        <td>
+                            {{POIssueDate}}{{date}}
+                        </td>
+
+                    </tr>
+                    @*<tr class="success">
+
+                            <td>
+                                WorkEnd
+                            </td>
+                            <td>
+                                02/04/2012
+                            </td>
+
+                        </tr>*@
+                    <tr class="warning">
+
+                        <td>
+                            Total price
+                        </td>
+                        <td>
+                            {{TotalPrice}}
+                        </td>
+
+                    </tr>
+                    <tr class="danger">
+
+                        <td>
+                            Sh total price
+                        </td>
+                        <td>
+                            ---
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 column">
+            <table class="table detail">
+
+                <tbody>
+                    <tr>
+
+                        <td>
+                            Тип
+                        </td>
+                        <td>
+                            {{Type}}
+                        </td>
+
+                    </tr>
+                    <tr class="active">
+
+                        <td>
+                            Subcontractor
+                        </td>
+                        <td>
+                            {{Subcontractor}}
+                        </td>
+
+                    </tr>
+                    <tr class="success">
+
+                        <td>
+                            Subregion
+                        </td>
+                        <td>
+                            {{Region}}
+                        </td>
+
+                    </tr>
+                    <tr class="warning">
+
+                        <td>
+                            Филиал
+                        </td>
+                        <td>
+                            {{Brunch}}
+                        </td>
+
+                    </tr>
+                    <tr class="danger">
+
+                        <td>
+                            Actions
+                        </td>
+                        <td>
+                            --- --- ---
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 column">
+            @*<h2>
+                    Heading
+                </h2>
+                <p>
+                    Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                </p>
+                <p>
+                    <a class="btn" href="#">View details »</a>
+                </p>*@
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table" id="items">
+                <thead>
+                    <tr>
+                        <th colspan="4">Items</th>
+                    </tr>
+                </thead>
+                <thead>
+                <th>
+                    Номер сайта
+                </th>
+                <th>
+                    Адрес сайта
+                </th>
+                <th>
+                    Тип
+                </th>
+                <th>
+                    Кол-во
+                </th>
+                <th>
+                    Код
+                </th>
+                <th>
+                    Цена
+                </th>
+                <th>
+                    Сумма
+                </th>
+                </thead>
+
+                <tbody id="items-list"></tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table" id="matItems">
+                <thead>
+                    <tr>
+                        <th colspan="4">Material Items</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="matItems-list"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+
+</script>
+<script type="text/x-handlebars-template" id="detail-panel-template">
+    <div class="row clearfix">
+        <div class="col-md-8 column">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Info
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{Message}}
+                </div>
+                @*<div class="panel-footer">
+
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</script>
+
+@*<script type="text/x-handlebars-template" id="items-template">
+
+
+        <table class="table table-bordered">
+            <thead>
+            <th>
+                Номер сайта
+            </th>
+            <th>
+                Адрес сайта
+            </th>
+            <th>
+                Тип
+            </th>
+            <th>
+                Кол-во
+            </th>
+            <th>
+                Код
+            </th>
+            <th>
+                Цена
+            </th>
+            <th>
+                Сумма
+            </th>
+            </thead>
+            <tbody id="rows"></tbody>
+
+
+        </table>
+    </script>*@
+
+<script type="text/x-handlebars-template" id="row-template">
+
+
+    <td>{{Site}}</td>
+    <td>{{SiteAddress}}</td>
+    <td>{{Type}}</td>
+
+    <td>{{SiteQuantity}}</td>
+    <td class="">
+        {{selected}}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="check"
+                       {{#if selected}}
+                       checked
+                       {{/if}}>
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+
+                <input type="checkbox" id="check-group"> group
+            </label>
+        </div>
+        <div class="view">
+
+
+
+            <label>
+                <span class="label label-primary">{{TOItem}}</span>
+                <span class="label label-danger">{{ItemId}}</span>
+                {{TOItemText}}
+            </label>
+        </div>
+        <div class="edit">
+            <select name="name" class="edit" value="{{Item}}" />
+        </div>
+    </td>
+    <td>
+        {{Price}}
+    </td>
+    <td>{{Total}}</td>
+
+
+
+
+</script>
+
+<script type="text/x-handlebars-template" id="row-empty-template">
+    no data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</script>
+
+<script type="text/x-handlebars-template" id="prices-view-template">
+    <select class="input-large form-control dd-menu">
+        {{#each items}}
+        <option value="{{value}}">{{text}}</option>
+        {{/each}}
+
+    </select>
+
+</script>
+@*<script type="text/x-handlebars-template" id="price-view-template">
+        <option value="volvo">Volvo</option>
+    </script>*@
+<script type="text/x-handlebars-template" id="no-data">
+    no data
+</script>
+

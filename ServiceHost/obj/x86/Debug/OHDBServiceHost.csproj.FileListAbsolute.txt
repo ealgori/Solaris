@@ -1,0 +1,79 @@
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Debug\OHDBServiceHost.exe
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Debug\OHDBServiceHost.pdb
+\\RU00112284\p\Programs\1721\OHDB\NLog.config
+\\RU00112284\p\Programs\1721\OHDB\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDB\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721\OHDB\OHDBServiceHost.pdb
+\\RU00112284\p\Programs\1721\OHDB3\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDB3\Image\draft.png
+\\RU00112284\p\Programs\1721\OHDB3\NLog.config
+\\RU00112284\p\Programs\1721\OHDB3\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721\OHDB3\OHDBServiceHost.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Debug\OHDBServiceHost.csprojResolveAssemblyReference.cache
+\\RU00112284\p\Programs\1721\OHDB64\NLog.config
+\\RU00112284\p\Programs\1721\OHDB64\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDB64\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721\OHDB64\OHDBServiceHost.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Debug\Interop.Redemption.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Debug\OHDBServiceHost.csproj.ResolveComReference.cache
+\\RU00112284\p\Programs\1721\OHDB64\Image\draft.png
+\\RU00112284\p\Programs\1721\OHDBtest\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDBtest\Image\draft.png
+\\RU00112284\p\Programs\1721\OHDBtest\NLog.config
+\\RU00112284\p\Programs\1721\OHDBtest\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721\OHDBtest\OHDBServiceHost.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\OHDBServiceHost.exe.config
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NLog.config
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\OHDBServiceHost.exe
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\OHDBServiceHost.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\CommonFunctions.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EntityFramework.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EntityFramework.SqlServer.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\OHDBServiceProxy.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\Service.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NLog.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\FastMember.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\UnidecodeSharpFork.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\TaskManager.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\DbModels.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\ShClone.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\AutoImport.Rev3.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NPOI.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\RedemptionInteract.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EPPlus.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NpoiInteract.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\RedemptionInreract.Rev2.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\SurfaceImporter.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\SHInteract.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EFExtensions.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\WIHInteract.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\ExcelParser.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\Ionic.Zip.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\HtmlAgilityPack.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\CommonFunctions.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\OHDBServiceProxy.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\Service.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EntityFramework.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EntityFramework.SqlServer.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NLog.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\FastMember.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\FastMember.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\TaskManager.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\DbModels.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\ShClone.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\AutoImport.Rev3.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NPOI.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\RedemptionInteract.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EPPlus.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\NpoiInteract.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\RedemptionInreract.Rev2.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\SurfaceImporter.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\SHInteract.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EFExtensions.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\EFExtensions.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\WIHInteract.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\WIHInteract.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\ExcelParser.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\HtmlAgilityPack.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\bin\x86\HtmlAgilityPack.xml
+\\RU00112284\p\Programs\1721\OHDB\Image\draft.png

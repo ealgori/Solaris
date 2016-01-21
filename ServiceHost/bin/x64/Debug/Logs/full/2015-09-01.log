@@ -1,0 +1,32 @@
+ 11:36:35.9987  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 11:36:48.7571  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:36:49.7529  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:36:49.7529  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:37:14.7489  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:37:14.7899  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:37:14.7899  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:37:39.7859  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:37:39.8289  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:37:39.8289  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:38:04.8287  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:38:04.8537  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:38:04.8537  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:47:23.0954  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 11:47:50.9942  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 11:48:04.3145  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:48:05.4706  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:48:05.4706  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:48:30.4741  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:48:30.5021  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:48:30.5221  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:53:49.7700  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 11:53:58.5489  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 11:53:59.6720  INFO  Cannot find file of type:ShPriceListItems  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 11:53:59.6720  INFO  -------------------ShClone Update End Work:-------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 15:09:07.9638  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 15:12:39.6860  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 15:14:50.1540  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 15:14:59.6270  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 15:16:53.7554  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 15:17:45.8306  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 15:18:33.5634  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn

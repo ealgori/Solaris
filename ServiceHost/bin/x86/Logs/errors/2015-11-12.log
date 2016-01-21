@@ -1,0 +1,6 @@
+ 14:19:10.0284   ERROR  Ошибка получения свойств таблицы, либо создания экземпляра объекта типа указанного в ShFiles:ShAVRFs -Value cannot be null.
+Parameter name: type  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportProtoType.GetRequiredFields
+ 14:19:36.9531   ERROR  Ошибка получения свойств таблицы, либо создания экземпляра объекта типа указанного в ShFiles:ShAVRFs -Value cannot be null.
+Parameter name: type  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportProtoType.GetRequiredFields
+ 14:21:55.0869   ERROR  Ошибка при импорте-Сообщение:Cannot set Column 'IDItemFromPL' to be null. Please use DBNull instead., Файл:\\RU00112284\InFiles\1721\2015-11-12_14-21-22\ShTOItem_2015-11-12_12.11.47_42512.3.xls, Ряд:693, Колонка:9, Поле:IDItemFromPL, Тип:System.Nullable`1[System.Int32]  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 14:23:05.4080   ERROR  Ошибка при импорте-Сообщение:Cannot set Column 'IDItemFromPL' to be null. Please use DBNull instead., Файл:\\RU00112284\InFiles\1721\2015-11-12_14-21-22\ShTOItem_2015-11-12_12.11.47_42512.3.xls, Ряд:693, Колонка:9, Поле:IDItemFromPL, Тип:System.Nullable`1[System.Int32]  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read

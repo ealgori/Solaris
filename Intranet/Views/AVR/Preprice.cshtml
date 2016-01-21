@@ -1,0 +1,237 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<script src="@Url.Content("~/Scripts/KO/KOMapp.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Content/loaders.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/Site/AVR/Preprice.js")" type="text/javascript"></script>
+<script>
+    var getAVRListUrl = '@Url.Action("GetAVRForPreprice", "Avr")';
+    var getPriceLists = '@Url.Action("PositionList", "Json")';
+    var getAVRItems = '@Url.Action("GetAVRItems", "Avr")';
+    var postUrl = '@Url.Action("PostPreprice", "Avr")';
+</script>
+
+<div style="text-align: center;" data-bind="visible: !avrListLoaded()" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+@*<div class="loaders">
+        <div class="loader">
+            <div class="loader-inner ball-pulse">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>*@
+<div data-bind=" visible:avrListLoaded()">
+    <input data-bind="kendoComboBox: { dataTextField: 'avr', dataValueField: 'avr', data: avrList, value: selectedChoice, filter:'contains'}" />
+</div>
+<hr />
+@*Selected: <strong data-bind="text: selectedChoice"> </strong>*@
+<div data-bind="visible:selectedWS() ">Work start:  <strong data-bind="text: selectedWS"></strong></div>
+
+<div data-bind="visible:selectedWE()">Work end: <strong data-bind="text: selectedWE"></strong></div>
+<div data-bind="visible:selectedRukOtdelaBy()">Заморожен: <strong data-bind="text: selectedRukOtdelaBy"></strong></div>
+<div data-bind="visible:selectedPriority()">Приоритет: <strong data-bind="text: selectedPriority"></strong></div>
+<div data-bind="visible:selectedCity()">Город: <strong data-bind="text: selectedCity"></strong></div>
+<hr />
+@*<button data-bind="click: ToJSON">ToJSON</button>*@
+<button data-bind="click: PostJSON, enable:postAllowed(), visible:items().length>0">Опрайсовать</button>
+<span data-bind="text:postMessage()" style="
+      margin-left 20px;
+      "></span>
+@*<div data-bind="text:Json"></div>*@
+
+<div style="text-align: center;" data-bind="visible: !avrItemsListLoaded()" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+<div data-bind="visible:items().length>0" id="ItemTable">
+    <div id="avr-item-table">
+        <div class="row">
+            <div id="scrolldiv" class="span1320">
+                <table class="table table-bordered" style="padding: 0px;">
+                    <thead class="tableFloatingHeaderOriginal">
+                        <tr>
+                            <th class="sh-price-color" style="width: 29.5%">
+                                SH Description
+                            </th>
+                            <th class="sh-price-color" style="width: 8%">
+                                SH Price
+                            </th>
+
+                            <th class="sh-price-color" style="width: 5%">
+                                SH Quantity
+                            </th>
+                            <th class="price-color" style="width: 30%">
+                                Code
+                            </th>
+                            <th class="price-color" style="width: 1%; padding:0">
+                                <p class="vertical-text">Cust</p>
+                            </th>
+                            <th class="price-color" style="width: 1%; padding:0">
+                                <p class="vertical-text">*1.4</p>
+                            </th>
+                            <th class="price-color" style="width: 8%">
+                                VC Quantity
+                            </th>
+                            <th class="price-color" style="width: 8%">
+                                VC Price
+                            </th>
+                            <th class="price-color" style="width: 8%">
+                                VC Total
+                            </th>
+                            <th class="sh-price-color" style="width: 8%">
+                                Subc total
+                            </th>
+                            <th class="price-color" style="width: 8%">
+                                Margin
+                            </th>
+                            <th class="price-color" style="width: 1%">
+                                Note
+                            </th>
+
+                            @*<th class="price-color" style="width: 8.9%">
+                                    Price
+                                </th>*@
+                            @*<th class="sh-price-color" style="width: 12.1%">
+                                    SH Price Per Item
+                                </th>
+                                <th class="sh-price-color" style="width: 12.1%">
+                                    SH Price
+                                </th>*@
+                        </tr>
+                    </thead>
+                    @*<thead class="tableFloatingHeader" style="display: none;">
+                            <tr>
+                                <th class="main-color" style="width: 29.5%">
+                                    SH Description
+                                </th>
+                                <th class="main-color" style="width: 8%">
+                                    Code
+                                </th>
+                                <th class="price-color" style="width: 5%">
+                                    Price Per Item
+                                </th>
+                                <th class="price-color" style="width: 30%">
+                                    Quantity
+                                </th>
+                                <th class="price-color" style="width: 6.9%">
+                                    Koeff
+                                </th>
+                                <th class="price-color" style="width: 8.9%">
+                                    Price
+                                </th>
+                                <th class="sh-price-color" style="width: 12.1%">
+                                    SH Price Per Item
+                                </th>
+                                <th class="sh-price-color" style="width: 12.1%">
+                                    SH Price
+                                </th>
+                            </tr>
+                        </thead>*@
+                    @*<tbody data-bind="template:{name:'row-template', foreach: items}"></tbody>*@
+
+                    <tbody data-bind="foreach: items">
+                        <tr class="TableRow">
+
+                            <td style="background: rgb(221, 236, 221);">
+                                <span data-bind="text:id"></span> <span data-bind="text:shDesc"></span>
+                            </td>
+
+                            <td class="text-align-right">
+                                <span data-bind="text:shPrice"></span>
+                            </td>
+                            <td class="text-align-right">
+                                <span data-bind="text:shQuantity"></span>
+                            </td>
+
+                            <td style="background: rgb(221, 236, 221);">
+                                <div data-bind="visible: $parent.pricesLoaded()==false" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+                                <div data-bind="visible: $parent.pricesLoaded()==true" style=" width:100%">
+                                    <div data-bind="visible: !vcCustomPos() " class="k-combobox-wrapper">
+                                        <input data-bind="kendoComboBox: { dataTextField: 'text', dataValueField: 'value', data: $parent.prices, value: vcPriceListRevisionItemId, filter:'contains'}" />
+                                    </div>
+                                    <div data-bind="visible:  vcCustomPos()" class="k-combobox-wrapper">
+                                        <input data-bind="value:vcDescription" style="width: 95%;" placeholder="Наименование позиции" type="text">
+
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <input type="checkbox" data-bind="checked: vcCustomPos" />
+
+                            </td>
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+                                    <input type="checkbox" data-bind="checked: vcUseCoeff, visible:  !vcCustomPos()" />
+                                </div>
+                            </td>
+
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+                                    <input data-bind="kendoNumericTextBox: {value: vcQuantity, min:0}" />
+                                </div>
+                            </td>
+
+
+                            <td valign="top" class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+                                    <div data-bind="visible:  vcCustomPos()">
+                                        <input data-bind="kendoNumericTextBox: {value: vcCustomPrice, min:0} " />
+                                    </div>
+
+
+                                    <div data-bind="fixedStyle: vcPrice() , visible:  !vcCustomPos()" />
+                                </div>
+
+
+                            </td>
+                            <td class="text-align-right" data-bind="style:{color: vcTotal()>shTotal()?'green':'red'}, refreshable:vcTotal" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+                                    <span data-bind="fixedStyle:vcTotal()"></span>
+                                </div>
+
+                            </td>
+
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div data-bind="fixedStyle:shTotal()"></div>
+
+                            </td>
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+                                    <span data-bind="text: margin().toFixed(1), refreshable:margin"></span><span>%</span>
+                                </div>
+
+                            </td>
+                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
+                                <div class="k-numeric-wrapper">
+
+                                    <input type="text" data-bind="value: noteVC"  style="width: 110px;">
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                    <tbody>
+                        <tr bgcolor="#ADADAD" style="font-weight: bold;">
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                           
+                            <td />
+                            <td class="text-align-right"><span data-bind="text: totalVC().toFixed(2), refreshable:totalVC" /></td>
+                            <td class="text-align-right" data-bind="text: totalSH().toFixed(2)" />
+                            <td class="text-align-right"><span data-bind="text: marginTotal().toFixed(1), refreshable:marginTotal"></span><span>%</span></td>
+                            <td />
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

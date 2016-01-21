@@ -1,0 +1,20 @@
+C:\Temp\SolarisRelease\OHDBServiceHost.exe.config
+C:\Temp\SolarisRelease\Image\draft.png
+C:\Temp\SolarisRelease\NLog.config
+C:\Temp\SolarisRelease\OHDBServiceHost.exe
+C:\Temp\SolarisRelease\OHDBServiceHost.pdb
+\\RU00112284\p\Programs\1721-Release!\Image\draft.png
+\\RU00112284\p\Programs\1721-Release!\NLog.config
+\\RU00112284\p\Programs\1721-Release!\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721-Release!\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721-Release!\OHDBServiceHost.pdb
+\\RU00112284\p\Programs\1721\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDBTest\OHDBServiceHost.exe.config
+\\RU00112284\p\Programs\1721\OHDBTest\Image\draft.png
+\\RU00112284\p\Programs\1721\OHDBTest\NLog.config
+\\RU00112284\p\Programs\1721\OHDBTest\OHDBServiceHost.exe
+\\RU00112284\p\Programs\1721\OHDBTest\OHDBServiceHost.pdb
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Release\OHDBServiceHost.csprojResolveAssemblyReference.cache
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Release\Interop.Redemption.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\ServiceHost\obj\x86\Release\OHDBServiceHost.csproj.ResolveComReference.cache
+\\RU00112284\p\Programs\1721\OHDB\OHDBServiceHost.exe.config

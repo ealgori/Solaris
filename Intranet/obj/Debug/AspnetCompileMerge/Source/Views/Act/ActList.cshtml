@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "ActList";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div id="grid" style="height: 701px">
+</div>
+<script type="text/x-kendo-template" id="print-template">
+
+
+     #if (UploadedToSH)  { #
+      <a href= 'PrintDraft/#=Id #' class="btn btn-small btn-primary">Print</a>
+    
+# } #
+  #if (!UploadedToSH)  { #
+   #if (!UploadedToSHComment)  { #
+ 
+ <img src="@Url.Content("~/Content/loading8.gif")"></img>
+# }#
+ 
+# }#   
+
+   
+</script>
+
+
+
+<script type="text/javascript">
+    $("#grid").kendoGrid({
+        pageable: true,
+        batch: true,
+        //editable: "inline",
+        scrollable: true,
+        //groupable: true,
+        filterable: true,
+        sortable: true,
+        resizable: true,
+        dataSource: {
+            type: "json",
+            pageSize: 100,
+            transport: {
+                read: {
+                    url: '@Url.Action("GetActList", "Json")',
+                    contentType: "application/json",
+                    type: "POST", //use HTTP POST request as by default GET is not allowed by ASP.NET MVC
+                    cache: false
+                },
+                //                    update: {
+                //                        url: '/Document/Update',
+                //                        contentType: "application/json",
+                //                        type: "POST"
+                //                    },
+                parameterMap: function (data) {
+                    //if (options.filter) {
+                    //    options.filter.filters[0].value = kendo.toString(options.filter.filters[0].value, "MM/dd/yyyy");
+                    //}
+                    return JSON.stringify(data)
+                }
+            },
+            schema: {
+                data: "data",
+                total: "total",
+                model: {
+                    id: "Id",
+                    fields: {
+
+                        PrintDate: { type: "date" },
+                        ActName: { type: "string" },
+                        TO: { type: "string" },
+                        UserName: { type: "string" },
+
+                       
+                        WorkStart: { type: "date" },
+                        WorkEnd: { type: "date" },
+                        UploadedToSH: { type: "boolean" },
+                        UploadedToSHComment: { type: "string" },
+                        Price: { type: "number" },
+                        Print: { name: "Print" }
+                       
+                    }
+                }
+            }
+        },
+        columns: [
+
+                         { field: "PrintDate", width: "12%", title: "PrintDate", template: '#= kendo.toString(PrintDate, "dd.MM.yyyy HH:mm") #' },
+                         { field: "ActName", width: "10%", title: "ActName" },
+                         { field: "TO", width: "10%", title: "TO" },
+                         { field: "UserName", width: "10%", title: "UserName" },
+                         { field: "WorkStart", width: "8%", title: "WorkStart", template: '#= kendo.toString(WorkStart, "dd.MM.yyyy") #' },
+                         { field: "WorkEnd", width: "8%", title: "WorkEnd", template: '#= kendo.toString(WorkEnd, "dd.MM.yyyy") #' },
+                         { field: "Price", width: "10%", title: "Total cost",format: "{0:n0}" },
+                      { field: "UploadedToSH", width: "12%", title: "UploadedToSH" },
+                      { field: "UploadedToSHComment", width: "10%", title: "Comment" },
+                         { title: "Print", width: "80px", template: kendo.template($("#print-template").html()) },
+                       
+                       //  { title: "Delete", width: "80px", template: kendo.template($("#row-templateDel").html()) }
+            ]
+    });
+
+    function OnSuccess() {
+        $("#grid").data("kendoGrid").dataSource.read();
+        $("#OrderListMessageAlert").delay(4000).fadeOut(400);
+    }
+
+</script>

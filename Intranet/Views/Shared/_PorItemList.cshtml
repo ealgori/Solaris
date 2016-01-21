@@ -1,0 +1,166 @@
+﻿@model Intranet.Models.NewPORViewModel
+@{Layout = null;}
+<div id="avr-header">
+    <div class="row no-margin-left">
+        <div class="offset8">
+            <div class="span3">
+                <h5>
+                    Subcontractor
+                </h5>
+                @Html.EditorFor(m => m.Subcontractor, "DisabledText")
+            </div>
+            <div class="span3">
+                <h5>
+                    SubRegion
+                </h5>
+                @Html.EditorFor(m => m.SubRegion, "DisabledText")
+            </div>
+        </div>
+@*<th style="width: 240px"> SH Description </th>
+<th style="width: 229px"> Code </th>
+<th style="width: 55px"> Price Per Item </th>
+<th style="width: 10px"> Quantity </th>
+<th style="width: 44px"> Koeff </th>
+<th style="width: 56px"> Price </th>
+<th style="width: 70px"> SH Price Per Item </th>*@
+    </div>
+    <div class="row no-margin-left">
+        @Html.HiddenFor(m => m.SubcId)
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.Network)
+        @Html.HiddenFor(m => m.Activity)
+        <div class="span2">
+            <h5>
+                Work Start
+            </h5>
+            @Html.EditorFor(m => m.WorkStart)
+            @Html.ValidationMessageFor(m => m.WorkStart)
+        </div>
+        <div class="span2">
+            <h5>
+                Work End
+            </h5>
+            @Html.EditorFor(m => m.WorkEnd)
+            @Html.ValidationMessageFor(m => m.WorkEnd)
+        </div>
+        <div class="span2">
+            <h5>
+                Total Price
+            </h5>
+            @Html.EditorFor(m => m.PriceTotal, "DisabledText")
+        </div>
+        <div class="span2">
+            <h5>
+                SH Total Price
+            </h5>
+
+            @Html.EditorFor(m => m.PriceTotalSH, "DisabledText")
+        </div>
+         <div class="span2">
+         <h5>
+                APS
+            </h5>
+         <span><input id="aps" type="checkbox" name="second" title="Автоматическое заполнение однотипных позиций"/></span>
+         </div>
+
+            <div class="span2">
+         @if (User.Identity.Name.Contains("ealgori") || User.Identity.Name.Contains("eksenaz") || User.Identity.Name.Contains("epavlil")||
+             User.Identity.Name.Contains("esvamia") || User.Identity.Name.Contains("esovalr"))
+         {
+          <h5>
+                AutoMap
+            </h5>
+        <span><button type="button"  id="autoMap" class="btn btn-default">AutoMap</button></span>
+        }
+         </div>
+    </div>
+    <br />
+    <div class="row no-margin-left">
+        <div class="span8">
+            <input type="submit" class="span2 btn btn-primary" id="CreatePor" value="Create POR" />
+            <br />
+            <br />
+            <div id="por-message">
+            </div>
+        </div>
+    </div>
+ @*   <div class="row no-margin-left">
+        <div class="span1320">
+            <table class="table table-bordered scroll-header">
+                <thead>
+                    <tr>
+                        <th style="width: 29.5%; background-color:Blue">
+                            SH Description
+                        </th>
+                        <th style="width: 28.5%">
+                            Code
+                        </th>
+                        <th style="width: 8.8%">
+                            Price Per Item
+                        </th>
+                        <th style="width: 7.3%">
+                            Quantity
+                        </th>
+                        <th style="width: 6.9%">
+                            Koeff
+                        </th>
+                        <th style="width: 8.9%">
+                            Price
+                        </th>
+                        <th style="width: 12.1%">
+                            SH Price Per Item
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>*@
+</div>
+<div id="avr-table">
+    @if (Model.Items.Count() > 0)
+    {
+        <div class="row no-margin-left">
+            <div  id ="scrolldiv" class="span1320">
+                <table class="table table-bordered">
+                    <thead>
+                         <tr>
+                        <th class="main-color" style="width: 29.5%">
+                            SH Description
+                        </th>
+                        <th class="main-color"  style="width: 28.5%">
+                            Code
+                        </th>
+                        <th class="price-color" style="width: 8.8%">
+                            Price Per Item
+                        </th>
+                        <th class="price-color" style="width: 7.3%">
+                            Quantity
+                        </th>
+                        <th class="price-color" style="width: 6.9%">
+                            Koeff
+                        </th>
+                        <th class="price-color" style="width: 8.9%">
+                            Price
+                        </th>
+                        <th class="sh-price-color" style="width: 12.1%">
+                            SH Price Per Item
+                        </th>
+                        <th class="sh-price-color" style="width: 12.1%">
+                            SH Price
+                        </th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        @Html.EditorFor(model => model.Items)
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }</div>
+    <script>
+        $(function () {
+            
+         })
+    </script>

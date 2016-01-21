@@ -1,0 +1,73 @@
+@{
+    ViewBag.Title = "SubContractors List";
+    
+}
+
+<div id="grid" style="height: 701px">
+</div>
+<script type="text/x-kendo-template" id="row-template">
+    <a href='/Import/Download/#= ImportFileId #' class="btn btn-small btn-primary">Download</a>
+</script>
+<script type="text/javascript">
+    $("#grid").kendoGrid({
+        pageable: true,
+        batch: true,
+        //editable: "inline",
+        scrollable: true,
+        //groupable: true,
+        selectable: "single",
+        filterable: true,
+        sortable: true,
+        resizable: true,
+        dataSource: {
+            type: "json",
+            pageSize: 100,
+            transport: {
+                read: {
+                    url: '@Url.Action("Read", "SubContractors")',
+                    contentType: "application/json",
+                    type: "POST", //use HTTP POST request as by default GET is not allowed by ASP.NET MVC
+                    cache: false
+                },
+                //                    update: {
+                //                        url: '/Document/Update',
+                //                        contentType: "application/json",
+                //                        type: "POST"
+                //                    },
+                parameterMap: function (data) {
+                    //if (options.filter) {
+                    //    options.filter.filters[0].value = kendo.toString(options.filter.filters[0].value, "MM/dd/yyyy");
+                    //}
+                    return JSON.stringify(data)
+                }
+            },
+            schema: {
+                data: "data",
+                total: "total",
+                model: {
+                    id: "Id",
+                    fields: {
+                        Id: { type: "number" },
+                        Name: { type: "string" },
+                        Address: { type: "string" },
+                        SAPNumber: { type: "string" },
+                        SAPName: { type: "string" },
+                        Project: { type: "string" },
+                       
+
+                    }
+                }
+            }
+        },
+        columns: [
+                         { field: "Id", width: "2%", title: "Id" },
+                         { field: "Name", width: "16%", title: "Name" },
+                         { field: "Address", width: "16%", title: "Address" },
+                         { field: "SAPNumber", width: "5%", title: "SAPNumber"},
+//                          { field: "SAPNumber", width: "5%", title: "SAPNumber", attributes: { style: "font-size:10px;"} },
+                         { field: "SAPName", width: "15%", title: "SAPName" },
+                         { field: "Project", width: "6%", title: "Project" },
+                        
+            ]
+    });
+</script>

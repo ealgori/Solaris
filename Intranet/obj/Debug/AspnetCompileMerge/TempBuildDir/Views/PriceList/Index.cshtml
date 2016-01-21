@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "PriceLists list";
+}
+
+
+<div class="row">
+    <div class="span6">
+        @*    @Html.DropDownList("project", ProjectList)*@ <a class="btn btn-primary report-btn-batch"
+            id="MainBtn" onclick="BatchReport()">Upload new Price List</a> <a class="btn" onclick="GridRefresh()">
+                Refresh</a>
+    </div>
+    <div class="span5" id="Message">
+    <div id="PriceListUploadMessageAlert">
+        @if (TempData[Intranet.Constants.PriceListMessage] != null)
+        {
+            if (TempData[Intranet.Constants.PriceListMessage].ToString().Contains("Success"))
+            {  
+            <div class="alert alert-success">@TempData[Intranet.Constants.PriceListMessage]</div>
+            }
+            if (TempData[Intranet.Constants.PriceListMessage].ToString().Contains("Error"))
+            {
+            <div class="alert alert-error">@TempData[Intranet.Constants.PriceListMessage]</div>
+            }
+        }
+    </div>
+</div>
+</div>
+<br />
+@Html.Partial("_PriceListUploader")
+<div id="grid" style="height:500px">
+</div>
+<script type="text/javascript">
+    function GridRefresh() {
+        $("#grid").data("kendoGrid").dataSource.read();
+    }
+
+    function OnSuccess() {
+        $("#grid").data("kendoGrid").dataSource.read();
+        $("#PriceListUploadMessageAlert").delay(4000).fadeOut(400);
+    }
+    function BatchReport() {
+        $("#project").kendoDropDownList(
+        {
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource:
+                {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("ProjectList", "Json")',
+                            dataType: "json"
+                        }
+                    }
+                }
+        });
+        var kendoWindow = $("#window").data("kendoWindow");
+        kendoWindow.center();
+        kendoWindow.open();
+    }
+    $(document).ready(function () {
+
+        kendo.culture("ru-RU");
+        $("#window").kendoWindow({
+            modal: true,
+            width: "500px",
+            height: "500px",
+            draggable: false,
+            resizable: false,
+            actions: ["Close"],
+            visible: false,
+            title: "Upload Price List",
+            //appendTo: "#mainForm"
+            open: function (e) {
+            }
+        });
+        $("#files").kendoUpload({
+            localization: {
+                select: "Add File..."
+            },
+            multiple: true,
+            async: {
+                saveUrl: '@Url.Action("Upload", "PriceList")',
+                //removeUrl: "remove",
+                autoUpload: false,
+                batch: true
+            },
+            upload: function (e) {
+                e.data = { ProjectId: $("#project").val(), Comparable:$("#Comparable").prop("checked") };
+            },
+            complete: function (e) {
+                GridRefresh();
+            }
+        });
+        $("#grid").kendoGrid({
+            pageable: true,
+            batch: true,
+            editable: "inline",
+            scrollable: true,
+            selectable: "single",
+            resizable: true,
+            //groupable: true,
+            filterable: true,
+            dataSource: {
+                type: "json",
+                pageSize: 100,
+               
+                transport: {
+                    read: {
+                        url: '@Url.Action("Read", "PriceList")',
+                        contentType: "application/json",
+                        type: "POST", //use HTTP POST request as by default GET is not allowed by ASP.NET MVC
+                        cache: false
+                    },
+                    //                    update: {
+                    //                        url: '/Document/Update',
+                    //                        contentType: "application/json",
+                    //                        type: "POST"
+                    //                    },
+                    parameterMap: function (data) {
+                        //if (options.filter) {
+                        //    options.filter.filters[0].value = kendo.toString(options.filter.filters[0].value, "MM/dd/yyyy");
+                        //}
+                        return JSON.stringify(data)
+                    }
+                },
+                schema: {
+                    data: "data",
+                    total: "total",
+                    model: {
+                        id: "ProjectId",
+                        fields: {
+                             VendorNumber: { type: "string" },
+                             VendorName: { type: "string" },
+                           
+                            PriceListNumber: { type: "string" },
+                            PriceListAdditionalNumber: { type: "string" },
+                            PriceListId: { type: "int" },
+                            CreationDate: { type: "date" },
+                            SignDate: { type: "date" },
+                            ExpiryDate: { type: "date" }
+
+                        }
+                    }
+                }
+            },
+            columns: [
+            //                         { command: ["edit"], title: "^", width: "190px" },
+                          {field: "VendorNumber", width: "100px", title: "Vendor number" },
+                          { field: "VendorName", width: "200px", title: "Vendor name" },
+                         
+                          {field: "PriceListId", width: "60px", title: "Id" },
+                         {field: "PriceListNumber", width: "200px", title: "Number" },
+                         { field: "PriceListAdditionalNumber", width: "150px", title: "Additional Number" },
+                         { field: "CreationDate", width: "130px", title: "Creation date", template: '#= kendo.toString(CreationDate, "dd.MM.yyyy HH:mm") #' },
+                         { field: "SignDate", width: "130px", title: "Sign date", template: '#= kendo.toString(SignDate, "dd.MM.yyyy") #' },
+                         { field: "ExpiryDate", width: "130px", title: "ExpriyDate", template: '#= kendo.toString(ExpiryDate, "dd.MM.yyyy") #' }
+            //                         { title: "Actions", width: "200px", template: kendo.template($("#row-template").html()) }
+            ]
+        });
+        $(".content-loader").fadeOut();
+        $("#PriceListUploadMessageAlert").delay(4000).fadeOut(400);
+    });
+
+   
+</script>

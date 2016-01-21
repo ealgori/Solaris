@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "SubcReport";
+}
+
+@using (Html.BeginForm("SubcReport", "PriceList"))
+{
+    @Html.Editor("SubcId")
+    <button class="btn" type='submit'> Create Report</button>
+}
+<script>
+    $(document).ready(function () {
+        $("#SubcId").width(750).kendoComboBox(
+        {
+            autoBind: false,
+            dataTextField: "text",
+            dataValueField: "value",
+            height: 400,
+            filter: "contains",
+            suggest: true,
+            dataSource:
+                {
+                    transport: {
+                        read: {
+                            url: '@Url.Action("SubcList", "Json")',
+                            dataType: "json"
+                        }
+                    }
+                }
+        });
+    });
+</script>

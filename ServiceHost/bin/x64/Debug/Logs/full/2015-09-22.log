@@ -1,0 +1,29 @@
+ 16:31:02.8447  WARN  -------------------ShClone Started:---------------------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogWarn
+ 16:31:11.4837  INFO  -------------------ShClone Update Start Work:-----------------------  Stack:Service1.<.cctor>b__2 => SHCloneBulkCopy.DoWork => SHCloneBulkCopy.LogInfo
+ 16:31:24.7547  INFO  ShPriceListItems_2015-09-22_15.12.52_2826.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7597  INFO  ShAVRF_2015-09-22_15.10.47_2819.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7597  INFO  ShAVRItem_2015-09-22_15.14.18_2838.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7597  INFO  ShFIX_2015-09-22_15.14.02_2834.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7777  INFO  ShFOL_2015-09-22_15.13.51_2832.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7777  INFO  ShSite_2015-09-22_15.12.18_2824.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.7937  INFO  ShAVRS_2015-09-22_15.14.10_2837.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8087  INFO  ShContacts_2015-09-22_15.14.08_2835.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8087  INFO  ShTOreport_2015-09-22_15.09.20_2816.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8087  INFO  ShTOItem_2015-09-22_15.10.07_2818.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8257  INFO  ShMatTOItems_2015-09-22_15.13.39_2829.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8257  INFO  ShWIH_2015-09-22_15.09.14_2814.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8407  INFO  ShSostavRabotTO_2015-09-22_15.12.17_2823.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8407  INFO  ShSostavRabotTOItems_2015-09-22_15.11.19_2821.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8547  INFO  ShAct_2015-09-22_15.14.09_2836.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8717  INFO  ShInvoice_2015-09-22_15.14.54_2839.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:24.8717  INFO  ShAddAgreement_2015-09-22_15.09.13_2813.1.xls  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.GetFiles => SHCloneBulkCopy.LogInfo
+ 16:31:25.7367  INFO  Unpacked: ShAVRItem_2015-09-22_15.14.18_2838.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.UnZipFiles => SHCloneBulkCopy.LogInfo
+ 16:31:26.1417  INFO  Unpacked: ShSite_2015-09-22_15.12.18_2824.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.UnZipFiles => SHCloneBulkCopy.LogInfo
+ 16:31:27.3477  INFO  Unpacked: ShTOItem_2015-09-22_15.10.07_2818.zip  Stack:SHCloneBulkCopy.DoWork => SHCloneBulkCopy.UnZipFiles => SHCloneBulkCopy.LogInfo
+ 16:32:43.6047  INFO  Ожидали:TOItem, PORTOItem, TOId, Site, FOL, FIX, PriceFromPL, IDItemFromPL, DescriptionFromPL, PLItemRevisionID, TOPlanDate, TOFactDate, TOPlanDateSubcontractor, Quantity, Price, WorkConfirmedByEricsson, WorkConfirmedByEricssonBy, WorkConfirmedByEricssonDate, FileReportTO1, FileReportTO2, FileReportTO3, FileReportTO4, ActId, ReasonForPartialClosure, EquipmentQuantity, EquipmentName, ExcludeWork, OtchetPredostavlenVCfact, LinkToReportinEridoc, AddAgreementId; Нашли:TOItem, PORTOItem, TOId, Site, FOL, FIX, TOPlanDate, TOFactDate, PriceFromPL, IDItemFromPL, DescriptionFromPL, PLItemRevisionID, TOPlanDateSubcontractor, Quantity, Price, WorkConfirmedByEricsson, WorkConfirmedByEricssonBy, WorkConfirmedByEricssonDate, FileReportTO1, FileReportTO2, FileReportTO3, FileReportTO4, ActId, ReasonForPartialClosure, EquipmentQuantity, EquipmentName, ExcludeWork, OtchetPredostavlenVCfact, LinkToReportinEridoc, AddAgreementId  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportProtoType.FieldMatching
+ 16:32:50.5087  INFO  Начинаем чтение файла:ShTOItem_2015-09-22_15.10.07_2818.1.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 16:33:23.5807  INFO  Прочли:4 строк;ShTOItem_2015-09-22_15.10.07_2818.1.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 16:33:36.9697  INFO  Прочли:4 строк;ShTOItem_2015-09-22_15.10.07_2818.2.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 16:33:43.7027  INFO  Прочли:4 строк;ShTOItem_2015-09-22_15.10.07_2818.3.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 16:33:54.8347  INFO  Прочли:4 строк;ShTOItem_2015-09-22_15.10.07_2818.4.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
+ 16:33:59.5197  INFO  Начинаем чтение файла:ShTOItem_2015-09-22_15.10.07_2818.5.xls  Stack:SHCloneBulkCopy.PrepareQueries => UniReportBulkCopy.ReadFiles => UniReportBulkCopy.Read
