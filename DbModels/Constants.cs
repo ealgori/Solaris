@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Intranet
+namespace DbModels
 {
     public static class Constants
     {

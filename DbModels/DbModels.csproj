@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DataContext\Context.cs" />
     <Compile Include="DataContext\DBInit.cs" />
     <Compile Include="DataContext\DbInitConstants.cs" />

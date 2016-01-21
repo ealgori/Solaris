@@ -31,13 +31,17 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             var now = DateTime.Now;
             // у которых нет сат поров
             var avrsPN = avrs.Where(a => !a.PriceNotifySend.HasValue
+                                        && a.Subcontractor!= DbModels.Constants.EricssonSubcontractor&& a.SubcontractorRef!= DbModels.Constants.EricssonSubcontractor
                                          && !cachedSATPors.Any(p => p.AVRId == a.AVRId)                            
             ).ToList();
 
 
             // у которых есть сат поры
             var avrsVPN = avrs.Where(a => !a.VCPriceNotifySend.HasValue
-                                            && cachedSATPors.Any(p => p.AVRId == a.AVRId)
+                                            &&( 
+                                            cachedSATPors.Any(p => p.AVRId == a.AVRId)
+                                            || a.Subcontractor == DbModels.Constants.EricssonSubcontractor && a.SubcontractorRef == DbModels.Constants.EricssonSubcontractor
+                                            )
             ).ToList();
             RedemptionMailProcessor processor = null;
             var importModels = new List<NoteDatesModel>();

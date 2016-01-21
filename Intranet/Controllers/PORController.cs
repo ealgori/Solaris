@@ -394,7 +394,7 @@ namespace Intranet.Controllers
                     }
                     int itemId = 0;
                     var ItemList = por.Items;// context.ShAVRItems.Where(p => p.AVRFId == por.AVRId || p.AVRSId == por.AVRId).ToList();
-                    if (ItemList.Where(p => !string.IsNullOrEmpty(p.ECRType) && p.ECRApprove != (string)Constants.ECRApprove).Count() > 0)
+                    if (ItemList.Where(p => !string.IsNullOrEmpty(p.ECRType) && p.ECRApprove != (string)DbModels.Constants.ECRApprove).Count() > 0)
                     {
                         return Json(new { Status = "error", Message = "Не все прайсовые позиции одобрены отделом Сорсинга." });
                     }
@@ -409,7 +409,7 @@ namespace Intranet.Controllers
                         Quantity = p.Quantity.HasValue ? p.Quantity.Value : 0,
                         PriceSH = p.Price * (p.Quantity.HasValue ? p.Quantity.Value : 0),
                         Unit = p.Unit,
-                        PositionId = p.ECRType == null ? null : (int?)Intranet.Constants.ECRAddId,
+                        PositionId = p.ECRType == null ? null : (int?)DbModels.Constants.ECRAddId,
                         ECRType = p.ECRType,
                         AVRItemId = p.AVRItemId
                     });

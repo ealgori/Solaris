@@ -61,7 +61,7 @@ namespace Intranet.Controllers
 
                 foreach (var item in resultItems)
                 {
-                    if (shAVR.Subcontractor == Constants.EricssonSubcontractor || shAVR.SubcontractorRef == Constants.EricssonSubcontractor)
+                    if (shAVR.Subcontractor == DbModels.Constants.EricssonSubcontractor || shAVR.SubcontractorRef == DbModels.Constants.EricssonSubcontractor)
                     {
                        // var avtItem = shAVRItems.FirstOrDefault(i=>i.AVRItemId== item.)
                     }
@@ -111,7 +111,7 @@ namespace Intranet.Controllers
                 var avrForPreprice = new List<ShAVRs>();
                 foreach (var avr in avrs)
                 {
-                    if (avr.Subcontractor == Constants.EricssonSubcontractor||avr.SubcontractorRef== Constants.EricssonSubcontractor)
+                    if (avr.Subcontractor == DbModels.Constants.EricssonSubcontractor||avr.SubcontractorRef== DbModels.Constants.EricssonSubcontractor)
                     {
                         avrForPreprice.Add(avr);
                     }
