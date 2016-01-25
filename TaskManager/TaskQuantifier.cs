@@ -372,7 +372,7 @@ namespace TaskManager
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters); ;
                         task.ConvertHandler = null;
-                        task.EmailHandler = null; 
+                        task.EmailHandler = null; ;
                         break;
 
                     }

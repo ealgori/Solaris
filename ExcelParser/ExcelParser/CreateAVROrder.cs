@@ -126,13 +126,16 @@ namespace ExcelParser.EpplusInteract
                 service.InsertTableToPatternCellInWorkBook("ExplTable", explTable.ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                 Dictionary<string, string> dict = new Dictionary<string, string>();
 
-                decimal total = items.Sum(i => (i.VCPrice ?? 0) * (i.VCQuantity ?? 0));
+                decimal total = items.Where(i=>!i.VCUseCoeff).Sum(i => (i.VCPrice ?? 0) * (i.VCQuantity ?? 0));
+                decimal total14 = items.Where(i => i.VCUseCoeff).Sum(i => (i.VCPrice ?? 0) * (i.VCQuantity ?? 0)); ;
+                
                 decimal totalFR = total.FinanceRound();
+                decimal total14FR = total14.FinanceRound();
                 //decimal totalWCoef = (total * 1.4M);
                 //decimal totalWCoefFR = totalWCoef.FinanceRound();
-                decimal nds = (total * 0.18M);
+                decimal nds = ((total+total14) * 0.18M);
                 decimal ndsFR = nds.FinanceRound();
-                decimal totalWNDS = (total + nds);
+                decimal totalWNDS = (total+total14 + nds);
                 decimal totalWNDSFR = totalWNDS.FinanceRound();
                 string totalWNDSp = CommonFunctions.InWords.Валюта.Рубли.Пропись(totalWNDSFR, CommonFunctions.InWords.Заглавные.Первая);
                 string ndsp = CommonFunctions.InWords.Валюта.Рубли.Пропись(ndsFR, CommonFunctions.InWords.Заглавные.Первая);
@@ -144,19 +147,37 @@ namespace ExcelParser.EpplusInteract
                 string orderTotalText = string.Format(orderTotalTextFormat, totalWNDSFR, totalWNDSp, ndsFR, ndsp);
                 string actTotalText = string.Format(actTotalTextFormat, number, totalWNDSFR, totalWNDSp, ndsFR, ndsp);
                 string explTotalText = string.Format(explTotalTextFormat, totalWNDSFR, totalWNDSp, ndsFR, ndsp);
-                if(items.Any(i=>i.VCUseCoeff))
+                var rowsToRemove = new List<string>();
+                // работы только в рабочее время
+                if (!items.Any(i => i.VCUseCoeff))
                 {
+                    // удалить лишнюю строчку 
                     dict.Add("Label", _labelWithCoeff);
+                    rowsToRemove.Add("Label1.4");
+
                 }
                 else
                 {
-                    dict.Add("Label", _labelWOCoeff);
+                    dict.Add("Label1.4", _labelWithCoeff);
+                    // смешаные работы
+                    if (!items.All(i => i.VCUseCoeff))
+                    {
+                        dict.Add("Label", _labelWOCoeff);
+                    }
+                    // только ночные
+                    else
+                    {
+                        rowsToRemove.Add("Label");
+                    }
                 }
+                service.RemoveRowsInWorkBook(rowsToRemove);
+
                 dict.Add("OrderTotalText", orderTotalText);
                 dict.Add("ActTotalText", actTotalText);
                 dict.Add("ExplTotalText", explTotalText);
                 dict.Add("TotalWONDS", totalFR.ToString());
                 dict.Add("Total", totalFR.ToString());
+                dict.Add("Total1.4", total14FR.ToString());
                 //dict.Add("TotalWCoef", totalWCoefFR.ToString());
                 dict.Add("NDS", ndsFR.ToString());
                 dict.Add("TotalWNDS", totalWNDSFR.ToString());
