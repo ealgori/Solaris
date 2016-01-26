@@ -75,15 +75,15 @@ namespace ExcelParser.EpplusInteract
                     orderRow.Note = item.NoteVC;
                     if(item.VCUseCoeff)
                     {
-                        orderRow.Price = (item.VCPrice.HasValue ? item.VCPrice.Value / _coeff : 0) * (orderRow.Quantity);
+                        orderRow.Price = ((item.VCPrice.HasValue ? item.VCPrice.Value / _coeff : 0) * (orderRow.Quantity)).FinanceRound();
                        
                     } 
                     else
                     {
-                        orderRow.Price = (item.VCPrice ?? 0) * (orderRow.Quantity);
+                        orderRow.Price = ((item.VCPrice ?? 0) * (orderRow.Quantity)).FinanceRound();
                     }
                    
-                    orderRow.Note = item.Note;
+                   // orderRow.Note = item.Note;
                     orderTable.Add(orderRow);
                     if (item.StartDate.HasValue && item.EndDate.HasValue)
                     {
@@ -99,11 +99,11 @@ namespace ExcelParser.EpplusInteract
                     actRow.Address = siteAddress;
                     if (item.VCUseCoeff)
                     {
-                        actRow.Price = item.VCPrice/_coeff;
+                        actRow.Price = (item.VCPrice/_coeff).FinanceRound();
                     }
                     else
                     {
-                        actRow.Price = item.VCPrice;
+                        actRow.Price = item.VCPrice.FinanceRound();
                     }
 
 
@@ -114,7 +114,7 @@ namespace ExcelParser.EpplusInteract
                     explRow.Id = count;
                    // explRow.Empty1 = "#merger(1,2)";
                     explRow.BigAddress = string.Format("БС(№: {0}) \"{1}\" {2} ", siteId, siteName, item.VCDescription);
-                    explRow.PriceWNDS = (item.VCPrice ?? 0 + item.VCPrice ?? 0 * 0.18M).ToString("F");
+                    explRow.PriceWNDS = (item.VCPrice ?? 0 + item.VCPrice ?? 0 * 0.18M).FinanceRound().ToString("F");
                     explTable.Add(explRow);
 
 
@@ -152,7 +152,7 @@ namespace ExcelParser.EpplusInteract
                 if (!items.Any(i => i.VCUseCoeff))
                 {
                     // удалить лишнюю строчку 
-                    dict.Add("Label", _labelWithCoeff);
+                    dict.Add("Label", _labelWOCoeff);
                     rowsToRemove.Add("Label1.4");
 
                 }

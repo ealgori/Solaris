@@ -4,6 +4,9 @@
 <script src="@Url.Content("~/Scripts/KO/KOMapp.js")" type="text/javascript"></script>
 <link href="@Url.Content("~/Content/loaders.css")" rel="stylesheet" />
 <script src="@Url.Content("~/Scripts/Site/AVR/Preprice.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ResizableColumns/jquery.resizableColumns.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/ResizableColumns/jquery.resizableColumns.css")" rel="stylesheet" />
+
 <script>
     var getAVRListUrl = '@Url.Action("GetAVRForPreprice", "Avr")';
     var getPriceLists = '@Url.Action("PositionList", "Json")';
@@ -45,7 +48,7 @@
     <div id="avr-item-table">
         <div class="row">
             <div id="scrolldiv" class="span1320">
-                <table class="table table-bordered" style="padding: 0px;">
+                <table class="table table-bordered" id="item-table" style="padding: 0px;">
                     <thead class="tableFloatingHeaderOriginal">
                         <tr>
                             <th class="sh-price-color" style="width: 29.5%">
@@ -199,11 +202,10 @@
                                 </div>
 
                             </td>
-                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
-                                <div class="k-numeric-wrapper">
-
-                                    <input type="text" data-bind="value: noteVC"  style="width: 110px;">
-
+                            <td class="no-vertical-padding" style="background: rgb(221, 236, 221);">
+                                <div class="no-margin-bottom">
+                                    <input type="text" placeholder="Время работ" data-bind="textInput : noteVC"  style="width: 110px;     background: #C5EBEF">
+                                    <TEXTAREA  type="text" placeholder="Основание" data-bind="textInput : workReason" style="width: 110px;     background: #B5E4B5;     height: 20px;"/>
                                 </div>
 
                             </td>

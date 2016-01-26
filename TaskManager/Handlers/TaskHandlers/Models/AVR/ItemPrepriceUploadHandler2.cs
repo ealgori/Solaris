@@ -32,7 +32,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                         var itemModel = new ItemPrepriceImportModel();
 
                         itemModel.ItemId = item.AVRItemId.Value;
-                        
+                        itemModel.NoteVC = item.NoteVC;
+                        itemModel.WorkReason = item.WorkReason;
                         if (!item.IsCustomItem)
                         {
                             if (item.Item != null)

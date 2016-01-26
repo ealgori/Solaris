@@ -56,7 +56,9 @@ namespace Intranet.Controllers
 
                     itemId = i.AVRItemId,
 
-                    noteVC = i.NoteVC
+                    noteVC = i.NoteVC,
+
+                    workReason = i.WorkReason
                 }).ToList();
 
                 foreach (var item in resultItems)
@@ -150,12 +152,12 @@ namespace Intranet.Controllers
                         //    shAvr = shItem.AVRS;
                         if (isCustomItem)
                         {
-                            context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, vcQuantity = item.vcQuantity, IsCustomItem = isCustomItem, VCDescription = item.vcDescription,  vcPrice = item.vcCustomPrice  });
+                            context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, vcQuantity = item.vcQuantity, IsCustomItem = isCustomItem, VCDescription = item.vcDescription,  vcPrice = item.vcCustomPrice , NoteVC = item.noteVC, WorkReason = item.workReason });
                             shItem.VCCustomPos = true;
                             shItem.VCPriceListRevisionItemId = null;
                             shItem.VCDescription = item.vcDescription;
                             shItem.VCPrice = item.vcCustomPrice;
-                            shItem.NoteVC = item.noteVC;
+                            
                         }
                         else
                         {
@@ -164,7 +166,7 @@ namespace Intranet.Controllers
                             if (plItem != null)
                             {
                                 //var shVCRequestNumber =
-                                context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, Item = plItem, vcQuantity = item.vcQuantity, VCUseCoeff = (item.vcUseCoeff.HasValue?item.vcUseCoeff.Value:false), VCCoeff = item.vcCoeff });
+                                context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, Item = plItem, vcQuantity = item.vcQuantity, VCUseCoeff = (item.vcUseCoeff.HasValue?item.vcUseCoeff.Value:false), VCCoeff = item.vcCoeff , NoteVC = item.noteVC, WorkReason = item.workReason });
                                 shItem.VCPriceListRevisionItemId = plItem.Id;
                                 shItem.VCDescription = plItem.Name;
                                 if (item.vcUseCoeff.HasValue&&item.vcUseCoeff.Value)
@@ -178,8 +180,11 @@ namespace Intranet.Controllers
                             }
                             
                         }
-                        
-                        
+                        shItem.NoteVC = item.noteVC;
+                        if (!string.IsNullOrEmpty(item.workReason))
+                            shItem.WorkReason = item.workReason;
+
+
                         // для ускорения теста
                         shItem.VCQuantity = item.vcQuantity;
                         

@@ -131,23 +131,6 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-# Bin Folders
- TaskManager/obj
- TaskManager/bin
- ShClone/obj
- ShClone/bin
- Service/obj
- Service/bin
- ServiceHost/obj
- ServiceHost/bin
- OHDBServiceProxy/obj
- OHDBServiceProxy/bin
- ExcelParser/obj
- ExcelParser/bin
- DbModels/bin
- DbModels/obj
- 
-
 # Click-Once directory
 publish/
 

@@ -16,5 +16,6 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ImportClasses
         public bool VCCustomItem { get; set; }
         public bool VCUseCoeff { get; set; }
         public string  NoteVC { get; set; }
+        public string WorkReason { get; set; }
     }
 }

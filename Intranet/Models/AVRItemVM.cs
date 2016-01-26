@@ -19,5 +19,6 @@ namespace Intranet.Models
         public bool? vcUseCoeff { get; set; }
         public decimal? vcCoeff { get; set; }
         public string noteVC { get; set; }
+        public string workReason { get; set; }
     }
 }

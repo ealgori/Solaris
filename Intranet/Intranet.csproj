@@ -248,6 +248,8 @@
     <Content Include="Scripts\KO\KOMapp.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\ResizableColumns\jquery.resizableColumns.css" />
+    <Content Include="Scripts\ResizableColumns\jquery.resizableColumns.js" />
     <Content Include="Scripts\Site\ActCreate.js" />
     <Content Include="Scripts\Site\ActScript.js" />
     <Content Include="Scripts\Site\AVR\Preprice.js" />

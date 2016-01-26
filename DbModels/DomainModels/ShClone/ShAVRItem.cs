@@ -49,7 +49,7 @@ namespace DbModels.DomainModels.ShClone
 
         public string NoteVC { get; set; }
 
-
+       
 
     }
 }

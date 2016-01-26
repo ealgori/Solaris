@@ -430,4 +430,15 @@ input[type="text"].sh-font {
 	transform: rotate(90deg);
 	
 }
+
+.no-margin-bottom input
+{
+    margin-bottom:0px;
+}
+
+.no-vertical-padding
+{
+    padding-top:0px !important; 
+    padding-bottom:0px !important;
+}
 /*------------------------------------------------------------------

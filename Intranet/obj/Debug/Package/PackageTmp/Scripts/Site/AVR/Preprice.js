@@ -66,6 +66,7 @@ $(function () {
                     self.selectedCity(avr.city);
                     self.postMessage("");
                     self.avrItemsListLoaded(true);
+                     $("#item-table").resizableColumns();
                 });
             });
            
@@ -125,6 +126,7 @@ $(function () {
         this.vcUseCoeff = data.vcUseCoeff;
         this.vcCoeff = data.vcCoeff;
         this.noteVC = data.noteVC;
+        this.workReason = data.workReason;
     }
 
     var PriceListModel = function (data) {
@@ -136,7 +138,8 @@ $(function () {
     }
     var ItemModel = function (data, parent) {
         this.id = data.id;
-        this.noteVC = data.noteVC;
+        this.noteVC = ko.observable(data.noteVC);
+        this.workReason = ko.observable(data.workReason);
         this.shDesc = data.shDesc;
         this.shPrice = data.shPrice;
         this.shQuantity = data.shQuantity;
@@ -293,12 +296,13 @@ $(function () {
         //        $.post("/AVR/PostPreprice", {model: self.Json()}, function (data, textStatus) {
         //         
         //        }, "json");
-        self.postAllowed(false);
+        var data = self.Json();
+            self.postAllowed(false);
         $.ajax({
             url: postUrl,
             type: 'POST',
             dataType: 'json',
-            data: self.Json(),
+            data: data,
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 self.postAllowed(true);

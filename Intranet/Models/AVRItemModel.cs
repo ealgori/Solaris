@@ -21,5 +21,7 @@ namespace Intranet.Models
         public int itemId { get; set; }
 
         public string noteVC { get; set; }
+
+        public string workReason { get; set; }
     }
 }

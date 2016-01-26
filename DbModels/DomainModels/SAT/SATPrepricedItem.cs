@@ -34,5 +34,7 @@ namespace DbModels.DomainModels.SAT
         public decimal? VCCoeff { get; set; }
 
         public string  NoteVC { get; set; }
+
+        public string WorkReason { get; set; }
     }
 }
