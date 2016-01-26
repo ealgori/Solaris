@@ -40,3 +40,5 @@ C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\
 C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\bin\EntityFramework.SqlServer.dll
 C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\bin\EntityFramework.xml
 C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\bin\EntityFramework.SqlServer.xml
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\bin\NLog.dll
+C:\Users\ealgori\Source\Workspaces\IFS Resources project\Solaris_Rev_2\Intranet\bin\UnidecodeSharpFork.dll
