@@ -397,7 +397,7 @@
         priceSHKendo.val(priceSHKendo.val().replace('.', ','));
 
         if (KendoPosition.val() != "") {
-            if (KendoPosition.val() == '@Intranet.Constants.ECRAddId') {
+            if (KendoPosition.val() == '@DbModels.Constants.ECRAddId') {
                 priceKendo.val((NumParse(pricePerItemSHKendo.val()) * NumParse(quantityKendo.val()) * NumParse(koeffKendo.val())).toFixed(2).replace('.', ','));
             } else {
                 var PriceResponse = GetCodeTotalPrice(FieldName);

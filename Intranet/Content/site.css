@@ -412,11 +412,12 @@ input[type="text"].sh-font {
     width: 100% !important;
     margin-bottom: 1px;
 }
-
+/**/
 .k-numeric-wrapper {
     width: 100%;
     margin-bottom: 1px;
 }
+/*testColorWords*/
 
 .k-combobox-wrapper input {
         margin-bottom: 0px;

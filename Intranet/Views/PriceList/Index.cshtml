@@ -11,15 +11,15 @@
     </div>
     <div class="span5" id="Message">
     <div id="PriceListUploadMessageAlert">
-        @if (TempData[Intranet.Constants.PriceListMessage] != null)
+        @if (TempData[DbModels.Constants.PriceListMessage] != null)
         {
-            if (TempData[Intranet.Constants.PriceListMessage].ToString().Contains("Success"))
+            if (TempData[DbModels.Constants.PriceListMessage].ToString().Contains("Success"))
             {  
-            <div class="alert alert-success">@TempData[Intranet.Constants.PriceListMessage]</div>
+            <div class="alert alert-success">@TempData[DbModels.Constants.PriceListMessage]</div>
             }
-            if (TempData[Intranet.Constants.PriceListMessage].ToString().Contains("Error"))
+            if (TempData[DbModels.Constants.PriceListMessage].ToString().Contains("Error"))
             {
-            <div class="alert alert-error">@TempData[Intranet.Constants.PriceListMessage]</div>
+            <div class="alert alert-error">@TempData[DbModels.Constants.PriceListMessage]</div>
             }
         }
     </div>
