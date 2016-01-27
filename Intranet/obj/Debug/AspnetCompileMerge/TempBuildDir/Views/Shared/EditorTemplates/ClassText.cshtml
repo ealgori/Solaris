@@ -1,8 +1,0 @@
-﻿@{
-    string _class = "";
-    if (ViewData["class"] != null)
-    {
-        _class = ViewData["class"].ToString();
-    }
-}
-@Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue.ToString(), new { @class = _class, placeholder = ViewData.ModelMetadata.Watermark})
