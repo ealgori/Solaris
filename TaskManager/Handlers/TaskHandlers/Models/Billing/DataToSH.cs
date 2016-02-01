@@ -147,12 +147,12 @@ order by [item id] ";
                 ;
 
 
-            //var InvoiceVymManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<InvoiceVymManSer>("MAStorage", command1);
+           var InvoiceVymManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<InvoiceVymManSer>("MAStorage", command1);
            //avr
             var POVympelcomManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<POVympelcomManSer>("MAStorage", command2);
             //to
             var TOVympelcommanSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<TOVympelcomManSer>("MAStorage", command3);
-            var InvoiceVymManSerResult =new List<InvoiceVymManSer>();
+            //var InvoiceVymManSerResult =new List<InvoiceVymManSer>();
             //var POVympelcomManSerResult = new List<POVympelcomManSer>();
            // var TOVympelcommanSerResult = new List<TOVympelcomManSer>();
             var TOPayVympelcommanSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<ShInvoice>("MAStorage", command4, x =>
@@ -394,7 +394,7 @@ order by [item id] ";
             public string Invoice { get; set; }
             public string Factura { get; set; }
             public DateTime? DocumentDate { get; set; }
-            public float TotalAmount { get; set; }
+            public decimal TotalAmount { get; set; }
             public DateTime? ReceivingDate { get; set; }
             public string ApprovedByOD { get; set; }
             public string Comments { get; set; }

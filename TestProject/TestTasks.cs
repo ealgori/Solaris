@@ -847,6 +847,27 @@ namespace TestProject
             }
 
         }
+
+[TestMethod]
+        public void TestMaterialize()
+        {
+            string command1 = @"select '' as ShAVR, [PO Number] as PO,
+					 [Invoice Number] as Invoice, 
+                      [Factura Number] as Factura, [document date] as DocumentDate, 
+                     [total amount] as TotalAmount, [receiving date] as ReceivingDate, 
+                      [approved by od] as ApprovedByOD, comments as Comments, 
+                     [passed to finance] as PassedToFinance, 
+                     [scanned to ocr wf] as ScannedToocrwf, 
+                      [sent to subcontractor] as SentToSubcontractorInv, 
+                      [Delivery Note Number] as DeliveryNoteInv, [Item ID] as ItemID
+                    from dbo.[Accounts_Payable_CU_Russia]
+                    where [PO Number] is not null AND [Approved by OD]='Approved' 
+                    order by [item id] ";
+            var InvoiceVymManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<TaskManager.Handlers.TaskHandlers.Models.Billing.DataToSH.InvoiceVymManSer>("MAStorage", command1);
+
+
+        }
+
         [TestMethod]
         public void DistributionHandler()
         {
