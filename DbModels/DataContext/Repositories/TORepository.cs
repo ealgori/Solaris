@@ -198,26 +198,66 @@ namespace DbModels.DataContext.Repositories
                             });
                         }
 
-                    //case "Сайт ТО":
-                    //    {
-                    //        return items.Where(i => i.t.TOType == "Сайт ТО").Select(i => new TOItemViewModel()
-                    //        {
-                    //            Site = i.s.Site,
-                    //            TO = i.t.TO,
-                    //            TOItem = i.i.TOItem,
-                    //            SiteAddress = i.s.Address,
-                    //            SiteQuantity = 1,
-                    //            ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                    //            Description = "",
-                    //            SiteRegion = i.s.MacroRegion,
-                    //            SiteBranch = i.s.Branch,
-                    //            TOPlanDate = i.i.TOPlanDate,
-                    //            Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                    //            Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+                    case "ТО ВОЛС":
+                        {
+                            return items.Where(i => i.t.TOType == "ТО ВОЛС").Select(i => new TOItemViewModel()
+                            {
+                                Site = i.s.Site,
+                                TO = i.t.TO,
+                                TOItem = i.i.TOItem,
+                                SiteAddress = i.s.Address,
+                                SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
+                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
+                                Description = i.s.TipMobilnoiGU,
+                                SiteRegion = i.s.MacroRegion,
+                                SiteBranch = i.s.Branch,
+                                TOPlanDate = i.i.TOPlanDate,
+                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
+                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1:0
 
-                    //        });
-                    //    }
-                  
+                            });
+                        }
+
+                    case "ТО БС":
+                        {
+                            return items.Where(i => i.t.TOType == "ТО БС").Select(i => new TOItemViewModel()
+                            {
+                                Site = i.s.Site,
+                                TO = i.t.TO,
+                                TOItem = i.i.TOItem,
+                                SiteAddress = i.s.Address,
+                                SiteQuantity = 1,
+                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
+                                Description = i.s.TipMobilnoiGU,
+                                SiteRegion = i.s.MacroRegion,
+                                SiteBranch = i.s.Branch,
+                                TOPlanDate = i.i.TOPlanDate,
+                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
+                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+
+                            });
+                        }
+
+                        //case "Сайт ТО":
+                        //    {
+                        //        return items.Where(i => i.t.TOType == "Сайт ТО").Select(i => new TOItemViewModel()
+                        //        {
+                        //            Site = i.s.Site,
+                        //            TO = i.t.TO,
+                        //            TOItem = i.i.TOItem,
+                        //            SiteAddress = i.s.Address,
+                        //            SiteQuantity = 1,
+                        //            ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
+                        //            Description = "",
+                        //            SiteRegion = i.s.MacroRegion,
+                        //            SiteBranch = i.s.Branch,
+                        //            TOPlanDate = i.i.TOPlanDate,
+                        //            Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
+                        //            Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+
+                        //        });
+                        //    }
+
                 }
             }
             return null;
@@ -313,7 +353,12 @@ namespace DbModels.DataContext.Repositories
 
         public IEnumerable<ShTO> GetAcceptedToList()
         {
-            return Context.ShTOes.Where(t => !string.IsNullOrEmpty(t.TOapproved)&&string.IsNullOrEmpty(t.TOTotalAmmountApproved)&& !t.NotForPOR).ToList();
+            var test1 = Context.ShTOes.Where(t => t.TO == "2016_ТЮМЕНЬ_ТО_АУГПТ").ToList();
+            return Context.ShTOes.Where(t => 
+            !string.IsNullOrEmpty(t.TOapproved)
+            &&string.IsNullOrEmpty(t.TOTotalAmmountApproved) // стоимость увтерждаю, выпустить заказ
+            && !t.NotForPOR)
+            .ToList();
         }
         //больше не используется . теперь активности и нетворки в сайтхендлере
         public PORActivity GetToActivity1(string TO)

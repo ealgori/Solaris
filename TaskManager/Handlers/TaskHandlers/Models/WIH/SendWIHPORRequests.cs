@@ -13,6 +13,9 @@ using TaskManager.Service;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
+    /// <summary>
+    /// Отправка поров ТО
+    /// </summary>
     public class SendWIHPORRequests:ATaskHandler
     {
         public SendWIHPORRequests(TaskParameters taskParameters) : base(taskParameters) { }
@@ -20,7 +23,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         {
             var readyToSendTOs = TaskParameters.Context.ShTOes.Where(t => !string.IsNullOrEmpty(t.TOTotalAmmountApproved)&& string.IsNullOrEmpty(t.PONumber)).ToList();
             var testTO = "ТЮМЕНЬ_ТО_АУГПТ_2";
-            bool test = true;
+            bool test = false;
             if (test)
                 readyToSendTOs = TaskParameters.Context.ShTOes.Where(t => t.TO == "ТЮМЕНЬ_ТО_АУГПТ_2").ToList();
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();

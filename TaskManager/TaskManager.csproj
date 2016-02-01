@@ -150,7 +150,6 @@
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSignedHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSWBSRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSyncHandler.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\POR\PORtoShHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PO\FSOPORtoODHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PO\PORecallHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PO\PORRecalledHandler.cs" />

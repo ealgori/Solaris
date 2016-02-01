@@ -11,6 +11,10 @@ using CommonFunctions.Extentions;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandlers
 {
+
+    /// <summary>
+    /// Просмотр оплаченых счетов. Выгрузка из сапа, обрабтка макросом и отправка на автоимпорт. Ответственный :Дмитрий Егоров
+    /// </summary>
     public class InvoiceUpdateImportHandler : IAutoImportHandler
     {
         public HandlerResult Handle(global::AutoImport.Rev3.DomainModels.Attachment attachment)
