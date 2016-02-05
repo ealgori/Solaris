@@ -26,7 +26,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             foreach (var shAvr in avrs)
             {
                 System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}",shAvr.AVRId, shAvr.NeedPreprice));
-                var need = NeedPrepriceCondition.Need(shAvr);
+                var need = NeedVCPrepriceCondition.Need(shAvr);
                 if(need != shAvr.NeedPreprice)
                 {
                     shAvr.NeedPreprice = need;

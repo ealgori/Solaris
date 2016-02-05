@@ -5,39 +5,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DbModels.DataContext;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
 {
-    public static class NeedPrepriceCondition
+    public  class NeedVCPrepriceCondition:IAVRCondition
     {
-        public static bool Need(ShAVRs shAvr)
+
+        /// <summary>
+        /// Если тип авр требует перевыставления
+        /// Если нет саксеед запросов
+        /// Если все предыдущие запросы завершены
+        /// Если опрайсовано или Эрикссон
+        /// </summary>
+        /// <param name="shAvr"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool IsSatisfy(ShAVRs shAvr, Context context)
         {
-            var avrItems = shAvr.Items;
-            if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
+            if(AVRRepository.NeedReexpose(shAvr))
             {
-                var requests = shAvr.ShVCRequests.Where(r=>r.RequestSend.HasValue).ToList();
-                if (requests == null || requests.Count == 0)
-                    return true;
-                if(requests.Any(VCRequestRepository.SuccessRequestComp))
+                var avrItems = shAvr.Items;
+                if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
                 {
-                    return false;
-                }
-                else
-                {
-                    if(requests.All(VCRequestRepository.CompleteRequestComp))
+                    var requests = shAvr.ShVCRequests.Where(r => r.RequestSend.HasValue).ToList();
+                    if (requests == null || requests.Count == 0)
                     {
-                        return true;
+                        if (AVRRepository.HasEricssonSubcontractor(shAvr))
+                            return true;
+                        else
+                            return (AVRRepository.GetAVRSATPor(shAvr.AVRId,context) != null);
                     }
-                    return false;
+                    if (requests.Any(VCRequestRepository.SuccessRequest))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (requests.All(VCRequestRepository.CompleteRequest))
+                        {
+                            if (AVRRepository.HasEricssonSubcontractor(shAvr))
+                                return true;
+                            else
+                                return (AVRRepository.GetAVRSATPor(shAvr.AVRId, context) != null);
+                        }
+                    }
                 }
-
-
+                
             }
-            else
-            {
-                return false;
-
-            }
+            return false;
         }
     }
 }

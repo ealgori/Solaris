@@ -120,8 +120,11 @@
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLFIQuantifier.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\AVRUnfreezeHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\Common\AVRCommon.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedPrepriceCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\ReadyToPORCondition.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\IAVRCondition.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedMUSCondition.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedVCPrepriceCondition.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedPriceCondition.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\PORAccessibleCondition.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\ReadyToRequestCondition.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRPrepriceImportModel.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRUnfreeezeImportModel.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AutoImport.Rev3.DataContext;
 using DbModels.DataContext;
+using DbModels.DomainModels.ShClone;
 
 namespace TaskManager.Service
 {
@@ -58,29 +59,30 @@ namespace TaskManager.Service
         
         }
 
-        //private static bool TORequestCanBeSended(string TO, string type, Context context)
-        //{
-        //    var toRequests = context.ShWIHRequests.Where(r => r.TOid == TO&& r.Type== type);
-        //    //0 если нет таких запросов запросов, то отправляем
-        //    if (toRequests.Count() == 0)
-        //        return true;
-        //    //1 если среди них есть хоть один комплитед, то досвидания
-        //    if (toRequests.Any(t => t.CompletedByOD.HasValue))
-        //    {
-        //        return false;
-        //    }
-        //    //2 если есть запрос у которого нет комплитеда и реджекта, то досвиданься
-        //    if (toRequests.Any(t => (!t.RejectedByOD.HasValue) && (!t.RejectedByOD.HasValue)))
-        //    {
-        //        return false;
-        //    }
-        //    //3 если есть реджекты с корректедом то наш клиент. условия выше отфильтруют негативные условия
-        //    if (toRequests.Any(t => t.RejectedByOD.HasValue && t.CorrectionCompleted))
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
+        public static bool RequestCanBeSended(List<ShWIHRequest> requests,string type )
+        {
+
+            requests = requests.Where(r => r.Type == type).ToList();
+            //0 если нет таких запросов запросов, то отправляем
+            if (requests.Count() == 0)
+                return true;
+            //1 если среди них есть хоть один комплитед, то досвидания
+            if (requests.Any(t => t.CompletedByOD.HasValue)
+            {
+                return false;
+            }
+            //2 если есть запрос у которого нет комплитеда и реджекта, то досвиданься
+            if (requests.Any(t => (!t.RejectedByOD.HasValue) && (!t.RejectedByOD.HasValue)))
+            {
+                return false;
+            }
+            //3 если есть реджекты с корректедом то наш клиент. условия выше отфильтруют негативные условия
+            if (requests.Any(t => t.RejectedByOD.HasValue && t.CorrectionCompleted))
+            {
+                return true;
+            }
+            return false;
+        }
 
         private static bool TORequestCanBeSended(string TO, string type, Context context, string agreement=null)
         {
@@ -116,6 +118,8 @@ namespace TaskManager.Service
             }
             return false;
         }
+
+     
 
 
         public static bool TOHasCompletedRequest(string TO, string Type, Context context)

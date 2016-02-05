@@ -16,6 +16,7 @@ namespace DbModels.DomainModels.ShClone
         public DateTime? RejectedByOD { get; set; }
         public string RejectedComment { get; set; }
         public string TOid { get; set; }
+        public string AVRId { get; set; }
         public bool CorrectionCompleted { get; set; }
         public string Type { get; set; }
         public string AddAgreementId { get; set; }

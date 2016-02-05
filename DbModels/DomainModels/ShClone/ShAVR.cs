@@ -106,14 +106,28 @@ namespace DbModels.DomainModels.ShClone
         [ExcludeAttribute]
         public virtual ICollection<ShAVRItem> Items { get; set; }
 
-        public bool? NeedPreprice { get; set; }
+        /// <summary>
+        /// Готов к опрайсовке в вк.(Либо подрядчик эрикссон, либо уже опрайсован Ксюшей)
+        /// </summary>
+        public bool? NeedVCPrice { get; set; }
+        /// <summary>
+        /// Готов к опрайсовке. Не эрикссон, и заморожен
+        /// </summary>
+        public bool? NeedPrice { get; set; }
+        /// <summary>
+        /// Либо получили нетворк, либо это ЕС, либо не требуется эта хуета.
+        /// </summary>
+        public bool? PorReady { get; set; }
+        /// <summary>
+        /// Катя Опрайсовала и проставила, что готовы оправлять реквест
+        /// </summary>
+        public bool? ReadyForRequest { get; set; }
         /// <summary>
         /// Флаг участия в расчетах лимитов. проставляется автоматом при заморозке и в дальнейшем не снимается
         /// </summary>
         public bool InCalculations { get; set; }
 
-        public bool? ReadyForPOR { get; set; }
-        public bool? ReadyForRequest { get; set; }
+        
 
         public DateTime? PriceNotifySend { get; set; }
         public DateTime? VCPriceNotifySend { get; set; }

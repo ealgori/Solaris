@@ -26,7 +26,7 @@ namespace Service
 
         //[OperationContract]
         //int AddTask(int dbTaskId, string UserName, List<CommonFunctions.CommonClasses.TaskTranceParam> parameters);
-        // TODO: Add your service operations here
+        
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations

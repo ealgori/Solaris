@@ -84,6 +84,7 @@
     <Compile Include="DomainModels\SAT\SATAct.cs" />
     <Compile Include="DomainModels\SAT\SATActFile.cs" />
     <Compile Include="DomainModels\SAT\SATActItem.cs" />
+    <Compile Include="DomainModels\SAT\SatMusItem.cs" />
     <Compile Include="DomainModels\SAT\SATPrepricedItem.cs" />
     <Compile Include="DomainModels\SAT\SATSubregions.cs" />
     <Compile Include="DomainModels\SAT\SATTO.cs" />

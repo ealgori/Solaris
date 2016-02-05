@@ -660,7 +660,7 @@ namespace TestProject
                 var shAvr = context.ShAVRs.FirstOrDefault(f => f.AVRId == "205836");
                 if (shAvr != null)
                 {
-                    var needPreprice = NeedPrepriceCondition.Need(shAvr);
+                    var needPreprice = NeedVCPrepriceCondition.Need(shAvr);
                     var readyForRequest = ReadyToRequestCondition.Ready(shAvr);
                     var readyForPOR = ReadyToPORCondition.Ready(shAvr);
                 }

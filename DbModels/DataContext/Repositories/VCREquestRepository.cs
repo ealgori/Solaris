@@ -39,13 +39,28 @@ namespace DbModels.DataContext.Repositories
         private static Expression<Func<ShVCRequest, bool>> UnSuccessRequestExpr = (r) =>
             r.RequestSend.HasValue && ((r.HasOrder && r.OrderRejected.HasValue) || (r.HasRequest && r.RequestRejected.HasValue));
 
+        private static Expression<Func<ShVCRequest, bool>> UnsendExpr = (r) =>
+             r.SendRequest && !r.RequestSend.HasValue;
 
-        public static Func<ShVCRequest, bool> SuccessRequestComp { get { return SuccessRequestExpr.Compile(); } }
-        
-        public static Func<ShVCRequest, bool> CompleteRequestComp { get { return CompleteRequestExpr.Compile(); } }
+        private static Expression<Func<ShVCRequest, bool>> SendExpr = (r) =>
+            r.SendRequest && r.RequestSend.HasValue;
 
-        public static Func<ShVCRequest, bool> UnSuccessRequestComp { get { return UnSuccessRequestExpr.Compile(); } }
-        
+
+        public static Func<ShVCRequest, bool> SuccessRequest { get { return SuccessRequestExpr.Compile(); } }
+
+        /// <summary>
+        /// Смотрит только на отправленные реквесты
+        /// </summary>
+        public static Func<ShVCRequest, bool> CompleteRequest { get { return CompleteRequestExpr.Compile(); } }
+
+        public static Func<ShVCRequest, bool> UnSuccessRequest { get { return UnSuccessRequestExpr.Compile(); } }
+        public static Func<ShVCRequest, bool> UnsendRequest { get { return UnsendExpr.Compile(); } }
+        public static Func<ShVCRequest, bool> SendRequest { get { return SendExpr.Compile(); } }
+
+        public static List<ShVCRequest> GetCheckedVCRequests(string avrId, Context context)
+        {
+            return context.ShVCRequests.Where(r => r.SendRequest&&r.ShAVRs.AVRId==avrId).ToList();
+        }
 
     }
 }
