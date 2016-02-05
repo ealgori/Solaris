@@ -576,7 +576,7 @@ namespace TestProject
             using (Context context = new Context())
             {
                 ////context.lo
-                TaskManager.Handlers.TaskHandlers.Models.AVR.SaveMailToAdmin.Handle("206350", context);
+                TaskManager.Handlers.TaskHandlers.Models.AVR.SaveMailToAdmin.Handle("206325", context);
          
             }
 
@@ -629,7 +629,7 @@ namespace TestProject
             using (Context context = new Context())
             {
 
-                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "VCRequestAnalyzer") };
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "WIHAnalyzer") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }

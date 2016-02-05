@@ -135,7 +135,8 @@ namespace Intranet.Controllers
                             {
                                 // фиктивный нетворк. еще не решили как делать
                                 var network =  model.Network;
-                                if (network != null)
+                                // Нетворк пока что не проверяем по причине того, что его может не быть в наличии, пока структура не заказана черзе мус.
+                                //if (network != null)
                                 {
                                     try
                                     {
@@ -317,11 +318,11 @@ namespace Intranet.Controllers
                                         result.Message = "Ошибка при создании пора:" + exc.Message;
                                     }
                                 }
-                                else
-                                {
-                                    result.Success = false;
-                                    result.Message = "Город в базе данных не найден";
-                                }
+                                //else
+                                //{
+                                //    result.Success = false;
+                                //    result.Message = "Город в базе данных не найден";
+                                //}
                             }
                             else
                             {

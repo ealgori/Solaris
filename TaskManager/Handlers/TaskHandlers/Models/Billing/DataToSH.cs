@@ -18,6 +18,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Billing
         public DataToSH(TaskParameters taskParameters) : base(taskParameters) { }
         public override bool Handle()
         {
+            // Подгрузить инфу по фактурам и инвойсам. а Так же Передано на оплату в бухг. и пр.
             string command1 = @"select '' as ShAVR, [PO Number] as PO,
 					 [Invoice Number] as Invoice, 
                       [Factura Number] as Factura, [document date] as DocumentDate, 
@@ -389,19 +390,19 @@ order by [item id] ";
 
         public class InvoiceVymManSer
         {
-            public string ShAVR { get; set; }
+            public string ShAVR { get; set; } //A
             public string PO { get; set; }
-            public string Invoice { get; set; }
-            public string Factura { get; set; }
-            public DateTime? DocumentDate { get; set; }
-            public decimal TotalAmount { get; set; }
-            public DateTime? ReceivingDate { get; set; }
-            public string ApprovedByOD { get; set; }
-            public string Comments { get; set; }
-            public DateTime? PassedToFinance { get; set; }
+            public string Invoice { get; set; } //C
+            public string Factura { get; set; }  //D
+            public DateTime? DocumentDate { get; set; }//E
+            public decimal TotalAmount { get; set; }//F
+            public DateTime? ReceivingDate { get; set; }//G
+            public string ApprovedByOD { get; set; }//H
+            public string Comments { get; set; }//I
+            public DateTime? PassedToFinance { get; set; }//J
             public DateTime? ScannedToOCRWF { get; set; }
-            public DateTime? SentToSubcontractorInv { get; set; }
-            public string DeliveryNoteInv { get; set; }
+            public DateTime? SentToSubcontractorInv { get; set; }//L
+            public string DeliveryNoteInv { get; set; }//M
             public int? ItemID { get; set; }
 
         }
