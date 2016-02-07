@@ -11,22 +11,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
 {
     public class ReadyToRequestCondition : IAVRCondition
     {
-        //public static bool Ready(ShAVRs shAvr)
-        //{
-        //    var items = shAvr.Items;
-        //    if (!items.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp) && items.Any(AVRItemRepository.InLimitComp))
-        //    {
 
-        //    }
-        //    return false;
-        //}
         /// <summary>
-        /// Если приорите 1 и 2
-        /// И нет уведломления
-        /// 
-        /// если Приоритет 3 и далее
-        /// Есть чекнутый вс реквест и он не отправлен
-        /// Нет некомплетед вс реквестов
+        /// Автоматические реквесты. только при отсутствии позиций за рамками лимита и аос
         /// </summary>
         /// <param name="shAvr"></param>
         /// <param name="context"></param>
@@ -34,50 +21,43 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
         public bool IsSatisfy(ShAVRs shAvr, Context context)
         {
 
+
             var items = shAvr.Items;
             var requests = shAvr.ShVCRequests;
-            // если это ЕС, то надо отправить уведомления в вымпел, если этого еще не сделано
-            if (AVRRepository.IsES(shAvr))
+            if (shAvr.Priority.HasValue)
             {
-                // в этом случае реквесты создаются автоматом и сразу отправляются
-                if (requests == null || requests.Count == 0)
-                    return true;
-            }
-            else
-            {
-                // если это не ЕС, то должен быть подготовлен новый реквест, который пометили готовым к отправке, а также
-                // не должно быть повисших реквестов
-
-                if (requests.Any(VCRequestRepository.UnsendRequest))
+                // если все только в рамках лимита
+                if (!items.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp) && items.Any(AVRItemRepository.InLimitComp))
                 {
-                    // из всех реквестов выбираем отправленные
-                    var sendRequests = requests.Where(VCRequestRepository.SendRequest).ToList();
-                    if (sendRequests.All(VCRequestRepository.CompleteRequest) && (!sendRequests.Any(VCRequestRepository.SuccessRequest)))
-                    {
+
+                    //  если реквестов не было -то сразу отправляем
+                    if (requests == null || requests.Count == 0)
                         return true;
-                    }
-                    else
+                    // если высокий приоритет - то сразу отправляем уведомление. реджекта быть не может
+                    if (!AVRRepository.IsES(shAvr))
                     {
-                        // если остались висящие реквесты, или по ним уже есть саксесс
-                        return false;
+                        // если низкий приоритет - то запрос с аппрувом. соотв могут быть реджекты.
+
+                        if (requests.All(VCRequestRepository.CompleteRequest)&&!requests.Any(VCRequestRepository.SuccessRequest))
+                        {
+                           
+                                return true;
+                           
+                        }
                     }
+
                 }
-                
             }
+            return false;
 
 
-            /// если позиции только в рамках лимита - то надо отправить уведомление - если этого еще не сделано
-            //if (!items.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp) && items.Any(AVRItemRepository.InLimitComp))
-            //{
-            //    /// реквест всего один, для уведомления
 
-            //}
-            //if (requests == null || requests.Count == 0)
-            //    return true;
-            //else
-            //{
 
-            //}
+
+            // если это ЕС, то надо отправить уведомления в вымпел, если этого еще не сделано
+
+
+
 
             return false;
 

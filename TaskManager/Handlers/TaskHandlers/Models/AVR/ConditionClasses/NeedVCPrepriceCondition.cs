@@ -9,10 +9,11 @@ using DbModels.DataContext;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
 {
-    public  class NeedVCPrepriceCondition:IAVRCondition
+    public  class NeedVCPriceCondition:IAVRCondition
     {
 
         /// <summary>
+        /// 
         /// Если тип авр требует перевыставления
         /// Если нет саксеед запросов
         /// Если все предыдущие запросы завершены

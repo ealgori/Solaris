@@ -27,6 +27,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             foreach (var limit  in limits)
             {
                 var calcItems = limit.ShAVRitems.Where(i=>i.InLimit.HasValue).Where(a=>a.AVRS.InCalculations).ToList();
+                // позиции, для которых еще не определено, в рамках лимита они или нет
                 var newItems = limit.ShAVRitems.Where(i => !i.InLimit.HasValue).Where(a => a.AVRS.InCalculations).ToList();
                 var lastValue = limit.Executed;
 

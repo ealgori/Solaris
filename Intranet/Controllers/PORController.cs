@@ -55,7 +55,7 @@ namespace Intranet.Controllers
                    
                 }).ToList();
 
-                var avrs = context.ShAVRs.Where(AVRRepository.BaseComp).ToList();
+                var avrs = context.ShAVRs.Where(AVRRepository.Base).ToList();
                 foreach (var por in result)
                 {
                     if (!string.IsNullOrEmpty(por.AVR))
@@ -63,7 +63,7 @@ namespace Intranet.Controllers
                         var porAVR = avrs.FirstOrDefault(p => p.AVRId == por.AVR);
                         if (porAVR != null)
                         {
-                            if (porAVR.NeedPreprice.HasValue && porAVR.NeedPreprice.Value)
+                            if (porAVR.Status== Statuses.NeedVCPrice)
                             {
                                 var VCrequest = porAVR.ShVCRequests.ToList();
                                 if (VCrequest.Count > 0)
@@ -302,7 +302,7 @@ namespace Intranet.Controllers
                                         context.SaveChanges();
                                         result.Success = true;
 
-                                        if (shAVR.NeedPreprice.HasValue && shAVR.NeedPreprice.Value)
+                                        if (shAVR.Status == Statuses.NeedVCPrice)
                                         {
                                             result.Message = "Пор подготовлен. Но я вам его не отдам, тк. у вас нетворков нет :-p";
                                         }

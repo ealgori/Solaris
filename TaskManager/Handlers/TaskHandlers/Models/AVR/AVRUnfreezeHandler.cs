@@ -19,7 +19,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         public override bool Handle()
         {
             var importList = new List<AVRUnfreeezeImportModel>();
-            var requests = TaskParameters.Context.ShVCRequests.Where(VCRequestRepository.UnSuccessRequestComp).Where(r => !string.IsNullOrEmpty(r.ShAVRs.RukFiliala)).ToList();
+            var requests = TaskParameters.Context.ShVCRequests.Where(VCRequestRepository.UnSuccessRequest).Where(r => !string.IsNullOrEmpty(r.ShAVRs.RukFiliala)).ToList();
             foreach (var request in requests)
             {
                 importList.Add(new AVRUnfreeezeImportModel {  AVRId = request.ShAVRs.AVRId});

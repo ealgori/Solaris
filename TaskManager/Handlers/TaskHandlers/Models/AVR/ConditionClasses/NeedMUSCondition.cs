@@ -29,6 +29,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                 var canBeSend = WIHService.RequestCanBeSended(wihRequests, WIHInteract.Constants.InternalMailTypeAVRMUS);
                 if(canBeSend)
                 {
+                    if (shAvr.ShVCRequests == null) return false;
                     var requests = shAvr.ShVCRequests.Where(r=>r.SendRequest);
                     if(requests.Any(VCRequestRepository.SuccessRequest))
                     {

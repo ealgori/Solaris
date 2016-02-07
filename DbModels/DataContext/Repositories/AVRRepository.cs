@@ -35,6 +35,15 @@ namespace DbModels.DataContext.Repositories
 
         public static Func<ShAVRs, bool> Base { get { return baseRequestExpr.Compile(); } }
 
+
+        private static readonly Expression<Func<ShAVRs, bool>> inCalculationsExpr = (a) => a.InCalculations;
+        /// <summary>
+        /// После добелвения лимитов, Просталяется рулой в сх. Эти авр учитываются при расчете лимитов.
+        /// </summary>
+        public static Func<ShAVRs, bool> InCalculations { get { return inCalculationsExpr.Compile(); } }
+
+
+
         /// <summary>
         /// Возвращает последний аврПОр для указанного авр
         /// </summary>

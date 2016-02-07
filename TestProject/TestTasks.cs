@@ -113,7 +113,7 @@ namespace TestProject
            using(Context context = new Context())
            {
                var testAVR = "206147";
-               var avr2 = context.ShAVRs.Where(AVRRepository.BaseComp).FirstOrDefault(a=>a.AVRId==testAVR);
+               var avr2 = context.ShAVRs.Where(AVRRepository.Base).FirstOrDefault(a=>a.AVRId==testAVR);
 
 
                var items = avr2.Items.ToList();
@@ -149,19 +149,19 @@ namespace TestProject
         {
             using (Context context = new Context())
             {
-                string testAVR = "205836";
-                var avrs4 = AVRRepository.GetReadyForPricingAVRList(context).Where(s => string.IsNullOrEmpty(s.PurchaseOrderNumber)).OrderBy(av=>av.AVRId).ToList();
-                var avr5 = avrs4.Select(av => new { avr = av.AVRId, conf = av.RukFiliala, workStart = av.WorkStart, workEnd = av.WorkEnd, needPreprice = av.NeedPreprice }).ToList();
-                var avrs = AVRRepository.GetReadyForPricingAVRList(context).Where(av => av.AVRId == testAVR).ToList(); ;
-                var avrs3 = AVRRepository.GetReadyForPricingAVRList(context).Where(s => string.IsNullOrEmpty(s.PurchaseOrderNumber)).Where(av => av.AVRId == testAVR).ToList();
-                var avrs2 = context.ShAVRs.Where(av => av.AVRId == testAVR).ToList();
-                var a = context.ShAVRs.FirstOrDefault(av => av.AVRId == testAVR);
-                var s1 = a.Priority.HasValue;
+                //string testAVR = "205836";
+                //var avrs4 = AVRRepository.GetReadyForPricingAVRList(context).Where(s => string.IsNullOrEmpty(s.PurchaseOrderNumber)).OrderBy(av=>av.AVRId).ToList();
+                //var avr5 = avrs4.Select(av => new { avr = av.AVRId, conf = av.RukFiliala, workStart = av.WorkStart, workEnd = av.WorkEnd, needPreprice = av.NeedPreprice }).ToList();
+                //var avrs = AVRRepository.GetReadyForPricingAVRList(context).Where(av => av.AVRId == testAVR).ToList(); ;
+                //var avrs3 = AVRRepository.GetReadyForPricingAVRList(context).Where(s => string.IsNullOrEmpty(s.PurchaseOrderNumber)).Where(av => av.AVRId == testAVR).ToList();
+                //var avrs2 = context.ShAVRs.Where(av => av.AVRId == testAVR).ToList();
+                //var a = context.ShAVRs.FirstOrDefault(av => av.AVRId == testAVR);
+                //var s1 = a.Priority.HasValue;
 
-                var s2 = s1 && (a.RukFiliala == "Утвержден");
-                var s3 = s2 && a.TotalAmount > 50000 && (a.RukRegionApproval == "Утвержден");
-                var s4 = s3 ||(a.TotalAmount <= 50000);
-                var s5 = s4 && a.Items != null && a.Items.Any();
+                //var s2 = s1 && (a.RukFiliala == "Утвержден");
+                //var s3 = s2 && a.TotalAmount > 50000 && (a.RukRegionApproval == "Утвержден");
+                //var s4 = s3 ||(a.TotalAmount <= 50000);
+                //var s5 = s4 && a.Items != null && a.Items.Any();
             }
 
             var mail = new RDOMail();
@@ -182,7 +182,7 @@ namespace TestProject
             //   //var res2 = AVRRepository.ReadyForRequestComp(avr);
             //    //var res3 = AVRRepository.ReadyForRequestComp(avr2);
 
-            //    //var avrs = context.ShAVRs.Where(AVRRepository.BaseComp);
+            //    //var avrs = context.ShAVRs.Where(AVRRepository.Base);
 
             //}
          
@@ -654,17 +654,17 @@ namespace TestProject
         public void NeedPrepriceConditionTest()
         {
 
-            using (Context context = new Context())
-            {
+            //using (Context context = new Context())
+            //{
 
-                var shAvr = context.ShAVRs.FirstOrDefault(f => f.AVRId == "205836");
-                if (shAvr != null)
-                {
-                    var needPreprice = NeedVCPrepriceCondition.Need(shAvr);
-                    var readyForRequest = ReadyToRequestCondition.Ready(shAvr);
-                    var readyForPOR = ReadyToPORCondition.Ready(shAvr);
-                }
-            }
+            //    var shAvr = context.ShAVRs.FirstOrDefault(f => f.AVRId == "205836");
+            //    if (shAvr != null)
+            //    {
+            //        var needPreprice = NeedVCPrepriceCondition.Need(shAvr);
+            //        var readyForRequest = ReadyToRequestCondition.Ready(shAvr);
+            //        var readyForPOR = ReadyToPORCondition.Ready(shAvr);
+            //    }
+            //}
 
         }
 
@@ -682,20 +682,20 @@ namespace TestProject
                 var successRequest2 = new ShVCRequest { Id = "succes2", RequestSend = DateTime.Now , HasRequest=true, RequestAccepted=DateTime.Now};
                 var successRequest3 = new ShVCRequest { Id = "succes3", RequestSend = DateTime.Now , HasRequest=true, RequestAccepted=DateTime.Now, HasOrder = true,  OrderAccepted=DateTime.Now};
 
-                Assert.IsTrue(VCRequestRepository.SuccessRequestComp(successRequest1));
-                Assert.IsTrue(VCRequestRepository.SuccessRequestComp(successRequest2));
-                Assert.IsTrue(VCRequestRepository.SuccessRequestComp(successRequest3));
+                Assert.IsTrue(VCRequestRepository.SuccessRequest(successRequest1));
+                Assert.IsTrue(VCRequestRepository.SuccessRequest(successRequest2));
+                Assert.IsTrue(VCRequestRepository.SuccessRequest(successRequest3));
 
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest1));
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest1));
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest1));
-
-
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest1));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest1));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest1));
 
 
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest1));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest2));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest3));
+
+
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest1));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest2));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest3));
 
 
 
@@ -705,30 +705,30 @@ namespace TestProject
                 var unSuccessRequest4 = new ShVCRequest { Id = "unsucces3", RequestSend = DateTime.Now, HasRequest = true, RequestAccepted = DateTime.Now, RequestRejected = DateTime.Now , HasOrder=true, OrderAccepted=DateTime.Now, OrderRejected=DateTime.Now};
 
 
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(unSuccessRequest1));
-                Assert.IsTrue(VCRequestRepository.UnSuccessRequestComp(unSuccessRequest2));
-                Assert.IsTrue(VCRequestRepository.UnSuccessRequestComp(unSuccessRequest3));
-                Assert.IsTrue(VCRequestRepository.UnSuccessRequestComp(unSuccessRequest4));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(unSuccessRequest1));
+                Assert.IsTrue(VCRequestRepository.UnSuccessRequest(unSuccessRequest2));
+                Assert.IsTrue(VCRequestRepository.UnSuccessRequest(unSuccessRequest3));
+                Assert.IsTrue(VCRequestRepository.UnSuccessRequest(unSuccessRequest4));
 
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest1));
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest2));
-                Assert.IsFalse(VCRequestRepository.UnSuccessRequestComp(successRequest3));
-
-
-
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest1));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest2));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(successRequest3));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(unSuccessRequest1));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(unSuccessRequest2));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(unSuccessRequest3));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(unSuccessRequest4));
-                Assert.IsTrue(VCRequestRepository.CompleteRequestComp(unSuccessRequest2));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest1));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest2));
+                Assert.IsFalse(VCRequestRepository.UnSuccessRequest(successRequest3));
 
 
-                    //var completed = VCRequestRepository.CompleteRequestComp(request);
-                    //var succed =   VCRequestRepository.SuccessRequestComp(request);
-                    //var unsucced = VCRequestRepository.UnSuccessRequestComp(request);
+
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest1));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest2));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(successRequest3));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(unSuccessRequest1));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(unSuccessRequest2));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(unSuccessRequest3));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(unSuccessRequest4));
+                Assert.IsTrue(VCRequestRepository.CompleteRequest(unSuccessRequest2));
+
+
+                    //var completed = VCRequestRepository.CompleteRequest(request);
+                    //var succed =   VCRequestRepository.SuccessRequest(request);
+                    //var unsucced = VCRequestRepository.UnSuccessRequest(request);
                 //}
             }
 
@@ -762,7 +762,19 @@ namespace TestProject
             }
 
         }
+  [TestMethod]
+        public void ConditionsHandlerTest()
+        {
 
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "ConditionsHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+
+        }
         [TestMethod]
         public void TestSize()
         {

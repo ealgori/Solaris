@@ -147,7 +147,7 @@
 //        public void IncompletedRequest()
 //        {
 //            var request = CreateInCompletedVCRequest_Request();
-//            Assert.IsFalse(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.CompleteRequest(request));
 //        }
 
 
@@ -155,7 +155,7 @@
 //        public void CompletedRequest()
 //        {
 //            var request = CreateCompletedVCRequest_Request();
-//            Assert.IsTrue(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.CompleteRequest(request));
 //        }
 
 
@@ -163,7 +163,7 @@
 //        public void IncompletedOrder()
 //        {
 //            var request = CreateInCompletedVCRequest_Order();
-//            Assert.IsFalse(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.CompleteRequest(request));
 //        }
 
 
@@ -171,7 +171,7 @@
 //        public void CompletedOrder()
 //        {
 //            var request = CreateCompletedVCRequest_Order();
-//            Assert.IsTrue(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.CompleteRequest(request));
 //        }
 
 
@@ -179,13 +179,13 @@
 //        public void IncompletedRequestOrder()
 //        {
 //            var request = CreateInCompletedVCRequest_RequestOrder();
-//            Assert.IsFalse(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.CompleteRequest(request));
 //        }
 //        [TestMethod]
 //        public void IncompletedOrderRequest()
 //        {
 //            var request = CreateInCompletedVCRequest_OrderRequest();
-//            Assert.IsFalse(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.CompleteRequest(request));
 //        }
 
 
@@ -193,34 +193,34 @@
 //        public void IncompletedOrderRequest2()
 //        {
 //            var request = CreateInCompletedVCRequest_OrderRequest2();
-//            Assert.IsFalse(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.CompleteRequest(request));
 //        }
 
 //        [TestMethod]
 //        public void CompletedOrderRequest()
 //        {
 //            var request = CreateCompletedVCRequest_OrderRequest();
-//            Assert.IsTrue(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.CompleteRequest(request));
 //        }
 
 //        [TestMethod]
 //        public void CompletedNotify()
 //        {
 //            var request = CreateCompletedVCRequest_Notify();
-//            Assert.IsTrue(VCRequestRepository.CompleteRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.CompleteRequest(request));
 //        }
 //        // succedd
 //        [TestMethod]
 //        public void SuccesNotify()
 //        {
 //            var request = CreateSuccedVC_Request_Notify();
-//            Assert.IsTrue(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.SuccessRequest(request));
 //        }
 //        [TestMethod]
 //        public void SuccedRequest()
 //        {
 //            var request = CreateSuccedVCRequest_Request();
-//            Assert.IsTrue(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.SuccessRequest(request));
 //        }
 
 
@@ -228,45 +228,45 @@
 //        public void UnSuccedRequest_Request()
 //        {
 //            var request = CreateUnSuccedVCRequest_Request();
-//            Assert.IsFalse(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.SuccessRequest(request));
 //        }
 //        [TestMethod]
 //        public void SucccedRequest_Order()
 //        {
 //            var request = CreateSuccedVCRequest_Order();
-//            Assert.IsTrue(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.SuccessRequest(request));
 //        }
 
 //        [TestMethod]
 //        public void UnSucccedRequest_Order()
 //        {
 //            var request = CreateUnSuccedVCRequest_Order();
-//            Assert.IsFalse(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.SuccessRequest(request));
 //        }
 //        [TestMethod]
 //        public void SucccedRequest_OrderRequest()
 //        {
 //            var request = CreateSuccedVCRequest_OrderRequest();
-//            Assert.IsTrue(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsTrue(VCRequestRepository.SuccessRequest(request));
 //        }
 
 //        [TestMethod]
 //        public void UnSucccedRequest_OrderRequest()
 //        {
 //            var request = CreateUnSuccedVCRequest_OrderRequest();
-//            Assert.IsFalse(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.SuccessRequest(request));
 //        }
 //        [TestMethod]
 //        public void UnSucccedRequest_RequestOrder()
 //        {
 //            var request = CreateUnSuccedVCRequest_RequestOrder();
-//            Assert.IsFalse(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.SuccessRequest(request));
 //        }
 //        [TestMethod]
 //        public void UnSucccedRequest_RequestOrder2()
 //        {
 //            var request = CreateUnSuccedVCRequest_RequestOrder2();
-//            Assert.IsFalse(VCRequestRepository.SuccessRequestComp(request));
+//            Assert.IsFalse(VCRequestRepository.SuccessRequest(request));
 //        }
 
 

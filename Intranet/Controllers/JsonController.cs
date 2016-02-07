@@ -120,19 +120,21 @@ namespace Intranet.Controllers
         {
             using (Context context = new Context())
             {
-               // var avrs= AVRRepository.GetReadyToPORAVRList(context).Select(a => new { avr = a.AVRId, conf = a.RukFiliala, workStart = a.WorkStart, workEnd = a.WorkEnd }).ToList();
-                var avrs = AVRRepository.GetReadyForPricingAVRList(context)
-                    .Where(av=>string.IsNullOrEmpty(av.PurchaseOrderNumber))
-                    .Select(a => new {
-                        avr = a.AVRId,
-                        conf = a.RukFiliala,
-                        workStart = a.WorkStart,
-                        workEnd = a.WorkEnd,
-                        needPreprice = a.NeedPreprice,
-                        por = a.PurchaseOrderNumber }
-                    ).ToList();
-             
-                return Json(avrs, JsonRequestBehavior.AllowGet);
+                //TODO: Требуется новая выборка
+                // var avrs= AVRRepository.GetReadyToPORAVRList(context).Select(a => new { avr = a.AVRId, conf = a.RukFiliala, workStart = a.WorkStart, workEnd = a.WorkEnd }).ToList();
+                //var avrs = AVRRepository.GetReadyForPricingAVRList(context)
+                //    .Where(av=>string.IsNullOrEmpty(av.PurchaseOrderNumber))
+                //    .Select(a => new {
+                //        avr = a.AVRId,
+                //        conf = a.RukFiliala,
+                //        workStart = a.WorkStart,
+                //        workEnd = a.WorkEnd,
+                //        needPreprice = a.NeedPreprice,
+                //        por = a.PurchaseOrderNumber }
+                //    ).ToList();
+
+                //return Json(avrs, JsonRequestBehavior.AllowGet);
+                return null;
             }
         }
         /// <summary>

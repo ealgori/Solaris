@@ -38,9 +38,9 @@ namespace ShClone
         public static double DbUpdateTimeoutMinuties = 0.01 ;
         //public static string ServerPath = HttpRuntime.AppDomainAppPath;
         public static string ServerPath = Assembly.GetExecutingAssembly().CodeBase;
-       // public static string FilesPath = @"//E768B599F0AF1A.ericsson.se/SOLInFiles/";//System.IO.Path.Combine(ServerPath, @"InFiles");
+        public static string FilesPath = @"C:\temp\InFiles\1721";//System.IO.Path.Combine(ServerPath, @"InFiles");
 
-        public static string FilesPath = @"\\RU00112284\InFiles\1721";
+        //public static string FilesPath = @"\\RU00112284\InFiles\1721";
         /// <summary>
         /// Максимальное количество значение в инсерт и апдэйт запросе
         /// </summary>

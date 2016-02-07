@@ -150,7 +150,7 @@ namespace DbModels.DataContext
         public DbSet<PORItem> PORItems { get; set; }
         public DbSet<PORNetwork> PORNetworks { get; set; }
         public DbSet<PORStatus> PorStatuses { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        //public DbSet<DbModels.DomainModels.ShClone.Status> Statuses { get; set; }
         public DbSet<SAPCode> SAPCodes { get; set; }
         public DbSet<PORActivity> PORActivities { get; set; }
         public DbSet<PurchaseRequest> PurchaseRequests { get; set; }
@@ -170,7 +170,7 @@ namespace DbModels.DataContext
         public DbSet<SATSubregion> SATSubregions { get; set; }
         public DbSet<SATActFile> SATActFiles { get; set; }
 
-        public DbSet<SATPrepricedItem> SATPrepricedItems { get; set; }
+        //public DbSet<SATPrepricedItem> SATPrepricedItems { get; set; }
 
         #endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

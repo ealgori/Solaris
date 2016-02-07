@@ -22,6 +22,7 @@ using TaskManager.Handlers.TaskHandlers.Models.Email;
 using TaskManager.Handlers.TaskHandlers.Models.Acts;
 using TaskManager.Handlers.TaskHandlers.Models.BackUps;
 using TaskManager.Handlers.TaskHandlers.Models.AVR;
+using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers;
 //using TaskManager.Handlers.TaskHandlers.Models.POR;
 //using TaskManager.Handlers.TaskHandlers.Models.MUSForms;
 //using TaskManager.Handlers.TaskHandlers.Models.PO;
@@ -305,7 +306,7 @@ namespace TaskManager
 
                 case "SendRequestHandler":
                     {
-                        task.TaskHandler = new SendRequestHandler(task.TaskParameters);
+                        task.TaskHandler = new SendVCRequestHandler(task.TaskParameters);
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters); ;
                         task.ConvertHandler = null;
@@ -330,15 +331,15 @@ namespace TaskManager
                         task.EmailHandler = null;
                         break;
                     }
-                case "NeedPrepriceHandler":
-                    {
-                        task.TaskHandler = new NeedPrepriceHandler(task.TaskParameters);
-                        task.FileIOSubHandler = null;
-                        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
-                        task.ConvertHandler = null;
-                        task.EmailHandler = null;
-                        break;
-                    }
+                //case "NeedPrepriceHandler":
+                //    {
+                //        task.TaskHandler = new NeedPrepriceHandler(task.TaskParameters);
+                //        task.FileIOSubHandler = null;
+                //        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                //        task.ConvertHandler = null;
+                //        task.EmailHandler = null;
+                //        break;
+                //    }
                 case "ReadyForPORHandler":
                     {
                         task.TaskHandler = new ReadyForPORHandler(task.TaskParameters);
@@ -376,9 +377,9 @@ namespace TaskManager
                         break;
 
                     }
-                case "ItemPrepriceUploadHandler":
+                case "ConditionsHandler":
                     {
-                        task.TaskHandler = new ItemPrepriceUploadHandler(task.TaskParameters);
+                        task.TaskHandler = new ConditionsHandler(task.TaskParameters);
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters); ;
                         task.ConvertHandler = null;

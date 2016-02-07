@@ -9,43 +9,13 @@ using DbModels.DataContext;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
 {
-    public static class PORAccessibleCondition:IAVRCondition
+    public class PORAccessibleCondition : IAVRCondition
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="avr"></param>
-        /// <returns></returns>
-        public static  bool Ready(ShAVRs avr)
+        private IAVRCondition needPriceCondition;
+        public PORAccessibleCondition(NeedPriceCondition needPriceCondition)
         {
-            var avrItems = avr.Items;
-            
-            
-            
-            // нет лимитов и аос - он готов
-            //if (!avrItems.Any(AVRItemRepository.HasLimitComp) && (!avrItems.Any(AVRItemRepository.IsVCAddonSalesComp)))
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-                //var requests = avr.ShVCRequests.Where(r=>r.RequestSend.HasValue).ToList();
-                //if (requests == null || requests.Count == 0)
-                //{
-                //    return false;
-                //}
-                //if (requests.Any(VCRequestRepository.SuccessRequestComp))
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    return false;
-                //}
-                // теперь все готовы к 
-                return true;
-
-            }
+            this.needPriceCondition = needPriceCondition;
+        }
 
         public bool IsSatisfy(ShAVRs shAvr, Context context)
         {
@@ -58,14 +28,14 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
             }
             else
             {
-                var requests = shAvr.ShVCRequests.Where(r=>r.RequestSend.HasValue).ToList();
+                var requests = shAvr.ShVCRequests.Where(r => r.RequestSend.HasValue).ToList();
                 var avrItems = shAvr.Items;
                 if (AVRRepository.IsES(shAvr))
                 {
                     if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
                     {
                         // если за рамками лимита или аос то должен быть саксесс вс реквест
-                        if(requests.Any(VCRequestRepository.SuccessRequest))
+                        if (requests.Any(VCRequestRepository.SuccessRequest))
                         {
                             return true;
                         }
@@ -74,7 +44,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                     {
                         // если там только позиции в рамках лимита, то можно пор отдать
                         // для еса в этом случае было уведомление в вымпел
-                        return true;
+                        // Но так же он должен быть опрайсован
+                        
+                        return !needPriceCondition.IsSatisfy(shAvr, context);
                     }
                 }
                 else
@@ -93,11 +65,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                             return true;
                         }
                     }
-                
+
                 }
             }
             return false;
         }
     }
-    }
 }
+

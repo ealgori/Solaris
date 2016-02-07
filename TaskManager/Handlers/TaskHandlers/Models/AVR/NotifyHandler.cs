@@ -21,7 +21,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
         public override bool Handle()
         {
-            var avrs = TaskParameters.Context.ShAVRs.Where(AVRRepository.BaseComp)
+            //TODO: попробовать воспользоваться существующими условиями
+            var avrs = TaskParameters.Context.ShAVRs.Where(AVRRepository.Base)
                 .Where(a=>a.Items.Any(AVRItemRepository.HasLimitComp)
                         ||a.Items.Any(AVRItemRepository.IsVCAddonSalesComp)).ToList();
             var cachedSATPors = TaskParameters.Context.AVRPORs.ToList();

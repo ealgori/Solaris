@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
 {
-    interface IAVRCondition
+    public interface IAVRCondition
     {
         bool IsSatisfy(ShAVRs shAvr, Context context);
     }

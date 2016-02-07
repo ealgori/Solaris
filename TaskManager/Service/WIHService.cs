@@ -67,7 +67,7 @@ namespace TaskManager.Service
             if (requests.Count() == 0)
                 return true;
             //1 если среди них есть хоть один комплитед, то досвидания
-            if (requests.Any(t => t.CompletedByOD.HasValue)
+            if (requests.Any(t => t.CompletedByOD.HasValue))
             {
                 return false;
             }

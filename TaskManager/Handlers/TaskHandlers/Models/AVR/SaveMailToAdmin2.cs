@@ -22,32 +22,33 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
         public override bool Handle()
         {
-             // находим реквесты которые в базовом состоянии и с лимитами в рамках лимита
+            // находим реквесты которые в базовом состоянии и с лимитами в рамках лимита
             // которым не требуется предопрайсовка
-            List<ShVCRequestImport> shVCRequestImport = new List<ShVCRequestImport>();
+            //TODO: пользуем существующий функционал
+            //List<ShVCRequestImport> shVCRequestImport = new List<ShVCRequestImport>();
 
-            var avrs = TaskParameters.Context.ShAVRs
-                .Where(AVRRepository.BaseComp)
-                .Where(a => a.NeedPreprice.HasValue && !a.NeedPreprice.Value)
-                .Where(a => a.Items.Any(AVRItemRepository.InLimitComp)).ToList();
+            //var avrs = TaskParameters.Context.ShAVRs
+            //    .Where(AVRRepository.Base)
+            //    .Where(a => a.NeedPreprice.HasValue && !a.NeedPreprice.Value)
+            //    .Where(a => a.Items.Any(AVRItemRepository.InLimitComp)).ToList();
 
-            foreach (var shAVR in avrs)
-            {
-                var request = TaskParameters.Context.ShVCRequests.Where(r => r.ShAVRs.AVRId == shAVR.AVRId).OrderByDescending(r=>r.CreateDate).FirstOrDefault();
-                if (request == null
-                    // реквест должен быть не саксес
-                    )
-                {
-                    var shVCRequest = SaveMailToAdmin.Handle(shAVR.AVRId, TaskParameters.Context);
-                    if (shVCRequest != null)
-                    {
-                        shVCRequest.SendRequest = true;
-                        shVCRequestImport.Add(shVCRequest);
-                    }
-                }
+            //foreach (var shAVR in avrs)
+            //{
+            //    var request = TaskParameters.Context.ShVCRequests.Where(r => r.ShAVRs.AVRId == shAVR.AVRId).OrderByDescending(r=>r.CreateDate).FirstOrDefault();
+            //    if (request == null
+            //        // реквест должен быть не саксес
+            //        )
+            //    {
+            //        var shVCRequest = SaveMailToAdmin.Handle(shAVR.AVRId, TaskParameters.Context);
+            //        if (shVCRequest != null)
+            //        {
+            //            shVCRequest.SendRequest = true;
+            //            shVCRequestImport.Add(shVCRequest);
+            //        }
+            //    }
 
-            }
-            TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(shVCRequestImport) });
+            //}
+            //TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(shVCRequestImport) });
 
 
             return true;

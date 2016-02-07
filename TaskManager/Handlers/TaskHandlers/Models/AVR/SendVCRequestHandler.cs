@@ -15,9 +15,12 @@ using CommonFunctions.Extentions;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 {
-    public class SendRequestHandler:ATaskHandler
+    /// <summary>
+    /// не автоматические реквесты. Это вк опрайсованные авр, созданные запросы, у которых стоит галочка готовности к отправке
+    /// </summary>
+    public class SendVCRequestHandler:ATaskHandler
     {
-        public SendRequestHandler(TaskParameters taskParameters):base(taskParameters)
+        public SendVCRequestHandler(TaskParameters taskParameters):base(taskParameters)
         {
 
         }
@@ -29,7 +32,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
         public override bool Handle()
         {
-         
+
+            //Первое - отправка проставленых уведомлений
             var interact = new RedemptionMailProcessor("SOLARIS");
             List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
             var requests = TaskParameters.Context.ShVCRequests.Where(r => r.SendRequest == true && !r.RequestSend.HasValue).ToList();
