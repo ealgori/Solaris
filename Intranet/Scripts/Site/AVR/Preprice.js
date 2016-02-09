@@ -27,10 +27,10 @@ $(function () {
         var self = this;
         this.avrList = ko.observableArray([]);
         this.avrListLoaded = ko.observable(false);
-        this.avrItemsListLoaded = ko.observable(true);
+        this.avrItemsListLoaded = ko.observable(false);
         this.items = ko.observableArray([]);
         this.prices = ko.observableArray([]);
-        this.pricesLoaded = ko.observable(false);
+        //this.pricesLoaded = ko.observable(false);
         this.selectedChoice = ko.observable();
         this.selectedWS = ko.observable();
         this.selectedWE = ko.observable();
@@ -39,39 +39,46 @@ $(function () {
         this.selectedPriority = ko.observable();
         this.selectedRukOtdelaBy = ko.observable();
         this.selectedCity = ko.observable();
+        this.selectedTotal = ko.observable(0);
         //this.fadeInValue = ko.observable(false);
         //this.fadeIn = function () {
         //    self.fadeInValue(false === self.fadeInValue());
         //}
         this.selectedChoice.subscribe(function (selected) {
-            
-            var self = this;
-            self.items([]);
-            self.pricesLoaded(false);
-            $.when(self.GetPrices()).done(function () {
-                self.pricesLoaded(true);
-                self.avrItemsListLoaded(false);
-                $.when(self.GetItemList()).done(function () {
-                   
-                    var avr = ko.utils.arrayFirst(self.avrList(), function (item) {
-                        return item.avr === selected;
-                    }, self);
-                    //self.selectedAVR(avr);
-                    var dateWS = new Date(parseInt(avr.workStart.substr(6)));
-                    self.selectedWS(kendo.toString(dateWS, "dd.MM.yyyy"));
-                    self.selectedRukOtdelaBy(avr.rukOtdelaBy);
-                    var dateWE = new Date(parseInt(avr.workEnd.substr(6)));
-                    self.selectedWE(kendo.toString(dateWE, "dd.MM.yyyy"));
-                    self.selectedPriority(avr.priority);
-                    self.selectedCity(avr.city);
-                    self.postMessage("");
-                    self.avrItemsListLoaded(true);
-                     $("#item-table").resizableColumns();
-                });
-            });
            
-          
+            var self = this;
+            self.avrItemsListLoaded(false);
+            self.clearSelected();
+            self.items([]);
+            self.GetPrices()
+                .then(self.GetItemList())
+                .then(function () {
+                    var avr = ko.utils.arrayFirst(self.avrList(), function (item) {
+                                    return item.avr === selected;
+                                }, self);
+                                
+                                var dateWS = new Date(parseInt(avr.workStart.substr(6)));
+                                self.selectedWS(kendo.toString(dateWS, "dd.MM.yyyy"));
+                                self.selectedRukOtdelaBy(avr.rukOtdelaBy);
+                                var dateWE = new Date(parseInt(avr.workEnd.substr(6)));
+                                self.selectedWE(kendo.toString(dateWE, "dd.MM.yyyy"));
+                                self.selectedPriority(avr.priority);
+                                self.selectedCity(avr.city);
+                                self.selectedTotal(avr.total);
+                                self.postMessage("");
+                                self.avrItemsListLoaded(true);
+                                 $("#item-table").resizableColumns();
+
+                });
         }, this);
+        this.clearSelected = function () {
+            this.selectedPriority("");
+            this.selectedRukOtdelaBy("");
+            this.selectedCity("");
+            this.selectedTotal(0);
+            this.selectedWS("");
+            this.selectedWE("");
+        };
         this.Json = ko.computed(function () {
             return this.ToJSON();
         }, this);
@@ -85,21 +92,22 @@ $(function () {
             }
             return sum;
         }, this)
-        this.totalSH = ko.computed(function () {
+        // расчет больше не требуется
+        //this.totalSH = ko.computed(function () {
 
-            var sum = 0;
-            if (this.items()) {
-                ko.utils.arrayForEach(this.items(), function (item) {
-                    sum += item.shTotal();
-                });
-            }
-            return sum;
-        }, this);
+        //    var sum = 0;
+        //    if (this.items()) {
+        //        ko.utils.arrayForEach(this.items(), function (item) {
+        //            sum += item.shTotal();
+        //        });
+        //    }
+        //    return sum;
+        //}, this);
 
         this.marginTotal = ko.computed(function(){
            
-            if (this.totalSH() && this.totalVC())
-                return (-this.totalSH() + this.totalVC()) / this.totalSH()*100;
+            if (this.selectedTotal() && this.totalVC())
+                return (this.totalVC() - this.selectedTotal()) / this.selectedTotal() * 100;
             else
                 return 0;
         },this);
@@ -114,6 +122,8 @@ $(function () {
         this.rukOtdelaBy = data.rukOtdelaBy;
         this.priority = data.priority;
         this.city = data.city;
+        this.total = data.total
+
     }
 
     var AvrItemJsonVM = function (data) {
@@ -138,13 +148,20 @@ $(function () {
     }
     var ItemModel = function (data, parent) {
         this.id = data.id;
+        this.avrItemId = data.avrItemId;
         this.noteVC = ko.observable(data.noteVC);
         this.workReason = ko.observable(data.workReason);
-        this.shDesc = data.shDesc;
+        this.shDescription = data.shDescription;
         this.shPrice = data.shPrice;
         this.shQuantity = data.shQuantity;
         this.shTotal = ko.computed(function () {
-            return this.shPrice * this.shQuantity;
+            if (this.shPrice && this.shQuantity) {
+                return this.shPrice * this.shQuantity;
+            }
+            else {
+                return 0;
+            }
+
         }, this);
         this.vcPriceListRevisionItemId = ko.observable(data.vcPriceListRevisionItemId);
         this.vcCustomPos = ko.observable(data.vcCustomPos);
@@ -204,6 +221,10 @@ $(function () {
                 return 0;
         }, this);
 
+        this.Remove = function () {
+            this.parent.items.remove(this);
+        }
+
       
 
 
@@ -215,69 +236,82 @@ $(function () {
 
     ViewModel.prototype.GetAVRList = function () {
         var self = this;
-        $.getJSON(getAVRListUrl, function (data) {
+        return new Promise(function (resolve, reject) {
+            $.getJSON(getAVRListUrl, function (data) {
 
-            self.avrList(ko.utils.arrayMap(data, function (item) {
-                return new AvrItemModel(item);
-            }));
-            self.avrListLoaded(true);
+                self.avrList(ko.utils.arrayMap(data, function (item) {
+                    return new AvrItemModel(item);
+                }));
+                
+                resolve();
+            });
         });
+       
 
     }
     ViewModel.prototype.GetItemList = function () {
+
+
         var self = this;
-        var deferred = $.Deferred()
-        $.getJSON(getAVRItems, {
-            avrId: self.selectedChoice()
-           
-        }, function (data) {
+        return new Promise(function (resolve,reject) {
+            $.getJSON(getAVRItems, {
+                avrId: self.selectedChoice()
 
-            //self.items(ko.utils.arrayMap(data, function (item) {
-            //    return new ItemModel(item, self);
-            //}));
+            }, function (data) {
 
-            var items = [];
-            for (var i = 0; i < data.length; i++) {
-                var dataItem = data[i];
-                items[i] = new ItemModel(dataItem, self);
-            }
-            self.items(items);
+                //self.items(ko.utils.arrayMap(data, function (item) {
+                //    return new ItemModel(item, self);
+                //}));
 
-            deferred.resolve();
+                var items = [];
+                for (var i = 0; i < data.length; i++) {
+                    var dataItem = data[i];
+                    items[i] = new ItemModel(dataItem, self);
+                }
+                self.items(items);
+
+                resolve();
+            })
         })
-        return deferred.promise();
+      
     }
     ViewModel.prototype.GetPrices = function () {
         var self = this;
-        var deferred = $.Deferred();
-        //   var data = [{ text: "ECR-SOLA-SER-02366 - Монтаж антенного фидера БС 7/8", value: 26739, price:12.223 },
-        //   { text: "ECR-SOLA-SER-02367 - Монтаж антенного фидера БС 1+1/4", value: "26740",price:345.7 },
-        //{ text: "ECR-SOLA-SER-02368 - Монтаж антенного фидера БС 1/2", value: "26741",price:678.2 },
-        //{ text: "ECR-SOLA-SER-02369 - Замена оптической сборки 3G (BBU-RRU)", value: 26742, price:987 },
-        //{ text: "ECR-SOLA-SER-02370 - Демонтаж антенного фидера БС (без сохранения качества кабеля)", value: 12345, price:123.2 },
-        //{ text: "ECR-SOLA-SER-02371 - Демонтаж/монтаж опоры панельной антенны", value: 26744, price:1.2 },
-        //{ text: "ECR-SOLA-SER-06505 - Дефектация панельной антенны, фидера с измерением КСВ", value: 26745,price:345.7 },
-        //{ text: "ECR-SOLA-SER-02373 - Замена панельной антенны", value: 26746 }];
-        //   self.prices(data);
-        //   self.pricesLoaded(true)
-        //console.log(self.selectedWS());
-        //console.log(self.selectedWE());
-
-        $.post(getPriceLists, { ProjectId: "4", SubcId: "230",nsc:"True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
-            self.prices(ko.utils.arrayMap(data, function (item) {
-                return new PriceListModel(item);
-            }));
-            deferred.resolve();
+        return new Promise(function (resolve, reject) {
+            $.post(getPriceLists, { ProjectId: "4", SubcId: "230", nsc: "True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
+                self.prices(ko.utils.arrayMap(data, function (item) {
+                    return new PriceListModel(item);
+                }));
+                resolve();
+            });
+        })
+ 
+           
 
 
 
-        }, "json");
-        return deferred.promise();
+        //return promise;
+        //var self = this;
+        //var deferred = $.Deferred();
+
+
+      
+        //    deferred.resolve();
+
+
+
+        //}, "json");
+        //return deferred.promise();
 
 
     }
 
-
+    ViewModel.prototype.AddItemToEnd = function () {
+        this.items.push(new ItemModel({},this));
+    }
+    ViewModel.prototype.AddItemToTop = function () {
+        this.items.unshift(new ItemModel({}, this));
+    }
     ViewModel.prototype.ToJSON = function () {
         var json = new function () { };
         json.avrId = this.selectedChoice;
@@ -322,7 +356,7 @@ $(function () {
 
     var vm = new ViewModel();
     ko.applyBindings(vm);
-    vm.GetAVRList();
+    vm.GetAVRList().then(function () { vm.avrListLoaded(true); });
 
     //var avrData = $.getJSON("/Json/GetAVRList", function (data) {
     //    ko.applyBindings(new ViewModel(data));

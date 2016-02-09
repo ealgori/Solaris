@@ -38,6 +38,14 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                     
                 }
             }
+            else
+            {
+                // если это ес, то мус уйдет после подписанного заказа в вымпеле
+                if (shAvr.ShVCRequests.Any(VCRequestRepository.SuccessRequest))
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

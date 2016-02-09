@@ -70,6 +70,48 @@ namespace DbModels.DataContext.Repositories
         public static Func<ShAVRs, bool> IsES { get { return IsESExpr.Compile(); } }
 
 
+        private static readonly Expression<Func<ShAVRs, bool>> NeedPriceExpr = (a) => a.Status <=Statuses.NeedPrice;
+        /// <summary>
+        /// Признак early start
+        /// </summary>
+        public static Func<ShAVRs, bool> NeedPrice { get { return NeedPriceExpr.Compile(); } }
+
+
+        public static List<ShAVRs>  GetNeedPriceAvrs(Context context)
+        {
+            return context.ShAVRs.Where(Base).Where(NeedPrice).ToList();
+        }
+
+
+
+        private static readonly Expression<Func<ShAVRs, bool>> ReadyPorExpr = (a) => a.PorAccesible;
+        /// <summary>
+        /// Признак early start
+        /// </summary>
+        public static Func<ShAVRs, bool> ReadyPor { get { return ReadyPorExpr.Compile(); } }
+
+
+        public static List<ShAVRs>  GetReadyPorAvrs(Context context)
+        {
+            return context.ShAVRs.Where(Base).Where(ReadyPor).ToList();
+        }
+
+
+
+        private static readonly Expression<Func<ShAVRs, bool>> NeedVCPriceExpr = (a) => a.Status==Statuses.NeedVCPrice;
+        /// <summary>
+        /// Признак early start
+        /// </summary>
+        public static Func<ShAVRs, bool> NeedVCPrice { get { return NeedVCPriceExpr.Compile(); } }
+
+
+        public static List<ShAVRs> GetNeedVCPriceAvrs(Context context)
+        {
+            return context.ShAVRs.Where(Base).Where(NeedVCPrice).ToList();
+        }
+
+
+
 
 
 
@@ -158,12 +200,6 @@ namespace DbModels.DataContext.Repositories
         //         return context.ShAVRs.Include("ShVCRequests").Where(ReadyForPorComp).ToList();
 
         // }
-        //public static List<ShAVRs> GetReadyForPricingAVRList(Context context)
-        //{
-        //    return context.ShAVRs.Where(BaseComp).ToList();
-        //}
-
-
         //public static List<ShAVRs> GetReadyToRequestAVRList(Context context)
         //{
         //        return context.ShAVRs.Include("ShVCRequests").Where(ReadyForRequestComp).ToList();

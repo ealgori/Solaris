@@ -20,11 +20,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
         public bool IsSatisfy(ShAVRs shAvr, Context context)
         {
 
+            var isPriced = AVRRepository.GetAVRSATPor(shAvr.AVRId, context) != null;
             if (!AVRRepository.NeedReexpose(shAvr))
             {
-                var isPriced = AVRRepository.GetAVRSATPor(shAvr.AVRId, context) != null;
-                if (isPriced)
-                    return true;
+               
+                    return isPriced;
             }
             else
             {
@@ -32,22 +32,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                 var avrItems = shAvr.Items;
                 if (AVRRepository.IsES(shAvr))
                 {
-                    if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
-                    {
-                        // если за рамками лимита или аос то должен быть саксесс вс реквест
-                        if (requests.Any(VCRequestRepository.SuccessRequest))
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        // если там только позиции в рамках лимита, то можно пор отдать
-                        // для еса в этом случае было уведомление в вымпел
-                        // Но так же он должен быть опрайсован
-                        
+                      // если это ес, то пор доступен сразу, тк. там будет ес нетворк  
                         return !needPriceCondition.IsSatisfy(shAvr, context);
-                    }
+                    
                 }
                 else
                 {
@@ -62,7 +49,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
                         else
                         {
                             // нетворк стандартный можно отдать пор
-                            return true;
+                            return isPriced;
                         }
                     }
 

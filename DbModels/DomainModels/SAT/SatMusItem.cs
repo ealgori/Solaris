@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbModels.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +14,21 @@ namespace DbModels.DomainModels.SAT
         public string VCRequestNumber { get; set; }
 
         public bool UseCoeff { get; set; }
+        public PriceListRevisionItem PriceListRevisionItem { get; set; }
+        public bool CustomPos   { get; set; }
+        public int? AvrItemId { get; set; }
         public string Description { get; set; }
+      
         public decimal Price { get; set; }
+       
+        public decimal Quantity { get; set; }
         public string NoteVC { get; set; }
         public string WorkReason { get; set; }
+
+
+        public string ShDescription { get; set; }
+        public decimal ShPrice { get; set; }
+        public decimal ShQuantity { get; set; }
 
     }
 }

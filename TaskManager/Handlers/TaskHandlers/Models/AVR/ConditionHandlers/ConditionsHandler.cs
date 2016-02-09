@@ -25,7 +25,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
             var inCalcAvrs = freezedAvrs.Where(AVRRepository.InCalculations).ToList();
             var reexposeAVRs = inCalcAvrs.Where(AVRRepository.NeedReexpose).ToList();
 
-            var changesStatuses = new List<ShAVRs>();
+            var changesStatuses = new List<StatusImportModel>();
             #region NeddPriceCondition
             var needPriceCondition = new NeedPriceCondition();
             {
@@ -33,24 +33,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
                 var needPriceStatus = Statuses.NeedPrice;
                 var needPriceList = Apply(freezedAvrs, needPriceCondition, needPriceStatus);
                 if (needPriceList != null && needPriceList.Count > 0)
-                    changesStatuses.AddRange(needPriceList);
+                    changesStatuses.AddRange(needPriceList.Select(s=>new StatusImportModel() { AvrId= s.AVRId, Status = s.Status.ToString() }));
             }
-            //var priceWatch = new System.Diagnostics.Stopwatch();
-
-            //priceWatch.Start();
-            //foreach (var shAvr in freezedAvrs)
-            //{
-            //    if (needPriceCondition.IsSatisfy(shAvr, TaskParameters.Context))
-            //    {
-            //        if (shAvr.Status != needPrice)
-            //        {
-            //            shAvr.Status = Statuses.NeedPrice;
-            //            changesStatuses.Add(shAvr);
-            //        }
-            //    }
-            //}
-            //priceWatch.Stop();
-            //TaskParameters.TaskLogger.LogInfo(string.Format("price:{0}",priceWatch.Elapsed.TotalSeconds));
             #endregion
             #region NeedVCpriceCondition
             {
@@ -59,24 +43,17 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
 
                 var needVCPriceList = Apply(reexposeAVRs, needVCPriceCondition, needVCPriceStatus);
                 if (needVCPriceList != null && needVCPriceList.Count > 0)
-                    changesStatuses.AddRange(needVCPriceList);
-            }
-            //var vcpriceWatch = new System.Diagnostics.Stopwatch();
+                {
+                    foreach (var shAvr in needVCPriceList)
+                    {
+                        var reexposeTotal = shAvr.Items.Where(AVRItemRepository.IsVCAddonSalesOrExceedComp).Sum(s=>s.Price*s.Quantity);
+                        shAvr.TotalVCReexpose = reexposeTotal;
+                    }
+                    changesStatuses.AddRange(needVCPriceList.Select(s => new StatusImportModel() { AvrId = s.AVRId, Status = s.Status.ToString() }));
+                }
 
-            //vcpriceWatch.Start();
-            //foreach (var shAvr in reexposeAVRs)
-            //{
-            //    if ((needVCPriceCondition.IsSatisfy(shAvr, TaskParameters.Context)))
-            //    {
-            //        if (shAvr.Status != needVCPriceStatus)
-            //        {
-            //            shAvr.Status = Statuses.NeedVCPrice;
-            //            changesStatuses.Add(shAvr);
-            //        }
-            //    }
-            //}
-            //vcpriceWatch.Stop();
-            //TaskParameters.TaskLogger.LogInfo(string.Format("vcPrice:{0}", vcpriceWatch.Elapsed.TotalSeconds));
+               
+            }
             #endregion
             #region needMus
             {
@@ -84,43 +61,49 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
                 var needMusStatus = Statuses.NeedMus;
                 var needMusList = Apply(reexposeAVRs, needMUSPriceCondition, needMusStatus);
                 if (needMusList != null && needMusList.Count > 0)
-                    changesStatuses.AddRange(needMusList);
+                    changesStatuses.AddRange(needMusList.Select(s => new StatusImportModel() { AvrId = s.AVRId, Status = s.Status.ToString() }));
             }
-            //var musWatch = new System.Diagnostics.Stopwatch();
-
-            //musWatch.Start();
-            //foreach (var shAvr in reexposeAVRs)
-            //{
-            //    if (needMUSPriceCondition.IsSatisfy(shAvr, TaskParameters.Context))
-            //    {
-            //        if(shAvr.)
-            //        shAvr.Status = Statuses.NeedMus;
-            //        changesStatuses.Add(shAvr);
-            //    }
-            //}
-            //musWatch.Stop();
-            //TaskParameters.TaskLogger.LogInfo(string.Format("mus:{0}", musWatch.Elapsed.TotalSeconds));
+         
             #endregion
             #region PorAccesible
             {
                 var porAccesileCondition = new PORAccessibleCondition(needPriceCondition);
-                var porAccesibleStatus = Statuses.PorReady;
-                var porAccesibleList = Apply(freezedAvrs, porAccesileCondition, porAccesibleStatus);
-                if (porAccesibleList != null && porAccesibleList.Count > 0)
-                    changesStatuses.AddRange(porAccesibleList);
+                //var porAccesibleStatus = Statuses.PorReady;
+                //var porAccesibleList = Apply(freezedAvrs, porAccesileCondition, porAccesibleStatus);
+                //if (porAccesibleList != null && porAccesibleList.Count > 0)
+                //    changesStatuses.AddRange(porAccesibleList.Select(s => new StatusImportModel() { AvrId = s.AVRId, Status = s.Status.ToString() }));
+              
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                foreach (var shAvr in freezedAvrs)
+                {
+                    StatusImportModel importItem = null;
+                    bool changed = false;
+                    if (porAccesileCondition.IsSatisfy(shAvr, TaskParameters.Context))
+                    {
+                        if (!shAvr.PorAccesible)
+                        {
+                            shAvr.PorAccesible = true;
+                            changed = true;
+
+                        }
+                    }
+                    else
+                    {
+                        if (shAvr.PorAccesible)
+                        {
+                            shAvr.PorAccesible = false;
+                            changed = true;
+
+                        }
+                    }
+                    if(changed)
+                        changesStatuses.Add(new StatusImportModel() { AvrId = shAvr.AVRId, PorAccesible = shAvr.PorAccesible });
+                }
+                watch.Stop();
+                TaskParameters.TaskLogger.LogInfo(string.Format("{1}:{0}", watch.Elapsed.TotalSeconds, "porAccesible"));
+
             }
-            //var porWatch = new System.Diagnostics.Stopwatch();
-            //porWatch.Start();
-            //foreach (var shAvr in freezedAvrs)
-            //{
-            //    if ((porAccesile.IsSatisfy(shAvr, TaskParameters.Context)))
-            //    {
-            //        shAvr.Status = Statuses.PorReady;
-            //        changesStatuses.Add(shAvr);
-            //    }
-            //}
-            //porWatch.Stop();
-            //TaskParameters.TaskLogger.LogInfo(string.Format("por:{0}", porWatch.Elapsed.TotalSeconds));
             #endregion
             #region ReadyForRequest
             {
@@ -128,25 +111,14 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
                 var readyRequestStatus = Statuses.ReadyForRequest;
                 var readyToRequestList = Apply(reexposeAVRs, readyRequestCond, readyRequestStatus);
                 if (readyToRequestList != null && readyToRequestList.Count > 0)
-                    changesStatuses.AddRange(readyToRequestList);
+                    changesStatuses.AddRange(readyToRequestList.Select(s => new StatusImportModel() { AvrId = s.AVRId, Status = s.Status.ToString() }));
             }
-            //var readyWatch = new System.Diagnostics.Stopwatch();
-            //readyWatch.Start();
-            //foreach (var shAvr in reexposeAVRs)
-            //{
-            //    if ((readyRequestCond.IsSatisfy(shAvr, TaskParameters.Context)))
-            //    {
-            //        shAvr.Status = Statuses.ReadyForRequest;
-            //        changesStatuses.Add(shAvr);
-            //    }
-            //}
-            //readyWatch.Stop();
-            //TaskParameters.TaskLogger.LogInfo(string.Format("por:{0}", readyWatch.Elapsed.TotalSeconds));
+          
             #endregion
 
             //TODO: А что если в сх ввести поле статус, и прогружать в него статус по этим коднишнам.
             // а так же добавить проверку их пересечения, для проверки корректности кондишнов
-            var doubles = changesStatuses.GroupBy(g => g.AVRId).Where(g => g.Count() > 1).ToList();
+            var doubles = changesStatuses.GroupBy(g => g.AvrId).Where(g => g.Count() > 1).Select(s=>s.Select(sa=>sa)).ToList();
             return true;
 
         }
@@ -172,6 +144,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
             watch.Stop();
             TaskParameters.TaskLogger.LogInfo(string.Format("{1}:{0}", watch.Elapsed.TotalSeconds, status.ToString()));
             return changedList;
+        }
+
+        public class StatusImportModel
+        {
+            public string AvrId { get; set; }
+            public string Status { get; set; }
+            public bool PorAccesible { get; set; }
         }
     }
 }

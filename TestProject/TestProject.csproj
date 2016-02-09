@@ -64,7 +64,7 @@
       <HintPath>..\..\..\..\bins\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Redemption">
-      <HintPath>..\..\..\..\bins\Interop.Redemption.dll</HintPath>
+      <HintPath>\\RU00112284\p\Soft\Libs\Interop.Redemption.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Ionic.Zip">

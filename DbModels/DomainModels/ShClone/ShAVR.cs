@@ -11,7 +11,7 @@ namespace DbModels.DomainModels.ShClone
         [Key]
         [Display(Name = "Заявка на оплату АВР")]
         public string AVRId { get; set; }
-        
+
         public string Subregion { get; set; }
         [Display(Name = "Стоимость работ")]
         public decimal? TotalAmount { get; set; }
@@ -23,7 +23,7 @@ namespace DbModels.DomainModels.ShClone
         public string Region { get; set; }
         [Display(Name = "Номер Purchase Order")]
         public string PurchaseOrderNumber { get; set; }
-      
+
         public DateTime? CreationPORdate { get; set; }
         [Display(Name = "Состав работ и смета утверждены рук. отдела")]
         public string RukOtdela { get; set; }
@@ -37,9 +37,9 @@ namespace DbModels.DomainModels.ShClone
 
     //}
 
-    public class ShAVRs:ShAVR
+    public class ShAVRs : ShAVR
     {
-       
+
         public DateTime? ObjectCreationDateTime { get; set; }
         [Display(Name = "Номер заявки подрядчика")]
         public string TaskSubcontractorNumber { get; set; }
@@ -59,29 +59,29 @@ namespace DbModels.DomainModels.ShClone
         public DateTime? PORotpravlenVOD { get; set; }
         [Display(Name = "Коментарии ECR Adm к заявке")]
         public string KomentariiECRAdmKzayavke { get; set; }
- [Display(Name = "Отправлено в соурсинг")]
+        [Display(Name = "Отправлено в соурсинг")]
         public DateTime? SentToSourcing { get; set; }
-[Display(Name = "Утверждение соурсингом")]
+        [Display(Name = "Утверждение соурсингом")]
         public DateTime? ApproovedBySoursing { get; set; }
         [Display(Name = "Подписание")]
         public DateTime? Signed { get; set; }
- [Display(Name = "Отправлено подрядчику")]
+        [Display(Name = "Отправлено подрядчику")]
         public DateTime? SentToSubcontractor { get; set; }
- [Display(Name = "Счет №")]
+        [Display(Name = "Счет №")]
         public string BillNumber { get; set; }
-[Display(Name = "Счет-фактура №")]
+        [Display(Name = "Счет-фактура №")]
         public string FacruteNumber { get; set; }
-[Display(Name = "КЗД получен")]
+        [Display(Name = "КЗД получен")]
         public DateTime? KZDPoluchen { get; set; }
-[Display(Name = "Статус рассмотрения")]
+        [Display(Name = "Статус рассмотрения")]
         public string StatusRassmotreniya { get; set; }
-[Display(Name = "Комментарий рассмотрения")]
+        [Display(Name = "Комментарий рассмотрения")]
         public string CommentarijRassmotreniya { get; set; }
-[Display(Name = "Передано в оплату")]
+        [Display(Name = "Передано в оплату")]
         public DateTime? PeredanoVOplatu { get; set; }
-[Display(Name = "Отправлено подрядчику для корректировки")]
+        [Display(Name = "Отправлено подрядчику для корректировки")]
         public DateTime? OtpravlenoPodryadchikuDlyaRassmotreniya { get; set; }
-[Display(Name = "Номер почтового отправления")]
+        [Display(Name = "Номер почтового отправления")]
         public string DeliveryNumber { get; set; }
         public string RukRegionApproval { get; set; }
         /// <summary>
@@ -91,6 +91,10 @@ namespace DbModels.DomainModels.ShClone
         public string AVRType { get; set; }
 
         public string Network { get; set; }
+
+        public string ESNetwork { get; set; }
+        public string MUSNetwork { get; set; }
+
         public string ActivityCode { get; set; }
 
         public DateTime? PaymentDate { get; set; }
@@ -132,8 +136,13 @@ namespace DbModels.DomainModels.ShClone
         ///// </summary>
         //[ExcludeAttribute]
         //public bool NeedMus { get; set; }
+
+        /// <summary>
+        /// Исключенный атрибут. Каждый раз просчитываетяс заново.
+        /// </summary>
         [ExcludeAttribute]
         public Statuses Status { get; set; }
+        public bool PorAccesible { get; set; }
 
         /// <summary>
         /// Флаг участия в расчетах лимитов. проставляется автоматом при заморозке и в дальнейшем не снимается
@@ -145,16 +154,21 @@ namespace DbModels.DomainModels.ShClone
 
         public DateTime? PriceNotifySend { get; set; }
         public DateTime? VCPriceNotifySend { get; set; }
+        /// <summary>
+        /// используется на форме Preprice (AVRController), просчитывается в отдельном хендлере после обновления, только для требующих перевыставления.
+        /// </summary>
+        [Exclude]
+        public decimal? TotalVCReexpose { get; set; }
 
     }
 
     public enum Statuses
     {
+        None,
         NeedPrice,
         NeedVCPrice,
         NeedMus,
         MusSend,
-        PorReady,
         PorSend,
         ReadyForRequest,
         RequestSend

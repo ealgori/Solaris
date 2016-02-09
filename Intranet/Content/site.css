@@ -315,6 +315,12 @@ input[type="text"].sh-font {
     background-color: #ffc40d;
 }
 
+.actions-color {
+    background-color: #47C18E;
+}
+.actions-rem-color {
+    background-color: rgb(230, 133, 133);
+}
 .disabled-correct {
     cursor: not-allowed;
     background-color: #C5ECB8;

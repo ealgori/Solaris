@@ -340,24 +340,24 @@ namespace TaskManager
                 //        task.EmailHandler = null;
                 //        break;
                 //    }
-                case "ReadyForPORHandler":
-                    {
-                        task.TaskHandler = new ReadyForPORHandler(task.TaskParameters);
-                        task.FileIOSubHandler = null;
-                        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
-                        task.ConvertHandler = null;
-                        task.EmailHandler = null;
-                        break;
-                    }
-                case "ReadyForRequestHandler":
-                    {
-                        task.TaskHandler = new ReadyForRequestHandler(task.TaskParameters);
-                        task.FileIOSubHandler = null;
-                        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
-                        task.ConvertHandler = null;
-                        task.EmailHandler = null;
-                        break;
-                    }
+                //case "ReadyForPORHandler":
+                //    {
+                //        task.TaskHandler = new ReadyForPORHandler(task.TaskParameters);
+                //        task.FileIOSubHandler = null;
+                //        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                //        task.ConvertHandler = null;
+                //        task.EmailHandler = null;
+                //        break;
+                //    }
+                //case "ReadyForRequestHandler":
+                //    {
+                //        task.TaskHandler = new ReadyForRequestHandler(task.TaskParameters);
+                //        task.FileIOSubHandler = null;
+                //        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                //        task.ConvertHandler = null;
+                //        task.EmailHandler = null;
+                //        break;
+                //    }
                 case "AVRUnfreezeHandler":
                     {
                         task.TaskHandler = new AVRUnfreezeHandler(task.TaskParameters);

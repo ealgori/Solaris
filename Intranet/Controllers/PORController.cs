@@ -37,8 +37,8 @@ namespace Intranet.Controllers
             using (Context context = new Context())
             {
 
-                
-                var result = context.PORs.OrderByDescending(pors => pors.PrintDate).ToList().Select(por => new
+                var cachedShAVR = context.ShAVRs.Where(AVRRepository.Base).ToList();
+                var pors = context.PORs.OrderByDescending(p => p.PrintDate).ToList().Select(por => new
                 SATPorModel
                 {
                     Id = por.Id,
@@ -54,36 +54,51 @@ namespace Intranet.Controllers
                     Status= null 
                    
                 }).ToList();
-
-                var avrs = context.ShAVRs.Where(AVRRepository.Base).ToList();
-                foreach (var por in result)
+                var result = new List<SATPorModel>();
+                foreach (var por in pors)
                 {
                     if (!string.IsNullOrEmpty(por.AVR))
                     {
-                        var porAVR = avrs.FirstOrDefault(p => p.AVRId == por.AVR);
-                        if (porAVR != null)
-                        {
-                            if (porAVR.Status== Statuses.NeedVCPrice)
-                            {
-                                var VCrequest = porAVR.ShVCRequests.ToList();
-                                if (VCrequest.Count > 0)
-                                {
-                                    por.Status = string.Format("Запросы:{0}", string.Join(",", VCrequest.Select(s => s.Id).ToList()));
-                                }
-                                else
-                                {
-                                    por.Status = string.Format("Запросы в вк еще не отправлены");
-                                }
-                            }
-
-                        }
+                        var shAvr = cachedShAVR.FirstOrDefault(a => a.AVRId == por.AVR);
+                        if (shAvr != null)
+                            if (shAvr.PorAccesible)
+                                result.Add(por);
+                    }
+                    else
+                    {
+                        result.Add(por);
                     }
 
-
                 }
+                //var avrs = context.ShAVRs.Where(AVRRepository.Base).ToList();
+                //foreach (var por in result)
+                //{
+                //    if (!string.IsNullOrEmpty(por.AVR))
+                //    {
+                //        var porAVR = avrs.FirstOrDefault(p => p.AVRId == por.AVR);
+                //        if (porAVR != null)
+                //        {
+                //            if (porAVR.Status== Statuses.NeedVCPrice)
+                //            {
+                //                var VCrequest = porAVR.ShVCRequests.ToList();
+                //                if (VCrequest.Count > 0)
+                //                {
+                //                    por.Status = string.Format("Запросы:{0}", string.Join(",", VCrequest.Select(s => s.Id).ToList()));
+                //                }
+                //                else
+                //                {
+                //                    por.Status = string.Format("Запросы в вк еще не отправлены");
+                //                }
+                //            }
+
+                //        }
+                //    }
+
+
+                
 
                 return Json(new { data = result, total = result.Count() });
-            }
+        }
         }
         public ActionResult Create()
         {

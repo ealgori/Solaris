@@ -14,7 +14,9 @@
     var postUrl = '@Url.Action("PostPreprice", "Avr")';
 </script>
 
-<div style="text-align: center;" data-bind="visible: !avrListLoaded()" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+<h1>Under Construction</h1>
+
+<div data-bind="visible:!avrListLoaded()"  style="text-align: center;"  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
 @*<div class="loaders">
         <div class="loader">
             <div class="loader-inner ball-pulse">
@@ -24,7 +26,7 @@
             </div>
         </div>
     </div>*@
-<div data-bind=" visible:avrListLoaded()">
+<div data-bind="visible:avrListLoaded()" >
     <input data-bind="kendoComboBox: { dataTextField: 'avr', dataValueField: 'avr', data: avrList, value: selectedChoice, filter:'contains'}" />
 </div>
 <hr />
@@ -38,19 +40,22 @@
 <hr />
 @*<button data-bind="click: ToJSON">ToJSON</button>*@
 <button data-bind="click: PostJSON, enable:postAllowed(), visible:items().length>0">Опрайсовать</button>
-<span data-bind="text:postMessage()" style="
-      margin-left 20px;
-      "></span>
+<span data-bind="text:postMessage()" style="margin-left 20px;"></span>
 @*<div data-bind="text:Json"></div>*@
 
-<div style="text-align: center;" data-bind="visible: !avrItemsListLoaded()" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
-<div data-bind="visible:items().length>0" id="ItemTable">
+<div data-bind="visible:!avrItemsListLoaded()"  style="text-align: center;"  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+<div data-bind="visible:avrItemsListLoaded()" id="ItemTable">
     <div id="avr-item-table">
         <div class="row">
             <div id="scrolldiv" class="span1320">
                 <table class="table table-bordered" id="item-table" style="padding: 0px;">
                     <thead class="tableFloatingHeaderOriginal">
                         <tr>
+                            <th class="actions-color" style="width: 2.5%; vertical-align: middle;padding-top: 0px;">
+                                <a style="cursor:pointer" data-bind="click:AddItemToTop">
+                                    <i class="icon-plus"></i>
+                                </a>
+                            </th>
                             <th class="sh-price-color" style="width: 29.5%">
                                 SH Description
                             </th>
@@ -81,9 +86,6 @@
                             </th>
                             <th class="sh-price-color" style="width: 8%">
                                 Subc total
-                            </th>
-                            <th class="price-color" style="width: 8%">
-                                Margin
                             </th>
                             <th class="price-color" style="width: 1%">
                                 Note
@@ -129,12 +131,16 @@
                             </tr>
                         </thead>*@
                     @*<tbody data-bind="template:{name:'row-template', foreach: items}"></tbody>*@
-
                     <tbody data-bind="foreach: items">
                         <tr class="TableRow">
 
+                            <td  class =" actions-rem-color"style="vertical-align: middle;">
+                                <a style="cursor:pointer" data-bind="click:Remove">
+                                    <i class="icon-remove"></i>
+                                </a>
+                            </td>
                             <td style="background: rgb(221, 236, 221);">
-                                <span data-bind="text:id"></span> <span data-bind="text:shDesc"></span>
+                                <span data-bind="text:avrItemId"></span> <span data-bind="text:shDescription"></span>
                             </td>
 
                             <td class="text-align-right">
@@ -145,8 +151,8 @@
                             </td>
 
                             <td style="background: rgb(221, 236, 221);">
-                                <div data-bind="visible: $parent.pricesLoaded()==false" class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
-                                <div data-bind="visible: $parent.pricesLoaded()==true" style=" width:100%">
+                                @*<div  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>*@
+                                <div  style="width:100%">
                                     <div data-bind="visible: !vcCustomPos() " class="k-combobox-wrapper">
                                         <input data-bind="kendoComboBox: { dataTextField: 'text', dataValueField: 'value', data: $parent.prices, value: vcPriceListRevisionItemId, filter:'contains'}" />
                                     </div>
@@ -196,27 +202,25 @@
                                 <div data-bind="fixedStyle:shTotal()"></div>
 
                             </td>
-                            <td class="text-align-right" style="background: rgb(221, 236, 221);">
-                                <div class="k-numeric-wrapper">
-                                    <span data-bind="text: margin().toFixed(1), refreshable:margin"></span><span>%</span>
-                                </div>
-
-                            </td>
+                            
                             <td class="no-vertical-padding" style="background: rgb(221, 236, 221);">
                                 <div class="no-margin-bottom">
-                                    <input type="text" placeholder="Время работ" data-bind="textInput : noteVC"  style="width: 110px;     background: #C5EBEF">
-                                    <TEXTAREA  type="text" placeholder="Основание" data-bind="textInput : workReason" style="width: 110px;     background: #B5E4B5;     height: 20px;"/>
+                                    <input type="text" placeholder="Время работ" data-bind="textInput : noteVC" style="width: 110px;     background: #C5EBEF"/>
+                                    <TEXTAREA type="text" placeholder="Основание" data-bind="textInput : workReason" style="width: 110px;     background: #B5E4B5;     height: 20px;" ></TEXTAREA
                                 </div>
 
                             </td>
 
 
                         </tr>
-
-
                     </tbody>
                     <tbody>
                         <tr bgcolor="#ADADAD" style="font-weight: bold;">
+                            <td  class ="actions-color"style="vertical-align: middle; padding-top: 0px;">
+                                <a style="cursor:pointer" data-bind="click:AddItemToEnd">
+                                    <i class="icon-plus"></i>
+                                </a>
+                            </td>
                             <td />
                             <td />
                             <td />
@@ -224,12 +228,11 @@
                             <td />
                             <td />
                             <td />
-                           
                             <td />
                             <td class="text-align-right"><span data-bind="text: totalVC().toFixed(2), refreshable:totalVC" /></td>
-                            <td class="text-align-right" data-bind="text: totalSH().toFixed(2)" />
+                            <td class="text-align-right" data-bind="text: selectedTotal().toFixed(2)" />
                             <td class="text-align-right"><span data-bind="text: marginTotal().toFixed(1), refreshable:marginTotal"></span><span>%</span></td>
-                            <td />
+                           
                         </tr>
                     </tbody>
                 </table>

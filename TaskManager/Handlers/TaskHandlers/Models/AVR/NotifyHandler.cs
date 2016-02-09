@@ -22,6 +22,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         public override bool Handle()
         {
             //TODO: попробовать воспользоваться существующими условиями
+            // если требует опрайсовки, и еще не отправлено, то отправляем Ксюше
+            // после опрайсовки ксюшей при создании пора, проверим, нужно ли его в вк опрйсовывать, и если да, то поставим флаг
+            //, что надо отправть Кате
+
+
+
             var avrs = TaskParameters.Context.ShAVRs.Where(AVRRepository.Base)
                 .Where(a=>a.Items.Any(AVRItemRepository.HasLimitComp)
                         ||a.Items.Any(AVRItemRepository.IsVCAddonSalesComp)).ToList();

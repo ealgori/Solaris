@@ -8,6 +8,6 @@ namespace Intranet.Models
     public class PrepriceModel
     {
         public string avrId { get; set; }
-        public List<AVRItemVM> items { get; set; }
+        public List<AVRItemModel> items { get; set; }
     }
 }

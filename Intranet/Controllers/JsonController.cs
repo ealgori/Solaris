@@ -121,20 +121,22 @@ namespace Intranet.Controllers
             using (Context context = new Context())
             {
                 //TODO: Требуется новая выборка
-                // var avrs= AVRRepository.GetReadyToPORAVRList(context).Select(a => new { avr = a.AVRId, conf = a.RukFiliala, workStart = a.WorkStart, workEnd = a.WorkEnd }).ToList();
-                //var avrs = AVRRepository.GetReadyForPricingAVRList(context)
-                //    .Where(av=>string.IsNullOrEmpty(av.PurchaseOrderNumber))
-                //    .Select(a => new {
-                //        avr = a.AVRId,
-                //        conf = a.RukFiliala,
-                //        workStart = a.WorkStart,
-                //        workEnd = a.WorkEnd,
-                //        needPreprice = a.NeedPreprice,
-                //        por = a.PurchaseOrderNumber }
-                //    ).ToList();
+                // var avrs = AVRRepository.GetReadyPorAvrs(context).Select(a => new { avr = a.AVRId, conf = a.RukFiliala, workStart = a.WorkStart, workEnd = a.WorkEnd }).ToList();
+                var avrs = AVRRepository.GetNeedPriceAvrs(context)
+                    .Where(av => string.IsNullOrEmpty(av.PurchaseOrderNumber))
+                    .Select(a => new
+                    {
+                        avr = a.AVRId,
+                        conf = a.RukFiliala,
+                        workStart = a.WorkStart,
+                        workEnd = a.WorkEnd,
+                        needPreprice = a.Items.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp),
+                        por = a.PurchaseOrderNumber
+                    }
+                    ).ToList();
 
-                //return Json(avrs, JsonRequestBehavior.AllowGet);
-                return null;
+                return Json(avrs, JsonRequestBehavior.AllowGet);
+               
             }
         }
         /// <summary>
