@@ -136,9 +136,7 @@ $(function () {
         else
             this.price = data.vcCustomPrice();
         this.quantity = data.quantity();
-       
         this.description = data.description();
-        
         this.vcUseCoeff = data.vcUseCoeff();
         this.noteVC = data.noteVC();
         this.workReason = data.workReason();
@@ -147,7 +145,6 @@ $(function () {
 
     var PriceListModel = function (data) {
         this.text = data.text;
-        //this.price = ko.observable();
         this.value = data.value;
         this.price = data.price;
 
@@ -268,10 +265,6 @@ $(function () {
 
             }, function (data) {
 
-                //self.items(ko.utils.arrayMap(data, function (item) {
-                //    return new ItemModel(item, self);
-                //}));
-
                 var items = [];
                 for (var i = 0; i < data.length; i++) {
                     var dataItem = data[i];
@@ -286,14 +279,28 @@ $(function () {
     }
     ViewModel.prototype.GetPrices = function () {
         var self = this;
-        return new Promise(function (resolve, reject) {
-            $.post(getPriceLists, { ProjectId: "4", SubcId: "230", nsc: "True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
-                self.prices(ko.utils.arrayMap(data, function (item) {
-                    return new PriceListModel(item);
-                }));
-                resolve();
-            });
-        })
+       // return new Promise(function (resolve, reject) {
+            /// корректный фетч
+            return fetch("http://localhost:16496/Json/PositionList",
+                {
+                    method: "POST"
+                    , headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                    , credentials: "same-origin"
+                    , body: JSON.stringify({ 'ProjectId': '4', 'SubcId': '230', 'nsc': 'True', 'WorkEnd': self.selectedWS(), 'WorkStart': self.selectedWE() })
+                }).then(function (data) {
+                    self.prices(ko.utils.arrayMap(data, function (item) {
+                        return new PriceListModel(item);
+                    }))
+                });
+
+
+        //    $.post(getPriceLists, { ProjectId: "4", SubcId: "230", nsc: "True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
+        //        self.prices(ko.utils.arrayMap(data, function (item) {
+        //            return new PriceListModel(item);
+        //        }));
+        //        resolve();
+        //    });
+        //})
  
            
 
@@ -336,9 +343,6 @@ $(function () {
     ViewModel.prototype.PostJSON = function () {
         //           
         var self = this;
-        //        $.post("/AVR/PostPreprice", {model: self.Json()}, function (data, textStatus) {
-        //         
-        //        }, "json");
         var data = self.ToJSON();
             self.postAllowed(false);
         $.ajax({
@@ -366,11 +370,5 @@ $(function () {
     var vm = new ViewModel();
     ko.applyBindings(vm);
     vm.GetAVRList().then(function () { vm.avrListLoaded(true); });
-
-    //var avrData = $.getJSON("/Json/GetAVRList", function (data) {
-    //    ko.applyBindings(new ViewModel(data));
-    //})
-
-    //ko.applyBindings(new ViewModel());
 
 })

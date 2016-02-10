@@ -15,11 +15,11 @@ using TaskManager.TaskParamModels;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 {
-    public static class SaveMailToAdmin
-    {
+	public static class SaveMailToAdmin
+	{
 
-        #region templates
-        private static string NotifyMainTemplate = @"
+		#region templates
+		private static string NotifyMainTemplate = @"
 <html>
 
 <head>
@@ -187,7 +187,7 @@ Kosinskaya &lt;ekaterina.kosinskaya@ericsson.com&gt;</span></p>
 
 ";
 
-        private static string NoteRowTemplate = @"
+		private static string NoteRowTemplate = @"
 <tr>
   <td width=47 valign=top style='width:35.05pt;border:solid windowtext 1.0pt;
   border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
@@ -222,8 +222,8 @@ Kosinskaya &lt;ekaterina.kosinskaya@ericsson.com&gt;</span></p>
 
 
 ";
-        private static string RequestMainTemplate =
-           @"
+		private static string RequestMainTemplate =
+		   @"
 <html>
 
 <head>
@@ -353,7 +353,7 @@ ul
 
 <p class=MsoNormal><span lang=RU>&nbsp;</span></p>
 
-<p class=MsoNormal><span lang=RU>Для начала проведени работ требуется одно из
+<p class=MsoNormal><span lang=RU>Для начала проведения работ требуется одно из
 перечисланных действий:</span></p>
 
 <p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt'><span lang=RU
@@ -394,7 +394,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 </html>
 
 ";
-        private static string RequestRowTemplate = @"
+		private static string RequestRowTemplate = @"
 <tr>
   <td width=128 valign=top style='width:95.75pt;border:solid windowtext 1.0pt;
   border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
@@ -428,158 +428,158 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
  </tr>
 ";
 
-        #endregion
+		#endregion
 
 
-        public static ShVCRequestImport Handle(string shAVR, Context context)
-        {
-            string votingOptions = string.Format("{0};{1}", Common.AVRCommon.AcceptMask, Common.AVRCommon.RejectMask);
-            string notifyRecipients =
-                //    "aleksey.chekalin@ericsson.com";
-                //"aleksey.gorin@ericsson.com";
-            "ekaterina.kosinskaya@ericsson.com";
-
-
-
-            List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
-            RedemptionMailProcessor interactor = new RedemptionMailProcessor("SOLARIS");
-
-            var shAvr = context.ShAVRs.Find(shAVR);
-
-            System.Diagnostics.Debug.WriteLine(shAvr.AVRId);
-
-            var shAvrItems = shAvr.Items.ToList(); // TaskParameters.Context.ShAVRItems.Where(a => a.AVRSId == shAvr.AVRId).ToList();
-            var inLimitItems = shAvrItems.Where(AVRItemRepository.InLimitComp).ToList();
-            var outOfLimitItems = shAvrItems.Where(AVRItemRepository.OutOfLimitComp).ToList();
-            var addOnSalesItems = shAvrItems.Where(AVRItemRepository.IsVCAddonSalesComp).ToList();
-            var orderItems = outOfLimitItems.Union(addOnSalesItems).Distinct().ToList();
-
-            if (inLimitItems.Any(i => !i.InLimit.HasValue) || (outOfLimitItems.Any(i => !i.InLimit.HasValue)))
-            {
-                Console.WriteLine(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
-                // TaskParameters.TaskLogger.LogError(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
-                // continue;
-                return null;
-            }
-
-            string requestName = Common.AVRCommon.GetVCRequestName(shAvr.AVRId);
-            var now = DateTime.Now;
-            var shVCRequest = new ShVCRequestImport() { Id = requestName, ShAVRs = shAvr.AVRId };
-
-            byte[] orderBytes = null;
-            if (orderItems.Any())
-            {
-                //if (!shAvr.PrePriced.HasValue)
-                //{
-                //    Console.WriteLine(string.Format("Предопрайсовка АВР {0} еще не проведена.", shAvr.AVRId));
-                //    // TaskParameters.TaskLogger.LogError(string.Format("Предопрайсовка АВР {0} еще не проведена.", shAvr.AVRId));
-                //    // continue;
-                //    return null;
-                //}
-                var count = 0;
-                orderBytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(orderItems, requestName);
-                if (orderBytes == null)
-                {
-                    Console.WriteLine(string.Format("Ошибка формирования заказа для авр: {0}", shAvr.AVRId));
-                    // TaskParameters.TaskLogger.LogError(string.Format("Ошибка формирования заказа для авр: {0}", shAvr.AVRId));
-                    //  continue;
-                    return null;
-                }
-
-            }
-
-            string rowtemplate = shAvr.Priority > 2 ? RequestRowTemplate : NoteRowTemplate;
-            string mailtemplate = shAvr.Priority > 2 ? RequestMainTemplate : NotifyMainTemplate;
-
-            var mailText = string.Empty;
-            // заявленные на добавление в импорт позиций
-            StringBuilder textBuilder = new StringBuilder();
-            int lCount = 0;
-            if (inLimitItems.Any())
-            {
-
-                foreach (var ilitem in inLimitItems.GroupBy(i=>new { Description =  i.Description, Limit = i.Limit  }).ToList())
-                {
-                    lCount++;
-
-                    textBuilder.AppendLine(string.Format(rowtemplate
-                            , lCount
-                            , ilitem.Key.Limit != null ? ilitem.Key.Limit.Description : (string.IsNullOrEmpty(ilitem.Key.Description) ? "" : ilitem.Key.Description)
-                            , ilitem.Sum(i=>i.Quantity)
-                        //, ilitem.Price.HasValue ? ilitem.Price.Value : 0
-                            , ilitem.Key.Limit.Executed.HasValue ? ilitem.Key.Limit.Executed.Value : 0
-                            , ilitem.Key.Limit.SettedLimit.HasValue ? ilitem.Key.Limit.SettedLimit.Value : 0
-                            ));
-                }
-
-            }
-            if (outOfLimitItems.Any())
-            {
-
-                foreach (var olitem in outOfLimitItems.GroupBy(i => new { Description = i.Description, Limit = i.Limit }).ToList())
-                {
-                    lCount++;
-                    if (olitem.Key.Limit != null)
-                    {
-                        textBuilder.AppendLine(string.Format(rowtemplate
-                           , lCount
-                           , olitem.Key.Limit != null ? olitem.Key.Limit.Description : (string.IsNullOrEmpty(olitem.Key.Description) ? "" : olitem.Key.Description)
-                           , olitem.Sum(i=>i.VCQuantity)
-                            //, olitem.VCPrice.HasValue ? olitem.VCPrice.Value : 0
-                           , olitem.Key.Limit.Executed.HasValue ? olitem.Key.Limit.Executed.Value : 0
-                           , olitem.Key.Limit.SettedLimit.HasValue ? olitem.Key.Limit.SettedLimit.Value : 0
-                           ));
-                    }
-                }
-
-            }
-
-
-            mailText = string.Format(mailtemplate, textBuilder.ToString(), shAvr.AVRId);
-
-            var autoMail = new AutoMail();
-            autoMail.Email = notifyRecipients;
-            autoMail.Body = mailText;
-            autoMail.Subject = string.Format("{0}", requestName);
-            if (inLimitItems.Any())
-            {
-                autoMail.VotingOptions = votingOptions;
-            }
-
-
-            if (orderBytes != null)
-            {
-                string orderFilePath = Common.AVRCommon.SaveOrderFile(requestName, orderBytes);
-                if (File.Exists(orderFilePath))
-                {
-                    var attachment = new Attachment() { FilePath = orderFilePath };
-                    autoMail.Attachments.Add(attachment);
-                }
-                else
-                {
-                    Console.WriteLine(string.Format("Ошибка сохранения заказа для авр: {0} - {1}", shAvr.AVRId, orderFilePath));
-                    // TaskParameters.TaskLogger.LogError(string.Format("Ошибка сохранения заказа для авр: {0} - {1}", shAvr.AVRId, orderFilePath));
-                    // continue;
-                    return null;
-                }
-            }
-
-            if (orderBytes != null)
-                shVCRequest.HasOrder = true;
+		public static ShVCRequestImport Handle(string shAVR, Context context)
+		{
+			string votingOptions = string.Format("{0};{1}", Common.AVRCommon.AcceptMask, Common.AVRCommon.RejectMask);
+			string notifyRecipients =
+				//    "aleksey.chekalin@ericsson.com";
+				//"aleksey.gorin@ericsson.com";
+			"ekaterina.kosinskaya@ericsson.com";
 
 
 
-            if (inLimitItems.Any()&& shAvr.Priority>2)
-                shVCRequest.HasRequest = true;
+			List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
+			RedemptionMailProcessor interactor = new RedemptionMailProcessor("SOLARIS");
+
+			var shAvr = context.ShAVRs.Find(shAVR);
+
+			System.Diagnostics.Debug.WriteLine(shAvr.AVRId);
+
+			var shAvrItems = shAvr.Items.ToList(); // TaskParameters.Context.ShAVRItems.Where(a => a.AVRSId == shAvr.AVRId).ToList();
+			var inLimitItems = shAvrItems.Where(AVRItemRepository.InLimitComp).ToList();
+			var outOfLimitItems = shAvrItems.Where(AVRItemRepository.OutOfLimitComp).ToList();
+			var addOnSalesItems = shAvrItems.Where(AVRItemRepository.IsVCAddonSalesComp).ToList();
+			var orderItems = outOfLimitItems.Union(addOnSalesItems).Distinct().ToList();
+
+			if (inLimitItems.Any(i => !i.InLimit.HasValue) || (outOfLimitItems.Any(i => !i.InLimit.HasValue)))
+			{
+				Console.WriteLine(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
+				// TaskParameters.TaskLogger.LogError(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
+				// continue;
+				return null;
+			}
+
+			string requestName = Common.AVRCommon.GetVCRequestName(shAvr.AVRId);
+			var now = DateTime.Now;
+			var shVCRequest = new ShVCRequestImport() { Id = requestName, ShAVRs = shAvr.AVRId };
+
+			byte[] orderBytes = null;
+			if (orderItems.Any())
+			{
+				//if (!shAvr.PrePriced.HasValue)
+				//{
+				//    Console.WriteLine(string.Format("Предопрайсовка АВР {0} еще не проведена.", shAvr.AVRId));
+				//    // TaskParameters.TaskLogger.LogError(string.Format("Предопрайсовка АВР {0} еще не проведена.", shAvr.AVRId));
+				//    // continue;
+				//    return null;
+				//}
+				var count = 0;
+				orderBytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(orderItems, requestName);
+				if (orderBytes == null)
+				{
+					Console.WriteLine(string.Format("Ошибка формирования заказа для авр: {0}", shAvr.AVRId));
+					// TaskParameters.TaskLogger.LogError(string.Format("Ошибка формирования заказа для авр: {0}", shAvr.AVRId));
+					//  continue;
+					return null;
+				}
+
+			}
+
+			string rowtemplate = shAvr.Priority > 2 ? RequestRowTemplate : NoteRowTemplate;
+			string mailtemplate = shAvr.Priority > 2 ? RequestMainTemplate : NotifyMainTemplate;
+
+			var mailText = string.Empty;
+			// заявленные на добавление в импорт позиций
+			StringBuilder textBuilder = new StringBuilder();
+			int lCount = 0;
+			if (inLimitItems.Any())
+			{
+
+				foreach (var ilitem in inLimitItems.GroupBy(i=>new { Description =  i.Description, Limit = i.Limit  }).ToList())
+				{
+					lCount++;
+
+					textBuilder.AppendLine(string.Format(rowtemplate
+							, lCount
+							, ilitem.Key.Limit != null ? ilitem.Key.Limit.Description : (string.IsNullOrEmpty(ilitem.Key.Description) ? "" : ilitem.Key.Description)
+							, ilitem.Sum(i=>i.Quantity)
+						//, ilitem.Price.HasValue ? ilitem.Price.Value : 0
+							, ilitem.Key.Limit.Executed.HasValue ? ilitem.Key.Limit.Executed.Value : 0
+							, ilitem.Key.Limit.SettedLimit.HasValue ? ilitem.Key.Limit.SettedLimit.Value : 0
+							));
+				}
+
+			}
+			if (outOfLimitItems.Any())
+			{
+
+				foreach (var olitem in outOfLimitItems.GroupBy(i => new { Description = i.Description, Limit = i.Limit }).ToList())
+				{
+					lCount++;
+					if (olitem.Key.Limit != null)
+					{
+						textBuilder.AppendLine(string.Format(rowtemplate
+						   , lCount
+						   , olitem.Key.Limit != null ? olitem.Key.Limit.Description : (string.IsNullOrEmpty(olitem.Key.Description) ? "" : olitem.Key.Description)
+						   , olitem.Sum(i=>i.VCQuantity)
+							//, olitem.VCPrice.HasValue ? olitem.VCPrice.Value : 0
+						   , olitem.Key.Limit.Executed.HasValue ? olitem.Key.Limit.Executed.Value : 0
+						   , olitem.Key.Limit.SettedLimit.HasValue ? olitem.Key.Limit.SettedLimit.Value : 0
+						   ));
+					}
+				}
+
+			}
 
 
-            // сохраняем письмо
-            var mailPath = interactor.SaveMailToFile(autoMail, Common.AVRCommon.GetAVRArhivePath(requestName));
-            shVCRequest.Attachment = Path.GetDirectoryName(mailPath);
+			mailText = string.Format(mailtemplate, textBuilder.ToString(), shAvr.AVRId);
+
+			var autoMail = new AutoMail();
+			autoMail.Email = notifyRecipients;
+			autoMail.Body = mailText;
+			autoMail.Subject = string.Format("{0}", requestName);
+			if (inLimitItems.Any())
+			{
+				autoMail.VotingOptions = votingOptions;
+			}
+
+
+			if (orderBytes != null)
+			{
+				string orderFilePath = Common.AVRCommon.SaveOrderFile(requestName, orderBytes);
+				if (File.Exists(orderFilePath))
+				{
+					var attachment = new Attachment() { FilePath = orderFilePath };
+					autoMail.Attachments.Add(attachment);
+				}
+				else
+				{
+					Console.WriteLine(string.Format("Ошибка сохранения заказа для авр: {0} - {1}", shAvr.AVRId, orderFilePath));
+					// TaskParameters.TaskLogger.LogError(string.Format("Ошибка сохранения заказа для авр: {0} - {1}", shAvr.AVRId, orderFilePath));
+					// continue;
+					return null;
+				}
+			}
+
+			if (orderBytes != null)
+				shVCRequest.HasOrder = true;
 
 
 
-            return shVCRequest;
-        }
-    }
+			if (inLimitItems.Any()&& shAvr.Priority>2)
+				shVCRequest.HasRequest = true;
+
+
+			// сохраняем письмо
+			var mailPath = interactor.SaveMailToFile(autoMail, Common.AVRCommon.GetAVRArhivePath(requestName));
+			shVCRequest.Attachment = Path.GetDirectoryName(mailPath);
+
+
+
+			return shVCRequest;
+		}
+	}
 }

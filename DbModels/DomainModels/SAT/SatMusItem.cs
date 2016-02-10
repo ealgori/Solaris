@@ -18,7 +18,7 @@ namespace DbModels.DomainModels.SAT
         public bool CustomPos   { get; set; }
         public int? AvrItemId { get; set; }
         /// <summary>
-        /// описание из сх
+        /// описание кастом айтема
         /// </summary>
         public string Description { get; set; }
 
@@ -31,7 +31,9 @@ namespace DbModels.DomainModels.SAT
         public string NoteVC { get; set; }
         public string WorkReason { get; set; }
 
-
+        /// <summary>
+        /// описание из сх
+        /// </summary>
         public string ShDescription { get; set; }
         public decimal ShPrice { get; set; }
         public decimal ShQuantity { get; set; }

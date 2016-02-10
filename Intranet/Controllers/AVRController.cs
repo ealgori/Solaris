@@ -220,7 +220,7 @@ namespace Intranet.Controllers
                     
 
 
-                    //context.SaveChanges();
+                    context.SaveChanges();
                 }
             return Json(true);
         }
