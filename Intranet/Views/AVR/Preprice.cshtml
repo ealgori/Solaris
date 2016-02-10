@@ -43,7 +43,7 @@
 <span data-bind="text:postMessage()" style="margin-left 20px;"></span>
 @*<div data-bind="text:Json"></div>*@
 
-<div data-bind="visible:!avrItemsListLoaded()"  style="text-align: center;"  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
+<div data-bind="visible:avrItemsListLoaded()===false"  style="text-align: center;"  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>
 <div data-bind="visible:avrItemsListLoaded()" id="ItemTable">
     <div id="avr-item-table">
         <div class="row">
@@ -154,10 +154,10 @@
                                 @*<div  class="loader"><div class="loader-inner ball-pulse"><div></div><div></div><div></div></div></div>*@
                                 <div  style="width:100%">
                                     <div data-bind="visible: !vcCustomPos() " class="k-combobox-wrapper">
-                                        <input data-bind="kendoComboBox: { dataTextField: 'text', dataValueField: 'value', data: $parent.prices, value: vcPriceListRevisionItemId, filter:'contains'}" />
+                                        <input data-bind="kendoComboBox: { dataTextField: 'text', dataValueField: 'value', data: $parent.prices, value: priceListRevisionItemId, filter:'contains'}" />
                                     </div>
                                     <div data-bind="visible:  vcCustomPos()" class="k-combobox-wrapper">
-                                        <input data-bind="value:vcDescription" style="width: 95%;" placeholder="Наименование позиции" type="text">
+                                        <input data-bind="value:description" style="width: 95%;" placeholder="Наименование позиции" type="text">
 
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@
 
                             <td class="text-align-right" style="background: rgb(221, 236, 221);">
                                 <div class="k-numeric-wrapper">
-                                    <input data-bind="kendoNumericTextBox: {value: vcQuantity, min:0}" />
+                                    <input data-bind="kendoNumericTextBox: {value: quantity, min:0}" />
                                 </div>
                             </td>
 
@@ -186,7 +186,7 @@
                                     </div>
 
 
-                                    <div data-bind="fixedStyle: vcPrice() , visible:  !vcCustomPos()" />
+                                    <div data-bind="fixedStyle: price() , visible:  !vcCustomPos()" />
                                 </div>
 
 
@@ -231,7 +231,7 @@
                             <td />
                             <td class="text-align-right"><span data-bind="text: totalVC().toFixed(2), refreshable:totalVC" /></td>
                             <td class="text-align-right" data-bind="text: selectedTotal().toFixed(2)" />
-                            <td class="text-align-right"><span data-bind="text: marginTotal().toFixed(1), refreshable:marginTotal"></span><span>%</span></td>
+                            <td class="text-align-right">Margin:<span data-bind="text: marginTotal().toFixed(1), refreshable:marginTotal"></span><span>%</span></td>
                            
                         </tr>
                     </tbody>

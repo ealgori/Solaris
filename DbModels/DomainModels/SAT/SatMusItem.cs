@@ -17,8 +17,14 @@ namespace DbModels.DomainModels.SAT
         public PriceListRevisionItem PriceListRevisionItem { get; set; }
         public bool CustomPos   { get; set; }
         public int? AvrItemId { get; set; }
+        /// <summary>
+        /// описание из сх
+        /// </summary>
         public string Description { get; set; }
-      
+
+        /// <summary>
+        /// кастом цена.  опрайсованная цена на прайревижонайтеме
+        /// </summary>
         public decimal Price { get; set; }
        
         public decimal Quantity { get; set; }

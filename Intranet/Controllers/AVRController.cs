@@ -169,72 +169,59 @@ namespace Intranet.Controllers
         public ActionResult PostPreprice(PrepriceModel model)
         {
             var now = DateTime.Now;
-            ShAVRs shAvr = null;
-            // string shVCRequestName = string.Format("{0}:{1}", model.avrId, DateTime.Now.ToString("yyyyMMddHHmmss"));
+           
+           
             using (Context context = new Context())
             {
+                var shAVRs = context.ShAVRs.FirstOrDefault(a => a.AVRId == model.avrId);
+                if (shAVRs == null)
+                    return Json(false);
+                string shVCRequestName = string.Format("{0}:{1}", model.avrId, DateTime.Now.ToString("yyyyMMddHHmmss"));
                 //TODO: Теперь работаем с другими объектами
-                //foreach (var item in model.items)
-                //{
+                foreach (var item in model.items)
+                {
+                    var musItem = new SatMusItem();
+                    if(item.avrItemId!=null)
+                    {
+                        var shItem = context.ShAVRItems.FirstOrDefault(i => i.AVRItemId==item.avrItemId);
+                        if (shItem != null)
+                        {
+                            musItem.AvrItemId = item.avrItemId;
+                            musItem.ShDescription = shItem.Description;
+                        }
+                    }
+                    if(item.vcCustomPos)
+                    {
+                        musItem.Price = item.price??0;
+                        musItem.CustomPos = item.vcCustomPos;
+                        musItem.Description = item.description;
+                    }
+                    else
+                    {
+                        if(item.priceListRevisionItemId.HasValue)
+                        {
+                            var plri = context.PriceListRevisionItems.FirstOrDefault(i => i.Id == item.priceListRevisionItemId);
+                            if (plri != null)
+                                musItem.PriceListRevisionItem = plri;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        musItem.UseCoeff = item.vcUseCoeff;
+                    }
+                    musItem.Quantity = item.quantity??0;
+                    musItem.WorkReason = item.workReason;
+                    musItem.NoteVC = item.noteVC;
+                    musItem.VCRequestNumber = shVCRequestName;
+                    context.SatMusItems.Add(musItem);
+                    }
+                   
+                    
 
 
-                //    var shItem = context.ShAVRItems.Find(item.itemId);
-                //    var isCustomItem = item.vcCustomPos??false;
-
-                //    shItem.VCCustomPos = isCustomItem;
-                //    if (shItem != null)
-                //    {
-                //        //if (shAvr == null)
-                //        //    shAvr = shItem.AVRS;
-                //        if (isCustomItem)
-                //        {
-                //            context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, vcQuantity = item.vcQuantity, IsCustomItem = isCustomItem, VCDescription = item.vcDescription,  vcPrice = item.vcCustomPrice , NoteVC = item.noteVC, WorkReason = item.workReason });
-                //            shItem.VCCustomPos = true;
-                //            shItem.VCPriceListRevisionItemId = null;
-                //            shItem.VCDescription = item.vcDescription;
-                //            shItem.VCPrice = item.vcCustomPrice;
-
-                //        }
-                //        else
-                //        {
-                //            var plItem = context.PriceListRevisionItems.Find(item.vcPriceListRevisionItemId);
-
-                //            if (plItem != null)
-                //            {
-                //                //var shVCRequestNumber =
-                //                context.SATPrepricedItems.Add(new SATPrepricedItem { AVRId = model.avrId, PrepriceDate = now, AVRItemId = item.itemId, Item = plItem, vcQuantity = item.vcQuantity, VCUseCoeff = (item.vcUseCoeff.HasValue?item.vcUseCoeff.Value:false), VCCoeff = item.vcCoeff , NoteVC = item.noteVC, WorkReason = item.workReason });
-                //                shItem.VCPriceListRevisionItemId = plItem.Id;
-                //                shItem.VCDescription = plItem.Name;
-                //                if (item.vcUseCoeff.HasValue&&item.vcUseCoeff.Value)
-                //                {
-                //                    shItem.VCPrice = plItem.Price * (item.vcCoeff.HasValue ? item.vcCoeff : 1);
-                //                }
-                //                else
-                //                {
-                //                    shItem.VCPrice = plItem.Price;
-                //                }
-                //            }
-
-                //        }
-                //        shItem.NoteVC = item.noteVC;
-                //        if (!string.IsNullOrEmpty(item.workReason))
-                //            shItem.WorkReason = item.workReason;
-
-
-                //        // для ускорения теста
-                //        shItem.VCQuantity = item.vcQuantity;
-
-
-
-
-
-                //    }
-                //}
-                //// ускорение для теста
-
-
-                //context.SaveChanges();
-            }
+                    //context.SaveChanges();
+                }
             return Json(true);
         }
     }

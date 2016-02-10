@@ -5,6 +5,7 @@ $(function () {
         update: function (element, valueAccessor)
         {
             var value = ko.utils.unwrapObservable(valueAccessor());
+            if (!value) value = 0;
             var formatted = value.toFixed(2);
             
             ko.bindingHandlers.text.update(element, function () { return formatted; });
@@ -27,7 +28,7 @@ $(function () {
         var self = this;
         this.avrList = ko.observableArray([]);
         this.avrListLoaded = ko.observable(false);
-        this.avrItemsListLoaded = ko.observable(false);
+        this.avrItemsListLoaded = ko.observable();
         this.items = ko.observableArray([]);
         this.prices = ko.observableArray([]);
         //this.pricesLoaded = ko.observable(false);
@@ -79,9 +80,9 @@ $(function () {
             this.selectedWS("");
             this.selectedWE("");
         };
-        this.Json = ko.computed(function () {
-            return this.ToJSON();
-        }, this);
+        //this.Json = ko.computed(function () {
+        //    return this.ToJSON();
+        //}, this);
         this.totalVC = ko.computed(function () {
 
             var sum = 0;
@@ -127,16 +128,21 @@ $(function () {
     }
 
     var AvrItemJsonVM = function (data) {
-        this.itemId = data.id;
-        this.vcPriceListRevisionItemId = data.vcPriceListRevisionItemId;
-        this.vcQuantity = data.vcQuantity;
-        this.vcCustomPos = data.vcCustomPos;
-        this.vcDescription = data.vcDescription;
-        this.vcCustomPrice = data.vcCustomPrice;
-        this.vcUseCoeff = data.vcUseCoeff;
-        this.vcCoeff = data.vcCoeff;
-        this.noteVC = data.noteVC;
-        this.workReason = data.workReason;
+        this.id = data.id;
+        this.avrItemId = data.avrItemId;
+        this.vcCustomPos = data.vcCustomPos();
+        if (!this.vcCustomPos)
+            this.priceListRevisionItemId = data.priceListRevisionItemId();
+        else
+            this.price = data.vcCustomPrice();
+        this.quantity = data.quantity();
+       
+        this.description = data.description();
+        
+        this.vcUseCoeff = data.vcUseCoeff();
+        this.noteVC = data.noteVC();
+        this.workReason = data.workReason();
+        this.shDescription = data.shDescription;
     }
 
     var PriceListModel = function (data) {
@@ -163,53 +169,56 @@ $(function () {
             }
 
         }, this);
-        this.vcPriceListRevisionItemId = ko.observable(data.vcPriceListRevisionItemId);
+        this.priceListRevisionItemId = ko.observable(data.priceListRevisionItemId);
         this.vcCustomPos = ko.observable(data.vcCustomPos);
-        this.vcDescription = ko.observable(data.vcDescription);
-        this.vcQuantity = ko.observable(data.vcQuantity);
-        this.vcCustomPrice = ko.observable(data.vcPrice);
+        this.description = ko.observable(data.description);
+        this.quantity = ko.observable(data.quantity);
+        this.vcCustomPrice = ko.observable(data.price);
         this.vcCoeff = 1.4;
         this.vcUseCoeff = ko.observable(data.vcUseCoeff);
-        this.vcPrice = ko.computed(function () {
+        this.price = ko.computed(function () {
             var self = this;
             
-            if (this.vcPriceListRevisionItemId()) {
-                var founded = ko.utils.arrayFirst(parent.prices(), function (item) {
-                    
+            if (this.vcCustomPos()) {
+                return this.vcCustomPrice();
+            }
+            else {
+                if (this.priceListRevisionItemId()) {
+                    var founded = ko.utils.arrayFirst(parent.prices(), function (item) {
 
-                    return item.value == self.vcPriceListRevisionItemId();
-                   
-                });
-                if (founded) {
-                    if (this.vcUseCoeff())
-                    {
-                        return founded.price * this.vcCoeff;
+
+                        return item.value == self.priceListRevisionItemId();
+
+                    });
+                    if (founded) {
+                        if (this.vcUseCoeff()) {
+                            return founded.price * this.vcCoeff;
+                        }
+                        else {
+                            return founded.price;
+                        }
+
                     }
                     else
-                    {
-                        return founded.price;
-                    }
-                   
+                        return 0;
                 }
                 else
                     return 0;
             }
-            else
-                return 0;
 
         }, this);
       
         this.parent = parent;
         this.vcTotal = ko.computed(function () {
             if (this.vcCustomPos()) {
-                if (this.vcCustomPrice() && this.vcQuantity())
-                    return this.vcCustomPrice() * this.vcQuantity();
+                if (this.vcCustomPrice && this.quantity())
+                    return this.vcCustomPrice() * this.quantity();
                 else
                     return 0;
             }
             else {
-                if (this.vcPrice() && this.vcQuantity())
-                    return this.vcPrice() * this.vcQuantity();
+                if (this.price() && this.quantity())
+                    return this.price() * this.quantity();
                 else
                     return 0;
             }
@@ -330,7 +339,7 @@ $(function () {
         //        $.post("/AVR/PostPreprice", {model: self.Json()}, function (data, textStatus) {
         //         
         //        }, "json");
-        var data = self.Json();
+        var data = self.ToJSON();
             self.postAllowed(false);
         $.ajax({
             url: postUrl,
