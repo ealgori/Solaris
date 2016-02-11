@@ -9,6 +9,7 @@ using DbModels.DataContext.Repositories;
 using CommonFunctions.Extentions;
 using CommonFunctions;
 using DbModels.DomainModels.ShClone;
+using DbModels.DomainModels.SAT;
 
 namespace ExcelParser.EpplusInteract
 {
@@ -24,7 +25,7 @@ namespace ExcelParser.EpplusInteract
         //private static readonly string TemplatePath = @"C:\Temp\test.xlsm";
         //private static readonly string TemplatePath = @"\\RU00112284\SolarisTemplates\AKT.xlsm";
         //private static readonly string SavePathTest = @"C:\Temp\AVROrderTest.xlsm";
-        public static byte[] CreateOrderFile(List<ShAVRItem> items, string number)
+        public static byte[] CreateOrderFile(List<SatMusItem> items, string number)
         {
             if (items == null || items.Count == 0)
                 return null;
@@ -32,14 +33,14 @@ namespace ExcelParser.EpplusInteract
             using (Context context = new Context())
             {
 
-
+                var ndsCoeff = 0.18M;
                 var orderTable = new List<OrderRowModel>();
                 var actTable = new List<ActRowModel>();
                 var explTable = new List<ExpRow>();
                 int count = 0;
                 var testItem = items.FirstOrDefault();
                 string region = string.Empty;
-                var shAvr = context.ShAVRs.FirstOrDefault(a => a.AVRId == testItem.AVRS.AVRId);
+                var shAvr = context.ShAVRs.FirstOrDefault(a => a.AVRId == testItem.AVRId);
                 if (shAvr == null)
                     return null;
                 var netwRow = context.PORNetworks.FirstOrDefault(p => p.City == shAvr.Subregion);
@@ -49,91 +50,126 @@ namespace ExcelParser.EpplusInteract
                 {
                     count++;
 
-                    string siteAddress = string.Empty;
-                    string siteName = string.Empty;
-                    string siteId = string.Empty;
-                    var shSite = context.ShSITEs.FirstOrDefault(s => s.Site == item.SiteId);
-                    if (shSite != null)
-                    {
-                        siteAddress = shSite.Address;
-                        siteName = shSite.SiteName;
-                        siteId = shSite.Site;
-
-                    }
-
                     var orderRow = new OrderRowModel();
                     var actRow = new ActRowModel();
                     var explRow = new ExpRow();
 
+                    string siteAddress = string.Empty;
+                    string siteName = string.Empty;
+                    string siteId = string.Empty;
+
+                    if (item.AvrItemId.HasValue)
+                    {
+                        var shitem = context.ShAVRItems.FirstOrDefault(i=>i.AVRItemId== item.AvrItemId);
+                        if (shitem != null)
+                        {
+                            var shSite = context.ShSITEs.FirstOrDefault(s => s.Site == shitem.SiteId);
+                            if (shSite != null)
+                            {
+                                siteAddress = shSite.Address;
+                                siteName = shSite.SiteName;
+                                siteId = shSite.Site;
+
+                            }
+                            if (shitem.StartDate.HasValue && shitem.EndDate.HasValue)
+                            {
+                                orderRow.Period = string.Format("c {0} по {1}"
+                               , shitem.StartDate.Value.ToString("dd.MM.yyyy")
+                               , shitem.EndDate.Value.ToString("dd.MM.yyyy")
+                               );
+                            }
+
+                        }
+                    }
+
+                  
+
                     orderRow.Id = count;
                     orderRow.Region = region;
                     orderRow.Address = siteAddress;
-                    orderRow.SiteName = string.Format("БС(№: {0}) \"{1}\"", siteId, siteName);
-                    orderRow.Description = item.VCDescription;
+                   
+                    orderRow.UseCoeff = item.UseCoeff;
                     orderRow.WorkReason = item.WorkReason;
-                    orderRow.Quantity = item.VCQuantity ?? 0;
-                    orderRow.Note = item.NoteVC;
-                    if(item.VCUseCoeff)
+                    orderRow.Quantity = item.Quantity.FinanceRound();
+                    orderRow.Period = item.NoteVC;
+                    if (item.CustomPos)
                     {
-                        orderRow.Price = ((item.VCPrice.HasValue ? item.VCPrice.Value / _coeff : 0) * (orderRow.Quantity)).FinanceRound();
-                       
-                    } 
+                        orderRow.Price = (item.Price* item.Quantity).FinanceRound();
+                        actRow.Price = (item.Price).FinanceRound();
+
+                        orderRow.Description = item.Description;
+                        actRow.Description = item.Description;
+
+                    }
                     else
                     {
-                        orderRow.Price = ((item.VCPrice ?? 0) * (orderRow.Quantity)).FinanceRound();
+
+                        if (item.PriceListRevisionItem != null)
+                        {
+                            var price = (item.PriceListRevisionItem.Price);
+                            if (item.UseCoeff)
+                            {
+                                orderRow.Price = (price * _coeff * item.Quantity ).FinanceRound();
+                                actRow.Price = (price * _coeff).FinanceRound();
+
+                            }
+                            else
+                            {
+                                orderRow.Price = (price * item.Quantity).FinanceRound();
+                                actRow.Price = (price).FinanceRound();
+                            }
+                        }
+
+                        orderRow.Description = item.PriceListRevisionItem.Name;
+                        actRow.Description = item.PriceListRevisionItem.Name;
                     }
                    
-                   // orderRow.Note = item.Note;
                     orderTable.Add(orderRow);
-                    if (item.StartDate.HasValue && item.EndDate.HasValue)
-                    {
-                        orderRow.Period = string.Format("c {0} по {1}"
-                       , item.StartDate.Value.ToString("dd.MM.yyyy")
-                       , item.EndDate.Value.ToString("dd.MM.yyyy")
-                       );
-                    }
+                  
 
 
                     actRow.Id = count;
-                    actRow.Description = item.VCDescription;
-                    actRow.Address = siteAddress;
-                    if (item.VCUseCoeff)
-                    {
-                        actRow.Price = (item.VCPrice/_coeff).FinanceRound();
-                    }
-                    else
-                    {
-                        actRow.Price = item.VCPrice.FinanceRound();
-                    }
+                   
+                   
+                    
+                  
 
-
-                    actRow.PriceWNDS = ((item.VCPrice ?? 0) + (item.VCPrice ?? 0) * 0.18M).ToString("F");
-                    actRow.NDS = (item.VCPrice ?? 0 * 0.18M).ToString("F");
+                    // 
+                    actRow.PriceWNDS = ((actRow.Price ?? 0) + (actRow.Price ?? 0) * ndsCoeff).FinanceRound().ToString("F");
+                    actRow.NDS = (actRow.Price ?? 0 * ndsCoeff).ToString("F");
                     actTable.Add(actRow);
 
                     explRow.Id = count;
-                   // explRow.Empty1 = "#merger(1,2)";
-                    explRow.BigAddress = string.Format("БС(№: {0}) \"{1}\" {2} ", siteId, siteName, item.VCDescription);
-                    explRow.PriceWNDS = (item.VCPrice ?? 0 + item.VCPrice ?? 0 * 0.18M).FinanceRound().ToString("F");
+                    // explRow.Empty1 = "#merger(1,2)";
+                    if(!string.IsNullOrEmpty(siteId))
+                    {
+                        explRow.BigAddress = string.Format("БС(№: {0}) \"{1}\" {2} ", siteId, siteName, actRow.Description);
+                        orderRow.SiteName = string.Format("БС(№: {0}) \"{1}\"", siteId, siteName);
+                        actRow.Address = siteAddress;
+                    }
+                    
+                    explRow.PriceWNDS = actRow.PriceWNDS;
                     explTable.Add(explRow);
 
 
                 }
 
-
-                service.InsertTableToPatternCellInWorkBook("OrderTable", orderTable.ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
+                var orderDT = orderTable.ToDataTable();
+                orderDT.Columns.Remove("UseCoeff");
+                service.InsertTableToPatternCellInWorkBook("OrderTable", orderDT, new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                 service.InsertTableToPatternCellInWorkBook("ActTable", actTable.ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                 service.InsertTableToPatternCellInWorkBook("ExplTable", explTable.ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                 Dictionary<string, string> dict = new Dictionary<string, string>();
 
-                decimal total = items.Where(i=>!i.VCUseCoeff).Sum(i => (i.VCPrice ?? 0) * (i.VCQuantity ?? 0));
-                decimal total14 = items.Where(i => i.VCUseCoeff).Sum(i => (i.VCPrice ?? 0) * (i.VCQuantity ?? 0)); ;
+                //в ордер тэйбл цены уже умножены на количество и коэфф, если надо.
+                decimal total = orderTable.Where(i=>!i.UseCoeff).Sum(i => (i.Price??0));
+                decimal total14 = orderTable.Where(i => i.UseCoeff).Sum(i => (i.Price ?? 0));
                 
                 decimal totalFR = total.FinanceRound();
                 decimal total14FR = total14.FinanceRound();
                 //decimal totalWCoef = (total * 1.4M);
                 //decimal totalWCoefFR = totalWCoef.FinanceRound();
-                decimal nds = ((total+total14) * 0.18M);
+                decimal nds = ((total+total14) * ndsCoeff);
                 decimal ndsFR = nds.FinanceRound();
                 decimal totalWNDS = (total+total14 + nds);
                 decimal totalWNDSFR = totalWNDS.FinanceRound();
@@ -149,7 +185,7 @@ namespace ExcelParser.EpplusInteract
                 string explTotalText = string.Format(explTotalTextFormat, totalWNDSFR, totalWNDSp, ndsFR, ndsp);
                 var rowsToRemove = new List<string>();
                 // работы только в рабочее время
-                if (!items.Any(i => i.VCUseCoeff))
+                if (!items.Any(i => i.UseCoeff))
                 {
                     // удалить лишнюю строчку 
                     dict.Add("Label", _labelWOCoeff);
@@ -160,7 +196,7 @@ namespace ExcelParser.EpplusInteract
                 {
                     dict.Add("Label1.4", _labelWithCoeff);
                     // смешаные работы
-                    if (!items.All(i => i.VCUseCoeff))
+                    if (!items.All(i => i.UseCoeff))
                     {
                         dict.Add("Label", _labelWOCoeff);
                     }
@@ -207,6 +243,7 @@ namespace ExcelParser.EpplusInteract
             public decimal? Price { get; set; }
             public string Period { get; set; }
             public string Note { get; set; }
+            public bool UseCoeff { get; set; }
 
 
         

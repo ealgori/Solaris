@@ -14,7 +14,7 @@ namespace DbModels.DomainModels.SAT
         public string VCRequestNumber { get; set; }
 
         public bool UseCoeff { get; set; }
-        public PriceListRevisionItem PriceListRevisionItem { get; set; }
+        public virtual PriceListRevisionItem PriceListRevisionItem { get; set; }
         public bool CustomPos   { get; set; }
         public int? AvrItemId { get; set; }
         /// <summary>

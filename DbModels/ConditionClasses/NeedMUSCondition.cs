@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using DbModels.DataContext;
 using DbModels.DomainModels.ShClone;
 using DbModels.DataContext.Repositories;
-using TaskManager.Service;
+using DbModels.DataContext.AVRConditions;
+using DbModels.Service;
 
-namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
+namespace DbModels.AVRConditions
 {
     public class NeedMUSCondition : IAVRCondition
     {

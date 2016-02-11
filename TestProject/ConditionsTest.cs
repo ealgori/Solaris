@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DbModels.DomainModels.ShClone;
 using System.Collections.Generic;
-using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses;
+
 using DbModels.DataContext;
+using DbModels.DataContext.AVRConditions;
+using DbModels.AVRConditions;
 
 namespace TestProject
 {

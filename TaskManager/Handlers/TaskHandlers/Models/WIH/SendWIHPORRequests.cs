@@ -9,7 +9,7 @@ using System.IO;
 using DbModels.DataContext.Repositories;
 using DbModels.DomainModels.ShClone;
 using System.Collections;
-using TaskManager.Service;
+using DbModels.Service;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {

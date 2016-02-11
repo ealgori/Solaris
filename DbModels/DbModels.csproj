@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConditionClasses\IAVRCondition.cs" />
+    <Compile Include="ConditionClasses\NeedMUSCondition.cs" />
+    <Compile Include="ConditionClasses\NeedPriceCondition.cs" />
+    <Compile Include="ConditionClasses\NeedVCPrepriceCondition.cs" />
+    <Compile Include="ConditionClasses\PORAccessibleCondition.cs" />
+    <Compile Include="ConditionClasses\ReadyToRequestCondition.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataContext\Context.cs" />
@@ -91,6 +97,7 @@
     <Compile Include="DomainModels\SAT\SATTOItem.cs" />
     <Compile Include="DomainModels\Metadata\FKAttribute.cs" />
     <Compile Include="DomainModels\Metadata\ExcludeAttribute.cs" />
+    <Compile Include="DomainModels\SAT\VCRequestToCreate.cs" />
     <Compile Include="DomainModels\ShClone\ShAct.cs" />
     <Compile Include="DomainModels\ShClone\ShAddAgreement.cs" />
     <Compile Include="DomainModels\ShClone\ShAVR.cs" />
@@ -140,6 +147,7 @@
     <Compile Include="DomainModels\Solaris\SAPCode.cs" />
     <Compile Include="DomainModels\Solaris\SubContractor.cs" />
     <Compile Include="SharedModels\ActItemModel.cs" />
+    <Compile Include="Services\WIHService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -151,6 +159,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\IFS Resources project2\OHDB-Vimpelcome\WIHInteract\WIHInteract.csproj">
+      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
+      <Name>WIHInteract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>

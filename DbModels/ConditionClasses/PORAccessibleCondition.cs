@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DbModels.DataContext;
+using DbModels.DataContext.AVRConditions;
 
-namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
+namespace DbModels.AVRConditions
 {
     public class PORAccessibleCondition : IAVRCondition
     {

@@ -279,47 +279,28 @@ $(function () {
     }
     ViewModel.prototype.GetPrices = function () {
         var self = this;
-       // return new Promise(function (resolve, reject) {
-            /// корректный фетч
-            return fetch("http://localhost:16496/Json/PositionList",
-                {
-                    method: "POST"
-                    , headers: { 'Content-Type': 'application/json; charset=utf-8' }
-                    , credentials: "same-origin"
-                    , body: JSON.stringify({ 'ProjectId': '4', 'SubcId': '230', 'nsc': 'True', 'WorkEnd': self.selectedWS(), 'WorkStart': self.selectedWE() })
-                }).then(function (data) {
-                    self.prices(ko.utils.arrayMap(data, function (item) {
-                        return new PriceListModel(item);
-                    }))
-                });
-
-
-        //    $.post(getPriceLists, { ProjectId: "4", SubcId: "230", nsc: "True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
-        //        self.prices(ko.utils.arrayMap(data, function (item) {
-        //            return new PriceListModel(item);
-        //        }));
-        //        resolve();
-        //    });
-        //})
- 
-           
-
-
-
-        //return promise;
-        //var self = this;
-        //var deferred = $.Deferred();
-
-
       
-        //    deferred.resolve();
+            /// корректный фетч
+            //return fetch("http://localhost:16496/Json/PositionList",
+            //    {
+            //        method: "POST"
+            //        , headers: { 'Content-Type': 'application/json; charset=utf-8' }
+            //        , credentials: "same-origin"
+            //        , body: JSON.stringify({ 'ProjectId': '4', 'SubcId': '230', 'nsc': 'True', 'WorkEnd': self.selectedWS(), 'WorkStart': self.selectedWE() })
+            //    }).then(function (data) {
+            //        self.prices(ko.utils.arrayMap(data, function (item) {
+            //            return new PriceListModel(item);
+            //        }))
+            //    });
+        return new Promise(function (resolve, reject) {
 
-
-
-        //}, "json");
-        //return deferred.promise();
-
-
+            $.post(getPriceLists, { ProjectId: "4", SubcId: "230", nsc: "True", WorkEnd: self.selectedWS(), WorkStart: self.selectedWE() }, function (data, textStatus) {
+                self.prices(ko.utils.arrayMap(data, function (item) {
+                    return new PriceListModel(item);
+                }));
+                resolve();
+            });
+        });
     }
 
     ViewModel.prototype.AddItemToEnd = function () {

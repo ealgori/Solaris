@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using DbModels.DomainModels.ShClone;
 using DbModels.DataContext;
 using DbModels.DataContext.Repositories;
+using DbModels.DataContext.AVRConditions;
 
-namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
+namespace DbModels.AVRConditions
 {
     public class NeedPriceCondition : IAVRCondition
     {

@@ -122,12 +122,6 @@
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLFIQuantifier.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\AVRUnfreezeHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\Common\AVRCommon.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\IAVRCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedMUSCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedVCPrepriceCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\NeedPriceCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\PORAccessibleCondition.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionClasses\ReadyToRequestCondition.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ConditionHandlers\ConditionsHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRPrepriceImportModel.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRUnfreeezeImportModel.cs" />
@@ -138,9 +132,10 @@
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\ShVCRequestImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\LimitCalc.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\NotifyHandler.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\SaveMailToAdmin.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\CreateVCRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\SendVCRequestHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\SaveMailToAdmin2.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\UploadVCReqToCreateHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\VCRequestAnalyzer.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\BackUps\BackUpHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\BackUps\FolderBackUpHandler.cs" />

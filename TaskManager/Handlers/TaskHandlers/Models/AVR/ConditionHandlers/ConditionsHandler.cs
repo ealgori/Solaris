@@ -1,11 +1,13 @@
-﻿using DbModels.DataContext.Repositories;
+﻿using DbModels.AVRConditions;
+using DbModels.DataContext.AVRConditions;
+using DbModels.DataContext.Repositories;
 using DbModels.DomainModels.ShClone;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses;
+
 using TaskManager.TaskParamModels;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
@@ -19,6 +21,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
 
         public override bool Handle()
         {
+            
             var freezedAvrs = TaskParameters.Context.ShAVRs.Where(AVRRepository.Base)
                 //.Where(a => a.AVRId == "205806")
                 .ToList();

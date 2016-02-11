@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses
+namespace DbModels.DataContext.AVRConditions
 {
     public interface IAVRCondition
     {

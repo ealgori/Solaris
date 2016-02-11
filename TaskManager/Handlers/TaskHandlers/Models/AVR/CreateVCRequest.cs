@@ -15,7 +15,7 @@ using TaskManager.TaskParamModels;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 {
-	public static class SaveMailToAdmin
+	public static class CreateVCRequest
 	{
 
 		#region templates
@@ -431,7 +431,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 		#endregion
 
 
-		public static ShVCRequestImport Handle(string shAVR, Context context)
+		public static ShVCRequestImport Handle(string vcRequestName, Context context)
 		{
 			string votingOptions = string.Format("{0};{1}", Common.AVRCommon.AcceptMask, Common.AVRCommon.RejectMask);
 			string notifyRecipients =
@@ -441,20 +441,30 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 
 
 
-			List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
+            var vcRequestToUpload = context.VCRequestsToCreate.FirstOrDefault(r => r.VCRequestNumber == vcRequestName);
+            if (vcRequestToUpload == null)
+                return null;
+
 			RedemptionMailProcessor interactor = new RedemptionMailProcessor("SOLARIS");
 
-			var shAvr = context.ShAVRs.Find(shAVR);
+			var shAvr = context.ShAVRs.Find(vcRequestToUpload.AVRId);
 
 			System.Diagnostics.Debug.WriteLine(shAvr.AVRId);
 
 			var shAvrItems = shAvr.Items.ToList(); // TaskParameters.Context.ShAVRItems.Where(a => a.AVRSId == shAvr.AVRId).ToList();
 			var inLimitItems = shAvrItems.Where(AVRItemRepository.InLimitComp).ToList();
-			var outOfLimitItems = shAvrItems.Where(AVRItemRepository.OutOfLimitComp).ToList();
-			var addOnSalesItems = shAvrItems.Where(AVRItemRepository.IsVCAddonSalesComp).ToList();
-			var orderItems = outOfLimitItems.Union(addOnSalesItems).Distinct().ToList();
+            var orderItems = context.SatMusItems.Where(m => m.VCRequestNumber == vcRequestName).ToList();
+            var orderItemsIds = orderItems.Where(i => i.AvrItemId.HasValue).Select(s => s.AvrItemId).ToList();
+            /// эти позиции присутствуют и в заказе и в письме. Катя их переопрайсовала и вставила свои количества.
+            /// а могла и удалить. поэтому надо сравнить их с позициями мус. и пересекающиеся добавлять
+			var outOfLimitItems = shAvrItems.Where(AVRItemRepository.OutOfLimitComp).Where(i=> orderItemsIds.Contains(i.AVRItemId)).ToList();
 
-			if (inLimitItems.Any(i => !i.InLimit.HasValue) || (outOfLimitItems.Any(i => !i.InLimit.HasValue)))
+
+
+			//var addOnSalesItems = shAvrItems.Where(AVRItemRepository.IsVCAddonSalesComp).ToList();
+			//var orderItems = outOfLimitItems.Union(addOnSalesItems).Distinct().ToList();
+
+			if (inLimitItems.Any(i => !i.InLimit.HasValue))
 			{
 				Console.WriteLine(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
 				// TaskParameters.TaskLogger.LogError(string.Format("Еще не все лимиты позиции на АВР {0} учтены при расчете лимитов.", shAvr.AVRId));
@@ -462,9 +472,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 				return null;
 			}
 
-			string requestName = Common.AVRCommon.GetVCRequestName(shAvr.AVRId);
-			var now = DateTime.Now;
-			var shVCRequest = new ShVCRequestImport() { Id = requestName, ShAVRs = shAvr.AVRId };
+			var shVCRequest = new ShVCRequestImport() { Id = vcRequestName, ShAVRs = shAvr.AVRId };
 
 			byte[] orderBytes = null;
 			if (orderItems.Any())
@@ -477,7 +485,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 				//    return null;
 				//}
 				var count = 0;
-				orderBytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(orderItems, requestName);
+				orderBytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(orderItems, vcRequestName);
 				if (orderBytes == null)
 				{
 					Console.WriteLine(string.Format("Ошибка формирования заказа для авр: {0}", shAvr.AVRId));
@@ -540,7 +548,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 			var autoMail = new AutoMail();
 			autoMail.Email = notifyRecipients;
 			autoMail.Body = mailText;
-			autoMail.Subject = string.Format("{0}", requestName);
+			autoMail.Subject = string.Format("{0}", vcRequestName);
 			if (inLimitItems.Any())
 			{
 				autoMail.VotingOptions = votingOptions;
@@ -549,7 +557,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 
 			if (orderBytes != null)
 			{
-				string orderFilePath = Common.AVRCommon.SaveOrderFile(requestName, orderBytes);
+				string orderFilePath = Common.AVRCommon.SaveOrderFile(vcRequestName, orderBytes);
 				if (File.Exists(orderFilePath))
 				{
 					var attachment = new Attachment() { FilePath = orderFilePath };
@@ -574,7 +582,7 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 
 
 			// сохраняем письмо
-			var mailPath = interactor.SaveMailToFile(autoMail, Common.AVRCommon.GetAVRArhivePath(requestName));
+			var mailPath = interactor.SaveMailToFile(autoMail, Common.AVRCommon.GetAVRArhivePath(vcRequestName));
 			shVCRequest.Attachment = Path.GetDirectoryName(mailPath);
 
 

@@ -170,7 +170,7 @@ namespace DbModels.DataContext
         public DbSet<SATSubregion> SATSubregions { get; set; }
         public DbSet<SATActFile> SATActFiles { get; set; }
         public DbSet<SatMusItem> SatMusItems { get; set; }
-        //public DbSet<SATPrepricedItem> SATPrepricedItems { get; set; }
+        public DbSet<VCRequestToCreate> VCRequestsToCreate { get; set; }
 
         #endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

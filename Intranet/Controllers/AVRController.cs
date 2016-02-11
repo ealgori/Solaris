@@ -35,12 +35,12 @@ namespace Intranet.Controllers
                     {
                         avrItemId = i.AVRItemId,
                         noteVC = i.NoteVC,
-                        shQuantity = i.Quantity.HasValue?i.Quantity.Value:0,
+                        shQuantity = i.Quantity.HasValue ? i.Quantity.Value : 0,
                         shDescription = i.Description,
                         shPrice = i.Price,
                         workReason = i.WorkReason,
-                     
-                     
+
+
 
 
                     });
@@ -88,6 +88,7 @@ namespace Intranet.Controllers
                     {
                         // если же Катя уже опрайсовала, то выбираем последнюю опрайсовку и из нее позиции
                         var lastMusItems = avrMusItems.GroupBy(a => a.VCRequestNumber).OrderByDescending(g => g.Key).FirstOrDefault();
+                        List<AVRItemModel> musItemModels = new List<AVRItemModel>();
                         foreach (var musItem in lastMusItems)
                         {
                             var itemModel = new AVRItemModel()
@@ -101,10 +102,10 @@ namespace Intranet.Controllers
                                 vcUseCoeff = musItem.UseCoeff,
                                 priceListRevisionItemId = musItem.PriceListRevisionItem != null ? musItem.PriceListRevisionItem.Id : (int?)null
                             };
-                            if(musItem.AvrItemId.HasValue)
+                            if (musItem.AvrItemId.HasValue)
                             {
                                 var shItem = context.ShAVRItems.FirstOrDefault(i => i.AVRItemId == musItem.AvrItemId);
-                                if(shItem!=null)
+                                if (shItem != null)
                                 {
                                     itemModel.avrItemId = shItem.AVRItemId;
                                     itemModel.shQuantity = shItem.Quantity ?? 0;
@@ -113,10 +114,12 @@ namespace Intranet.Controllers
                                 }
                             }
 
+                            musItemModels.Add(itemModel);
                         }
+                        return Json(musItemModels, JsonRequestBehavior.AllowGet);
                     }
                 }
-          
+
 
                 return Json(null, JsonRequestBehavior.AllowGet);
                 //   System.Web.Script.Serialization.JavaScriptSerializer
@@ -150,9 +153,10 @@ namespace Intranet.Controllers
             {
 
                 var avrs = AVRRepository.GetNeedVCPriceAvrs(context);
-             
-              
-                return Json(avrs.Select(a => new {
+
+
+                return Json(avrs.Select(a => new
+                {
                     avr = a.AVRId,
                     workStart = a.WorkStart,
                     workEnd = a.WorkEnd,
@@ -169,8 +173,8 @@ namespace Intranet.Controllers
         public ActionResult PostPreprice(PrepriceModel model)
         {
             var now = DateTime.Now;
-           
-           
+
+
             using (Context context = new Context())
             {
                 var shAVRs = context.ShAVRs.FirstOrDefault(a => a.AVRId == model.avrId);
@@ -181,24 +185,24 @@ namespace Intranet.Controllers
                 foreach (var item in model.items)
                 {
                     var musItem = new SatMusItem();
-                    if(item.avrItemId!=null)
+                    if (item.avrItemId != null)
                     {
-                        var shItem = context.ShAVRItems.FirstOrDefault(i => i.AVRItemId==item.avrItemId);
+                        var shItem = context.ShAVRItems.FirstOrDefault(i => i.AVRItemId == item.avrItemId);
                         if (shItem != null)
                         {
                             musItem.AvrItemId = item.avrItemId;
                             musItem.ShDescription = shItem.Description;
                         }
                     }
-                    if(item.vcCustomPos)
+                    if (item.vcCustomPos)
                     {
-                        musItem.Price = item.price??0;
+                        musItem.Price = item.price ?? 0;
                         musItem.CustomPos = item.vcCustomPos;
                         musItem.Description = item.description;
                     }
                     else
                     {
-                        if(item.priceListRevisionItemId.HasValue)
+                        if (item.priceListRevisionItemId.HasValue)
                         {
                             var plri = context.PriceListRevisionItems.FirstOrDefault(i => i.Id == item.priceListRevisionItemId);
                             if (plri != null)
@@ -210,18 +214,26 @@ namespace Intranet.Controllers
                         }
                         musItem.UseCoeff = item.vcUseCoeff;
                     }
-                    musItem.Quantity = item.quantity??0;
+                    musItem.Quantity = item.quantity ?? 0;
                     musItem.WorkReason = item.workReason;
                     musItem.NoteVC = item.noteVC;
                     musItem.VCRequestNumber = shVCRequestName;
+                    musItem.AVRId = model.avrId;
                     context.SatMusItems.Add(musItem);
-                    }
-                   
-                    
-
-
-                    context.SaveChanges();
                 }
+                var vcRequestToUpload = new VCRequestToCreate
+                {
+                    AVRId = shAVRs.AVRId,
+                    CreateDate = DateTime.Now,
+                    VCRequestNumber = shVCRequestName,
+                    UserName = User.Identity.Name
+                };
+                context.VCRequestsToCreate.Add(vcRequestToUpload);
+
+
+
+                context.SaveChanges();
+            }
             return Json(true);
         }
     }

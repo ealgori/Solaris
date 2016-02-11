@@ -34,7 +34,7 @@ using CommonFunctions.Extentions;
 using UnidecodeSharpFork;
 using ShClone.UniReport;
 using System.Data;
-using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionClasses;
+
 
 
 namespace TestProject
@@ -112,12 +112,13 @@ namespace TestProject
         {
            using(Context context = new Context())
            {
-               var testAVR = "206147";
-               var avr2 = context.ShAVRs.Where(AVRRepository.Base).FirstOrDefault(a=>a.AVRId==testAVR);
+               var testAVR = "205126";
+               //var avr2 = context.ShAVRs.Where(AVRRepository.Base).FirstOrDefault(a=>a.AVRId==testAVR);
+                var request=  context.VCRequestsToCreate.Where(a => a.AVRId == testAVR).GroupBy(g=>g.VCRequestNumber).FirstOrDefault();
+                var musItems = context.SatMusItems.Where(i => i.VCRequestNumber == request.Key).ToList();
 
-
-               var items = avr2.Items.ToList();
-               var bytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(items, "testOrder");
+              
+               var bytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(musItems, request.Key);
                StaticHelpers.ByteArrayToFile(@"C:\Temp\AVROrderTest.xlsx", bytes);
                //var avrs = AVRRepository.GetAvrForLimitsRecalculate(context);
 
@@ -541,6 +542,20 @@ namespace TestProject
             }
 
         }
+
+        [TestMethod]
+        public void UploadVCReqToCreateHandler()
+        {
+
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "UploadVCReqToCreateHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+
+        }
         [TestMethod]
         public void NotifyHandlerTest()
         {
@@ -576,7 +591,7 @@ namespace TestProject
             using (Context context = new Context())
             {
                 ////context.lo
-                TaskManager.Handlers.TaskHandlers.Models.AVR.SaveMailToAdmin.Handle("206325", context);
+                TaskManager.Handlers.TaskHandlers.Models.AVR.CreateVCRequest.Handle("206325", context);
          
             }
 
