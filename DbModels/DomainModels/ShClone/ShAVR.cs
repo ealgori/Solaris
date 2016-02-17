@@ -154,6 +154,8 @@ namespace DbModels.DomainModels.ShClone
 
         public DateTime? PriceNotifySend { get; set; }
         public DateTime? VCPriceNotifySend { get; set; }
+        public DateTime? MUSNetworkNotifySend { get; set; }
+
         /// <summary>
         /// используется на форме Preprice (AVRController), просчитывается в отдельном хендлере после обновления, только для требующих перевыставления.
         /// </summary>
