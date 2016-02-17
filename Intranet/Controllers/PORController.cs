@@ -15,6 +15,7 @@ using DbModels.DomainModels.Solaris.Pors;
 using CommonFunctions.Extentions;
 using DbModels.DomainModels.ShClone;
 using DbModels.DataContext.Repositories;
+using DbModels.AVRConditions;
 
 namespace Intranet.Controllers
 {
@@ -317,15 +318,18 @@ namespace Intranet.Controllers
                                         context.SaveChanges();
                                         result.Success = true;
 
-                                        if (shAVR.Status == Statuses.NeedVCPrice)
+                                        var porAccesibleCondition = new PORAccessibleCondition(new NeedPriceCondition());
+                                        if (porAccesibleCondition.IsSatisfy(shAVR, context))
                                         {
-                                            result.Message = "Пор подготовлен. Но я вам его не отдам, тк. у вас нетворков нет :-p";
+                                            shAVR.PorAccesible = true;
+                                            result.Message = "POR успешно создан.";
+                                            result.Url = Url.Action("PrintPor", "POR", new { Id = por.Id }, Request.Url.Scheme);
                                         }
                                         else
                                         {
-                                            result.Message = "POR успешно создан";
-                                            result.Url = Url.Action("PrintPor", "POR", new { Id = por.Id }, Request.Url.Scheme);
+                                            result.Message = "Опрайсовка проведена. Пор будет подготовлен через некоторое время";
                                         }
+                                      
                                     }
                                     catch (Exception exc)
                                     {

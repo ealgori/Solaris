@@ -44,8 +44,11 @@ namespace DbModels.AVRConditions
                     {
                         if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
                         {
-                            // должен был быть мус
-                            //TODO: т.е. нетворк от муса
+                            if(!string.IsNullOrEmpty(shAvr.MUSNetwork))
+                            {
+                                return true;
+                            }
+                          
                         }
                         else
                         {

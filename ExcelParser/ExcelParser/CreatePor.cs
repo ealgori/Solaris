@@ -15,8 +15,8 @@ using DbModels.Models.Pors;
 using DbModels.DomainModels.Solaris.Pors;
 using CommonFunctions;
 using EpplusInteract;
-
-
+using DbModels.DataContext.Repositories;
+using DbModels.AVRConditions;
 
 namespace ExcelParser.EpplusInteract
 {
@@ -37,16 +37,14 @@ namespace ExcelParser.EpplusInteract
                 
               //  var por1 = context.PORs.Include("PORNetwork").FirstOrDefault(p => p.Id == porId);
                 var pitems = por.PorItems.ToList();
+
                 foreach (var item in pitems)
                 {
                      item.Description = string.Format("{0} ({1})",item.Description, item.Description.CUnidecode());
+
+
                 }
-                var dataTable = pitems.ToDataTable(typeof(PORItem));
-                dataTable.Columns.Remove("POR");
-                dataTable.Columns.Remove("Id");
-                dataTable.Columns.Remove("PriceListRevisionItem");
-                dataTable.Columns.Remove("IsCustom");
-                dataTable.Columns.Remove("Coeff");
+           
                 Dictionary<string,string> dict = new Dictionary<string,string>();
                 string porIds = string.Empty;
                 if (por is AVRPOR)
@@ -81,8 +79,67 @@ namespace ExcelParser.EpplusInteract
                
                 if (por is AVRPOR)
                 {
-                    dict.Add("Network", por.Network);
+                    var avrPor = ((AVRPOR)por);
+                    var shAvr = context.ShAVRs.FirstOrDefault(a => a.AVRId==avrPor.AVRId);
+                    var isEs = AVRRepository.IsES(shAvr);
+                    if (shAvr!=null)
+                    {
+                        //if(shAvr.PorAccesible)
+                        //{
+                        //    if(isEs)
+                        //    {
+                        //        dict.Add("Network", shAvr.ESNetwork);
+                        //    }
+                        //    else
+                        //    {
+                        //        var porAccesibleCondition = new PORAccessibleCondition(new NeedPriceCondition());
+                        //        if (porAccesibleCondition.IsSatisfy(shAvr, context))
+                        //        {
+                        //            dict.Add("Network", shAvr.MUSNetwork);
+                        //        }
+                        //    }
+
+                        //}
+                        //dict.Add("Network", por.Network);
+
+                        foreach (var item in pitems)
+                        {
+                            var shItem = context.ShAVRItems.FirstOrDefault(i => i.AVRItemId == item.ItemId);
+                            if(shItem!=null)
+                            {
+                                if (AVRItemRepository.IsVCAddonSalesOrExceedComp(shItem))
+                                {
+                                    if (isEs)
+                                    {
+                                        item.Network = shAvr.ESNetwork;
+                                    }
+                                    else
+                                    {
+                                        item.Network = shAvr.MUSNetwork;
+                                    }
+                                }
+                                else
+                                {
+                                    item.Network = shAvr.Network;
+                                }
+                            }
+                            
+                           
+                        }
+
+                        dict.Add("Network", string.Join(",",pitems.Select(i => i.Network).Distinct()));
+                    }
+
+                    
                 }
+
+
+                var dataTable = pitems.ToDataTable(typeof(PORItem));
+                dataTable.Columns.Remove("POR");
+                dataTable.Columns.Remove("Id");
+                dataTable.Columns.Remove("PriceListRevisionItem");
+                dataTable.Columns.Remove("IsCustom");
+                dataTable.Columns.Remove("Coeff");
                 //{
                 //    if(((AVRPOR)por).AVRId[0]=='2')
                 //    {
@@ -104,8 +161,8 @@ namespace ExcelParser.EpplusInteract
                 //          dict.Add("Network", por.PORNetwork==null?"": por.PORNetwork.Network.ToString());
                 //    }
                 //}
-                
-                
+
+
                 dict.Add("Activity", por.Activity);
                 var porNetwork = context.PORNetworks.FirstOrDefault(r => r.City == por.SubRegion);
                 if(porNetwork!=null)

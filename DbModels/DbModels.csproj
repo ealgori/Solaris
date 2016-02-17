@@ -159,13 +159,13 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\IFS Resources project2\OHDB-Vimpelcome\WIHInteract\WIHInteract.csproj">
-      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
-      <Name>WIHInteract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OHDB_Rev_2\WIHInteract\WIHInteract.csproj">
+      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
+      <Name>WIHInteract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

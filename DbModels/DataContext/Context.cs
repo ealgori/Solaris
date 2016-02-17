@@ -157,6 +157,9 @@ namespace DbModels.DataContext
         #endregion
 
         #region WIH
+        /// <summary>
+        /// Насколько помню, используется только для отслеживания запросов сап кодов.
+        /// </summary>
         public DbSet<WIHRequest> WIHRequests { get; set; }
         #endregion
 

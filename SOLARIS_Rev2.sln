@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OHDB", "OHDB\OHDB.csproj", "{B0F3F7B9-D37A-447E-AE24-8171C3E37213}"
 EndProject
@@ -36,8 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C618C8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoImport.Rev3", "..\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj", "{A6550831-F322-4FBB-BEDE-831AE9492AC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WIHInteract", "..\..\IFS Resources project2\OHDB-Vimpelcome\WIHInteract\WIHInteract.csproj", "{246412B6-B831-4DE2-99C3-535473383C5D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedemptionInteract", "..\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj", "{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonFunctions", "..\CommonFunctions\CommonFunctions\CommonFunctions.csproj", "{521A9EDB-4DCA-4610-ADD7-088A8B3E19F5}"
@@ -46,97 +44,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NpoiInteract", "..\NpoiInte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHInteract", "..\SHInteract\SHInteract\SHInteract.csproj", "{B6678255-E5B3-4270-B604-D51ADF577D4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WIHInteract", "..\OHDB_Rev_2\WIHInteract\WIHInteract.csproj", "{246412B6-B831-4DE2-99C3-535473383C5D}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 17
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://mrdb.visualstudio.com/defaultcollection
-		SccProjectUniqueName0 = DbModels\\DbModels.csproj
-		SccProjectName0 = DbModels
-		SccAuxPath0 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath0 = DbModels
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = ..\\SurfaceImporter\\SurfaceImporter\\SurfaceImporter.csproj
-		SccProjectName1 = ../SurfaceImporter/SurfaceImporter
-		SccAuxPath1 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath1 = ..\\SurfaceImporter\\SurfaceImporter
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName2 = ..\\AutoImport.Rev3\\AutoImport.Rev3\\AutoImport.Rev3.csproj
-		SccProjectName2 = ../AutoImport.Rev3/AutoImport.Rev3
-		SccAuxPath2 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath2 = ..\\AutoImport.Rev3\\AutoImport.Rev3
-		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName3 = ExcelParser\\ExcelParser.csproj
-		SccProjectName3 = ExcelParser
-		SccAuxPath3 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath3 = ExcelParser
-		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName4 = TaskManager\\TaskManager.csproj
-		SccProjectName4 = TaskManager
-		SccAuxPath4 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath4 = TaskManager
-		SccProvider4 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName5 = ShClone\\ShClone.csproj
-		SccProjectName5 = ShClone
-		SccAuxPath5 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath5 = ShClone
-		SccProvider5 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName6 = OHDB\\OHDB.csproj
-		SccProjectName6 = OHDB
-		SccAuxPath6 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath6 = OHDB
-		SccProvider6 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName7 = Service\\Service.csproj
-		SccProjectName7 = Service
-		SccAuxPath7 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath7 = Service
-		SccProvider7 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName8 = OHDBServiceProxy\\OHDBServiceProxy.csproj
-		SccProjectName8 = OHDBServiceProxy
-		SccAuxPath8 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath8 = OHDBServiceProxy
-		SccProvider8 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName9 = ServiceHost\\OHDBServiceHost.csproj
-		SccProjectName9 = ServiceHost
-		SccAuxPath9 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath9 = ServiceHost
-		SccProvider9 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName10 = TestProject\\TestProject.csproj
-		SccProjectName10 = TestProject
-		SccAuxPath10 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath10 = TestProject
-		SccProvider10 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName11 = Intranet\\Intranet.csproj
-		SccProjectName11 = Intranet
-		SccAuxPath11 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath11 = Intranet
-		SccProvider11 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName12 = ..\\..\\IFS\u0020Resources\u0020project2\\OHDB-Vimpelcome\\WIHInteract\\WIHInteract.csproj
-		SccProjectName12 = ../OHDB-Vimpelcome2/WIHInteract
-		SccAuxPath12 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath12 = ..\\..\\IFS\u0020Resources\u0020project2\\OHDB-Vimpelcome\\WIHInteract
-		SccProvider12 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName13 = ..\\RedemptionInteract\\RedemptionInteract\\RedemptionInteract.csproj
-		SccProjectName13 = ../../IFS\u0020Resources\u0020project/RedemptionInteract/RedemptionInteract
-		SccAuxPath13 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath13 = ..\\RedemptionInteract\\RedemptionInteract
-		SccProvider13 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName14 = ..\\CommonFunctions\\CommonFunctions\\CommonFunctions.csproj
-		SccProjectName14 = ../CommonFunctions/CommonFunctions
-		SccAuxPath14 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath14 = ..\\CommonFunctions\\CommonFunctions
-		SccProvider14 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName15 = ..\\NpoiInteract\\NpoiInteract\\NpoiInteract.csproj
-		SccProjectName15 = ../NpoiInteract/NpoiInteract
-		SccAuxPath15 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath15 = ..\\NpoiInteract\\NpoiInteract
-		SccProvider15 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName16 = ..\\SHInteract\\SHInteract\\SHInteract.csproj
-		SccProjectName16 = ../../IFS\u0020Resources\u0020project/SHInteract/SHInteract
-		SccAuxPath16 = https://mrdb.visualstudio.com/defaultcollection
-		SccLocalPath16 = ..\\SHInteract\\SHInteract
-		SccProvider16 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -321,21 +231,6 @@ Global
 		{A6550831-F322-4FBB-BEDE-831AE9492AC1}.Release|x64.ActiveCfg = Release|Any CPU
 		{A6550831-F322-4FBB-BEDE-831AE9492AC1}.Release|x86.ActiveCfg = Release|x86
 		{A6550831-F322-4FBB-BEDE-831AE9492AC1}.Release|x86.Build.0 = Release|x86
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x64.Build.0 = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x86.Build.0 = Debug|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Mixed Platforms.Build.0 = Release|x86
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x64.ActiveCfg = Release|Any CPU
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x86.ActiveCfg = Release|x86
-		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x86.Build.0 = Release|x86
 		{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
@@ -394,6 +289,22 @@ Global
 		{B6678255-E5B3-4270-B604-D51ADF577D4C}.Release|x64.ActiveCfg = Release|Any CPU
 		{B6678255-E5B3-4270-B604-D51ADF577D4C}.Release|x86.ActiveCfg = Release|x86
 		{B6678255-E5B3-4270-B604-D51ADF577D4C}.Release|x86.Build.0 = Release|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x64.Build.0 = Debug|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x86.ActiveCfg = Debug|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Debug|x86.Build.0 = Debug|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x64.ActiveCfg = Release|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x64.Build.0 = Release|Any CPU
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x86.ActiveCfg = Release|x86
+		{246412B6-B831-4DE2-99C3-535473383C5D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

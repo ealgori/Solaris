@@ -36,13 +36,13 @@ namespace DbModels.DomainModels.ShClone
         public DateTime? EndDate { get; set; }
         public string Note { get; set; }
 
-        public decimal? VCQuantity { get; set; }
-        public decimal? VCPrice { get; set; }
-        public int? VCPriceListRevisionItemId { get; set; }
+        //public decimal? VCQuantity { get; set; }
+        //public decimal? VCPrice { get; set; }
+        //public int? VCPriceListRevisionItemId { get; set; }
 
-        public string VCDescription { get; set; }
+        //public string VCDescription { get; set; }
 
-        public bool VCCustomPos { get; set; }
+        //public bool VCCustomPos { get; set; }
         public bool VCUseCoeff { get; set; }
 
         public bool VCAddOnSales { get; set; }

@@ -45,6 +45,7 @@ namespace DbModels.Models.Pors
         public virtual POR POR { get; set; }
         public decimal? Coeff { get; set; }
         public int? ItemId { get; set; }
+        public string Network { get; set; }
     }
 
     public class PORTOItem : Entity

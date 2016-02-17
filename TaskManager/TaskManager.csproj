@@ -204,10 +204,6 @@
     <None Include="Templates\PrintOutWorkOrder.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\IFS Resources project2\OHDB-Vimpelcome\WIHInteract\WIHInteract.csproj">
-      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
-      <Name>WIHInteract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj">
       <Project>{a6550831-f322-4fbb-bede-831ae9492ac1}</Project>
       <Name>AutoImport.Rev3</Name>
@@ -219,6 +215,10 @@
     <ProjectReference Include="..\..\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
       <Project>{cd807a95-25eb-4f71-a017-e537d58de0af}</Project>
       <Name>NpoiInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OHDB_Rev_2\WIHInteract\WIHInteract.csproj">
+      <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
+      <Name>WIHInteract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj">
       <Project>{a4b0d29a-b2eb-481f-a9ca-29f3d07f2848}</Project>

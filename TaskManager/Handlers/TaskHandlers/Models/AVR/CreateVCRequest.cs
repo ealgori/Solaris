@@ -454,7 +454,8 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 			var shAvrItems = shAvr.Items.ToList(); // TaskParameters.Context.ShAVRItems.Where(a => a.AVRSId == shAvr.AVRId).ToList();
 			var inLimitItems = shAvrItems.Where(AVRItemRepository.InLimitComp).ToList();
             var orderItems = context.SatMusItems.Where(m => m.VCRequestNumber == vcRequestName).ToList();
-            var orderItemsIds = orderItems.Where(i => i.AvrItemId.HasValue).Select(s => s.AvrItemId).ToList();
+            var mappedOrderItems = orderItems.Where(i => i.AvrItemId.HasValue);
+            var orderItemsIds = mappedOrderItems.Select(s => s.AvrItemId).ToList();
             /// эти позиции присутствуют и в заказе и в письме. Катя их переопрайсовала и вставила свои количества.
             /// а могла и удалить. поэтому надо сравнить их с позициями мус. и пересекающиеся добавлять
 			var outOfLimitItems = shAvrItems.Where(AVRItemRepository.OutOfLimitComp).Where(i=> orderItemsIds.Contains(i.AVRItemId)).ToList();
@@ -524,15 +525,24 @@ style='font-family:""Times New Roman"",""serif""'>&gt;</span></p>
 			if (outOfLimitItems.Any())
 			{
 
-				foreach (var olitem in outOfLimitItems.GroupBy(i => new { Description = i.Description, Limit = i.Limit }).ToList())
+                var olItems = outOfLimitItems.Join(
+                    mappedOrderItems,
+                    o => o.AVRItemId,
+                    m => m.AvrItemId,
+                    (o, m) => new { o, m }
+                    );
+
+
+                foreach (var olitem in olItems.GroupBy(i => new { Description = i.o.Description, Limit = i.o.Limit }).ToList())
 				{
-					lCount++;
+
+                    lCount++;
 					if (olitem.Key.Limit != null)
 					{
 						textBuilder.AppendLine(string.Format(rowtemplate
 						   , lCount
 						   , olitem.Key.Limit != null ? olitem.Key.Limit.Description : (string.IsNullOrEmpty(olitem.Key.Description) ? "" : olitem.Key.Description)
-						   , olitem.Sum(i=>i.VCQuantity)
+						   , olitem.Sum(i=>i.m.Quantity)
 							//, olitem.VCPrice.HasValue ? olitem.VCPrice.Value : 0
 						   , olitem.Key.Limit.Executed.HasValue ? olitem.Key.Limit.Executed.Value : 0
 						   , olitem.Key.Limit.SettedLimit.HasValue ? olitem.Key.Limit.SettedLimit.Value : 0
