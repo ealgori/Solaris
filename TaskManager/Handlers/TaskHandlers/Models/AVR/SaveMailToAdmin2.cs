@@ -22,9 +22,10 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
         public override bool Handle()
         {
+            // не юзаем эту функцию. Используется UploadVCRequestToCreaqte
             // находим реквесты которые в базовом состоянии и с лимитами в рамках лимита
             // которым не требуется предопрайсовка
-            //TODO: пользуем существующий функционал
+            //TODO: Включить эту функцию!!!
             //List<ShVCRequestImport> shVCRequestImport = new List<ShVCRequestImport>();
 
             //var avrs = TaskParameters.Context.ShAVRs

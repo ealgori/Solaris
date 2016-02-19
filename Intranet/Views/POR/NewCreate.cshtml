@@ -350,7 +350,12 @@
         $("#por-message").empty();
         $("#por-message").show();
         if (data.Success) {
-            $("#por-message").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button>" + data.Message + "<a href='" + data.Url + "'> Распечатать созданный ПОР.</a></div>");
+            var message = data.Message;
+            if (data.Url)
+            {
+                message += "<a href='" + data.Url + "'> Распечатать созданный ПОР.</a></div>"
+            }
+            $("#por-message").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button>" + message +"</div>");
         } else {
             $("#por-message").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>" + data.Message + "</div>");
         }

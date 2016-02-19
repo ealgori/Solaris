@@ -119,5 +119,15 @@ namespace TestProject
             Assert.IsFalse(conditions.ReadyToRequest.IsSatisfy(avr, Context));
 
         }
+        [TestMethod]
+        public void CheckAVR()
+        {
+            var avr = "206758";
+
+            var shAvr = Context.ShAVRs.Find(avr);
+            var result = conditions.PorAcccessible.IsSatisfy(shAvr, Context);
+          
+
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.PO
         public PORecallHandler(TaskParameters taskParameters) : base(taskParameters) { }
         public override bool Handle()
         {
-            bool test = true;
+            bool test = false;
             var requestList = new List<ShWIHRequest>();
             var recalled = TaskParameters.Context.ShTOes.Where(t => t.RecallPO && !string.IsNullOrEmpty(t.PONumber)).ToList();
             foreach (var to in recalled)

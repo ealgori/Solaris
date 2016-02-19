@@ -24,6 +24,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         {
             var notUploadedVCRequests = TaskParameters.Context.VCRequestsToCreate.Where(r => !r.UploadDate.HasValue).ToList();
             List<ShVCRequestImport> imports = new List<ShVCRequestImport>();
+            List<ImportPathToAVR> avrPathsList = new List<ImportPathToAVR>();
             foreach (var req in notUploadedVCRequests)
             {
                 var request = CreateVCRequest.Handle(req.VCRequestNumber, TaskParameters.Context);
@@ -31,6 +32,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                 {
                     req.UploadDate = DateTime.Now;
                     imports.Add(request);
+                    avrPathsList.Add(new ImportPathToAVR { AvrId = req.AVRId, Path = request.Attachment} );
                 }
             }
 
@@ -38,8 +40,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             {
 
                 TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(imports) });
+                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName2, Objects = new ArrayList(avrPathsList) });
             }
             return true;
+        }
+
+
+        private class ImportPathToAVR
+        {
+            public string AvrId { get; set; }
+            public string Path { get; set; }
         }
     }
 }

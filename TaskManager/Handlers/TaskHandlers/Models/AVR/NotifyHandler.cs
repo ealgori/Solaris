@@ -39,61 +39,61 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
             var now = DateTime.Now;
             var importModels = new List<NoteDatesModel>();
-            RedemptionMailProcessor processor = null;
-            // у которых нет сат поров
-            //var avrsPN = avrs.Where(a => !a.PriceNotifySend.HasValue
-            //                            && a.Subcontractor != DbModels.Constants.EricssonSubcontractor && a.SubcontractorRef != DbModels.Constants.EricssonSubcontractor
-            //                             && !cachedSATPors.Any(p => p.AVRId == a.AVRId)
-            //).ToList();
+            RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS"); ;
+           // у которых нет сат поров
+           var avrsPN = avrs.Where(a => !a.PriceNotifySend.HasValue
+                                       && a.Subcontractor != DbModels.Constants.EricssonSubcontractor && a.SubcontractorRef != DbModels.Constants.EricssonSubcontractor
+                                        && !cachedSATPors.Any(p => p.AVRId == a.AVRId)
+           ).ToList();
 
 
-            //// у которых есть сат поры
-            //var avrsVPN = avrs.Where(a => !a.VCPriceNotifySend.HasValue
-            //                                && (
-            //                                cachedSATPors.Any(p => p.AVRId == a.AVRId)
-            //                                || a.Subcontractor == DbModels.Constants.EricssonSubcontractor && a.SubcontractorRef == DbModels.Constants.EricssonSubcontractor
-            //                                )
-            //).ToList();
+            // у которых есть сат поры
+            var avrsVPN = avrs.Where(a => !a.VCPriceNotifySend.HasValue
+                                            && (
+                                            cachedSATPors.Any(p => p.AVRId == a.AVRId)
+                                            || a.Subcontractor == DbModels.Constants.EricssonSubcontractor && a.SubcontractorRef == DbModels.Constants.EricssonSubcontractor
+                                            )
+            ).ToList();
 
 
             //if (avrsPN.Any() || avrsVPN.Any())
             //{
-                processor = new RedemptionMailProcessor("SOLARIS");
+            //    processor = 
             //}
             //else
             //    return true;
 
 
-            //if (avrsPN.Count > 0)
-            //{
-            //    var autoMail = new AutoMail();
-            //    autoMail.Email = DistributionConstants.EksenazEmail;
-            //    autoMail.Subject = "Price request";
-            //    autoMail.CCEmail = DistributionConstants.EekakosEmail;
-            //    autoMail.Body = string.Format(admMailFormat, string.Join(",", avrsPN.Select(a => a.AVRId)));
-            //    var result = processor.SendMail(autoMail
-            //                                    //  , testRecipient: "aleksey.gorin@ericsson.com"
-            //                                    );
-            //    if (!string.IsNullOrEmpty(result))
-            //    {
-            //        importModels.AddRange(avrsPN.Select(s => new NoteDatesModel() { AVRs = s.AVRId, PriceNotifySend = now }));
-            //    }
-            //}
+            if (avrsPN.Count > 0)
+            {
+                var autoMail = new AutoMail();
+                autoMail.Email = DistributionConstants.EksenazEmail;
+                autoMail.Subject = "Price request";
+                autoMail.CCEmail = DistributionConstants.EekakosEmail;
+                autoMail.Body = string.Format(admMailFormat, string.Join(",", avrsPN.Select(a => a.AVRId)));
+                var result = processor.SendMail(autoMail
+                                                //  , testRecipient: "aleksey.gorin@ericsson.com"
+                                                );
+                if (!string.IsNullOrEmpty(result))
+                {
+                    importModels.AddRange(avrsPN.Select(s => new NoteDatesModel() { AVRs = s.AVRId, PriceNotifySend = now }));
+                }
+            }
 
-            //if (avrsVPN.Count > 0)
-            //{
-            //    var autoMail = new AutoMail();
-            //    autoMail.Email = DistributionConstants.EekakosEmail;
-            //    autoMail.Subject = "VC price notify";
-            //    autoMail.Body = string.Format(vcAdmMailFormat, string.Join(",", avrsVPN.Select(a => a.AVRId)));
-            //    var result = processor.SendMail(autoMail
-            //                                    //  , testRecipient: "aleksey.gorin@ericsson.com"
-            //                                    );
-            //    if (!string.IsNullOrEmpty(result))
-            //    {
-            //        importModels.AddRange(avrsVPN.Select(s => new NoteDatesModel() { AVRs = s.AVRId, VCPriceNotifySend = now }));
-            //    }
-            //}
+            if (avrsVPN.Count > 0)
+            {
+                var autoMail = new AutoMail();
+                autoMail.Email = DistributionConstants.EekakosEmail;
+                autoMail.Subject = "VC price notify";
+                autoMail.Body = string.Format(vcAdmMailFormat, string.Join(",", avrsVPN.Select(a => a.AVRId)));
+                var result = processor.SendMail(autoMail
+                                                //  , testRecipient: "aleksey.gorin@ericsson.com"
+                                                );
+                if (!string.IsNullOrEmpty(result))
+                {
+                    importModels.AddRange(avrsVPN.Select(s => new NoteDatesModel() { AVRs = s.AVRId, VCPriceNotifySend = now }));
+                }
+            }
 
             var musNetworkAVRs = TaskParameters.Context.ShAVRs.Where(a =>
             (!string.IsNullOrEmpty(a.MUSNetwork))
@@ -105,7 +105,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             foreach (var avr in musNetworkAVRs)
             {
                 var avrPor = TaskParameters.Context.AVRPORs.Where(r => r.AVRId == avr.AVRId).OrderByDescending(a => a.Id).FirstOrDefault();
-                links.Add(string.Format(linkTemplate, avrPor.Id, avrPor.AVRId));
+                if (avrPor != null)
+                {
+                    links.Add(string.Format(linkTemplate, avrPor.Id, avrPor.AVRId));
+                    importModels.Add(new NoteDatesModel() { AVRs = avrPor.AVRId, MUSNetworkNotifySend = now });
+                }
             }
             {
                 var autoMail = new AutoMail();
@@ -113,11 +117,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                 autoMail.Subject = "Por ready";
                 autoMail.Body = string.Format(musAdmMailFormat, string.Join(" ", links));
                 var result = processor.SendMail(autoMail
-                                                  , testRecipient: "aleksey.gorin@ericsson.com"
+                                                 // , testRecipient: "aleksey.gorin@ericsson.com"
                                                 );
             }
 
-            importModels.AddRange(musNetworkAVRs.Select(s => new NoteDatesModel() { AVRs = s.AVRId,  MUSNetworkNotifySend = now }));
+           // importModels.AddRange(musNetworkAVRs.Select(s => new NoteDatesModel() { AVRs = s.AVRId,  MUSNetworkNotifySend = now }));
 
 
 

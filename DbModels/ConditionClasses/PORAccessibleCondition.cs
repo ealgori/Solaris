@@ -40,7 +40,7 @@ namespace DbModels.AVRConditions
                 else
                 {
                     // должен был быть реквест в вк в любом случае
-                    if (requests.Any(VCRequestRepository.SuccessRequest))
+                    //if (requests.Any(VCRequestRepository.SuccessRequest))
                     {
                         if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
                         {

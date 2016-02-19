@@ -33,31 +33,32 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         public override bool Handle()
         {
 
-            //Первое - отправка проставленых уведомлений
-            var interact = new RedemptionMailProcessor("SOLARIS");
-            List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
-            var requests = TaskParameters.Context.ShVCRequests.Where(r => r.SendRequest == true && !r.RequestSend.HasValue).ToList();
-            foreach (var request in requests)
-	        {
-                var expectedMailName = Path.GetFileName(request.Attachments) + ".msg";
-                var mailPath = Path.Combine(request.Attachments,expectedMailName);
-                if(File.Exists(mailPath))
-                {
-                    var result = interact.SendMailByTemplate(mailPath);
-                    if(!string.IsNullOrEmpty(result))
-                    {
-                        ShVCRequestImport model = new ShVCRequestImport() { Id = request.Id, RequestSend=DateTime.Now };
-                        requestList.Add(model);
-                        // запишем в схклон
-                        request.RequestSend = DateTime.Now;
+         // Запросы в вк отправляет сама Катя. Хендлер этот не требуется.
+         //   //Первое - отправка проставленых уведомлений
+         //   var interact = new RedemptionMailProcessor("SOLARIS");
+         //   List<ShVCRequestImport> requestList = new List<ShVCRequestImport>();
+         //   var requests = TaskParameters.Context.ShVCRequests.Where(r => r.SendRequest == true && !r.RequestSend.HasValue).ToList();
+         //   foreach (var request in requests)
+	        //{
+         //       var expectedMailName = Path.GetFileName(request.Attachments) + ".msg";
+         //       var mailPath = Path.Combine(request.Attachments,expectedMailName);
+         //       if(File.Exists(mailPath))
+         //       {
+         //           var result = interact.SendMailByTemplate(mailPath);
+         //           if(!string.IsNullOrEmpty(result))
+         //           {
+         //               ShVCRequestImport model = new ShVCRequestImport() { Id = request.Id, RequestSend=DateTime.Now };
+         //               requestList.Add(model);
+         //               // запишем в схклон
+         //               request.RequestSend = DateTime.Now;
 
 
-                    }
-                }
-	        }
+         //           }
+         //       }
+	        //}
 
 
-                    TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(requestList) });
+         //           TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(requestList) });
             return true;
         }
     }
