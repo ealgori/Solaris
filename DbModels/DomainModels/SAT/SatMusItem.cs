@@ -35,8 +35,8 @@ namespace DbModels.DomainModels.SAT
         /// описание из сх
         /// </summary>
         public string ShDescription { get; set; }
-        public decimal ShPrice { get; set; }
-        public decimal ShQuantity { get; set; }
+        public decimal? ShPrice { get; set; }
+        public decimal? ShQuantity { get; set; }
 
     }
 }

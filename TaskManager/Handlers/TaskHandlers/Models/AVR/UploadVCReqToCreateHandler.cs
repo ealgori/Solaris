@@ -46,7 +46,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         }
 
 
-        private class ImportPathToAVR
+        public class ImportPathToAVR
         {
             public string AvrId { get; set; }
             public string Path { get; set; }

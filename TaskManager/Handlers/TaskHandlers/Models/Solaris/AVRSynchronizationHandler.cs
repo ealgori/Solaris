@@ -18,6 +18,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Solaris
 
             using (Context context = new Context())
             {
+                List<ImportClass> import = new List<ImportClass>();
                 var avrPors =context.AVRPORs.Where(avp=>avp.UploadedToSH==null);
                 if (avrPors.Count()>0)
                 {
@@ -27,8 +28,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Solaris
                     foreach (var avr in avrPors)
                     {
                         avr.UploadedToSH = date;
+                        import.Add(new ImportClass { AVRId = avr.AVRId, CreateDate = avr.PrintDate });
                     }
-                    TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(avrPors.Select(av => new { AVRId = av.AVRId, uploaded = formatedDate }).ToList()) });
+                    TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(import) });
                 }
                 else
                 {
@@ -37,6 +39,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Solaris
                 context.SaveChanges();
                 return true;
             }       
+        }
+
+        private class ImportClass
+        {
+            public string AVRId { get; set; }
+            public DateTime? CreateDate { get; set; }
         }
     }
 }

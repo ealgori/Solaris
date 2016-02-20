@@ -192,6 +192,8 @@ namespace Intranet.Controllers
                         {
                             musItem.AvrItemId = item.avrItemId;
                             musItem.ShDescription = shItem.Description;
+                            musItem.ShQuantity = shItem.Quantity;
+                            musItem.ShPrice = shItem.Price;
                         }
                     }
                     if (item.vcCustomPos)
@@ -219,6 +221,8 @@ namespace Intranet.Controllers
                     musItem.NoteVC = item.noteVC;
                     musItem.VCRequestNumber = shVCRequestName;
                     musItem.AVRId = model.avrId;
+                    
+
                     context.SatMusItems.Add(musItem);
                 }
                 var vcRequestToUpload = new VCRequestToCreate

@@ -583,6 +583,20 @@ namespace TestProject
 
         }
 
+        [TestMethod]
+        public void SaveMailToAdmin2Test()
+        {
+
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "DistributionHandler3") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+
+        }
+
 
         [TestMethod]
         public void SaveMailToAdmin()
@@ -593,6 +607,19 @@ namespace TestProject
                 ////context.lo
                 TaskManager.Handlers.TaskHandlers.Models.AVR.CreateVCRequest.Handle("206325", context);
          
+            }
+
+        }
+        [TestMethod]
+        public void AVRPorSync()
+        {
+
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "AVRSynchronization") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
             }
 
         }

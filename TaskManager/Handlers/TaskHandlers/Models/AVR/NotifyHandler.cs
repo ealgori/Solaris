@@ -111,6 +111,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                     importModels.Add(new NoteDatesModel() { AVRs = avrPor.AVRId, MUSNetworkNotifySend = now });
                 }
             }
+            if(links.Count>0)
             {
                 var autoMail = new AutoMail();
                 autoMail.Email = DistributionConstants.EksenazEmail;
