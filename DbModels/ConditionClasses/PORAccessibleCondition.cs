@@ -44,7 +44,11 @@ namespace DbModels.AVRConditions
                     {
                         if (avrItems.Any(AVRItemRepository.IsVCAddonSalesOrExceedComp))
                         {
-                            if(!string.IsNullOrEmpty(shAvr.MUSNetwork))
+                            if(
+                                (!string.IsNullOrEmpty(shAvr.MUSNetwork))
+                                &&(!string.IsNullOrEmpty(shAvr.VCActivity))
+
+                                )
                             {
                                 return true;
                             }

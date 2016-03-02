@@ -19,6 +19,7 @@ namespace DbModels.DomainModels.SAT
         public decimal Price { get; set; }
         public decimal Quantity { get; set; }
         public string Site { get; set; }
+        public string  FOL { get; set; }
         public int? SiteIndex { get; set; }
         public string SiteAddress { get; set; }
         public string Description { get; set; } 

@@ -72,6 +72,7 @@
     <Compile Include="ExcelParser\CreateAVROrder.cs" />
     <Compile Include="ExcelParser\CreateAct.cs" />
     <Compile Include="ExcelParser\CreateActAutoImport.cs" />
+    <Compile Include="ExcelParser\CreateGR.cs" />
     <Compile Include="ExcelParser\CreatePor.cs" />
     <Compile Include="ExcelParser\CreatePorDel.cs">
       <SubType>Code</SubType>

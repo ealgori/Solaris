@@ -162,6 +162,9 @@ namespace DbModels.DomainModels.ShClone
         [Exclude]
         public decimal? TotalVCReexpose { get; set; }
 
+        public string VCActivity { get; set; }
+
+
         
 
     }

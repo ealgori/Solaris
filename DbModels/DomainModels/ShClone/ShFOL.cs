@@ -12,5 +12,7 @@ namespace DbModels.DomainModels.ShClone
         public string FOL { get; set; }
         public string MacroRegion { get; set; }
         public string Branch { get; set; }
+        public string StartPoint { get; set; }
+        public string DestinationPoint { get; set; }
     }
 }

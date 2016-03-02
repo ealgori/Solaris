@@ -122,7 +122,7 @@ namespace Intranet.Controllers
                         satTo.ToType = shTO.TOType;
                         satTo.TO = shTO.TO;
                         #endregion
-                        var toItems = repository.GetTOItemModels(shTO.TO).ToList();
+                        var toItems = repository.GetTOItemModels(shTO.TO,false,true).ToList();
 
                         var firstNotSecond = toItems.Select(i => i.TOItem).Except(model.Items.Select(i => i.TOItem));
                         var secondNotFirst = model.Items.Select(i => i.TOItem).Except(toItems.Select(i => i.TOItem));
@@ -140,17 +140,33 @@ namespace Intranet.Controllers
                         PriceListRepository priceListRepository = new PriceListRepository(context);
                         var activePrices = priceListRepository.GetActivePriceListsRevisionItems(subcontractor.Id, 4, toItems.Min(i => i.TOPlanDate), toItems.Max(i => i.TOPlanDate));
 
+                        ///TODO Этот код до ввода ФОЛОВ. Корректный, Переписан ниже на репозиторий
 
                         /// айтемы сджойненные с инфой с формы по тоайтемИД
                         //  var test = toItems
                         //    .Join(model.Items, to => to.TOItem, it => it.TOItem, (to, it) => new { toItem = to.TOItem, priceItem = it.ItemId, site = to.Site }).ToList();
-                        var items = toItems
-                            .Join(model.Items, to => to.TOItem, it => it.TOItem, (to, it) => new { toItem = to.TOItem, priceItem = it.ItemId, site = to.Site, quantity = to.SiteQuantity, description = to.Description, planDate = to.TOPlanDate })
-                            .Join(context.ShSITEs.ToList(), it => it.site, si => si.Site, (it, site) => new { toItem = it.toItem, priceItem = it.priceItem, site = it.site, quantity = it.quantity, address = site.Address, description = it.description, planDate = it.planDate, siteIndex = site.Index })
-                            .GroupJoin(context.PriceListRevisionItems, i => i.priceItem, pli => pli.Id, (i, pli) => new { toItem = i.toItem, priceItem = i.priceItem, site = i.site, quantity = i.quantity, address = i.address, description = i.description, pli = pli.FirstOrDefault(), planDate = i.planDate, siteIndex = i.siteIndex })
-                            .ToList();
+                        //var items = toItems
+                        //    .Join(model.Items, to => to.TOItem, it => it.TOItem, (to, it) => new { toItem = to.TOItem, priceItem = it.ItemId, site = to.Site, quantity = to.SiteQuantity, description = to.Description, planDate = to.TOPlanDate })
+                        //    .Join(context.ShSITEs.ToList(), it => it.site, si => si.Site, (it, site) => new { toItem = it.toItem, priceItem = it.priceItem, site = it.site, quantity = it.quantity, address = site.Address, description = it.description, planDate = it.planDate, siteIndex = site.Index })
+                        //    .GroupJoin(context.PriceListRevisionItems, i => i.priceItem, pli => pli.Id, (i, pli) => new { toItem = i.toItem, priceItem = i.priceItem, site = i.site, quantity = i.quantity, address = i.address, description = i.description, pli = pli.FirstOrDefault(), planDate = i.planDate, siteIndex = i.siteIndex })
+                        //    .ToList();
 
-                        var unactivePrices = items.Select(i => i.pli).Except(activePrices);
+                        foreach (var item in model.Items)
+                        {
+                            var pli = context.PriceListRevisionItems.FirstOrDefault(i => i.Id == item.ItemId);
+                            var toItem = toItems.FirstOrDefault(i => i.TOItem == item.TOItem);
+                            if(pli!=null&& toItem!=null)
+                            {
+                                toItem.PLRI = pli;
+                            }
+                            else
+                            {
+                                throw (new Exception("Либо левый прайс, либо левый айтем"));
+                            }
+                        }
+
+
+                        var unactivePrices = toItems.Select(i => i.PLRI).Except(activePrices);
                         if (unactivePrices.Count() > 0)
                         {
                             result.Success = false;
@@ -161,42 +177,38 @@ namespace Intranet.Controllers
 
 
 
+
                         var sum = 0M;
                         var sumService = 0M;
                         var SumMaterials = 0M;
                         satTo.SATTOItems = new List<SATTOItem>();
                         satTo.NomerDogovora = shTO.NomerDogovora;
                         satTo.DataDogovora = shTO.DataDogovora;
-                        var plistNames = items.Select(i => i.pli.PriceListRevision.PriceList.PriceListNumber).Distinct();
+                        var plistNames = toItems.Select(i => i.PLRI.PriceListRevision.PriceList.PriceListNumber).Distinct();
                         satTo.ProceListNumbers = string.Join(";", plistNames);
                         satTo.WOVAT = shContact.WithOutVAT;
-                        foreach (var item in items)
+                        foreach (var item in toItems)
                         {
                             SATTOItem satTOItem = new SATTOItem();
 
 
-                            if (item.pli == null)
-                            {
-                                result.Success = false;
-                                result.Message = "Ошибка.. ";
-                                result.Url = Url.Action("Index", "Home", new { Id = 1 }, Request.Url.Scheme);
-                                return Json(result);
-                            }
+                          
                             #region
 
-                            satTOItem.PriceListRevision = item.pli.PriceListRevision;
-                            satTOItem.PriceListRevisionItem = item.pli;
-                            satTOItem.Quantity = item.quantity.Value;
-                            satTOItem.Site = item.site;
-                            satTOItem.SiteAddress = item.address;
-                            satTOItem.SiteIndex = item.siteIndex;
-                            satTOItem.TOItemId = item.toItem;
+                            satTOItem.PriceListRevision = item.PLRI.PriceListRevision;
+                            satTOItem.PriceListRevisionItem = item.PLRI;
+                            satTOItem.Quantity = item.SiteQuantity.Value;
+                            satTOItem.Site = item.ShSite!=null?item.ShSite.Site:null;
+                            satTOItem.FOL = item.ShFOL != null ? item.ShFOL.FOL : null;
+                            satTOItem.SiteAddress = item.ShSite!=null?item.ShSite.Address:string.Format("{0}-{1}",item.ShFOL.StartPoint, item.ShFOL.DestinationPoint);
+                            satTOItem.SiteIndex = item.ShSite!= null?item.ShSite.Index:0;
+                            satTOItem.TOItemId = item.TOItem;
                             // satTOItem.SATTO = satTo;
-                            satTOItem.PricePerItem = item.pli.Price;
-                            satTOItem.Price = item.pli.Price * item.quantity.Value;
-                            satTOItem.Description = item.description;
-                            satTOItem.PlanDate = item.planDate;
-                            satTOItem.Unit = item.pli.Unit;
+                            satTOItem.PricePerItem = item.PLRI.Price;
+                            satTOItem.Price = item.PLRI.Price * item.SiteQuantity.Value;
+                            satTOItem.Description = item.Description;
+                            satTOItem.PlanDate = item.TOPlanDate;
+                            satTOItem.Unit = item.PLRI.Unit;
                             satTOItem.Type = "Service";
                             sum += satTOItem.Price;
                             sumService += satTOItem.Price;
@@ -205,34 +217,37 @@ namespace Intranet.Controllers
                             #endregion
 
                         }
-                        var sampleItem = items.FirstOrDefault();
-                        var shSite = context.ShSITEs.Find(sampleItem.site);
-                        if (shSite != null)
-                        {
-                            satTo.Region = shSite.MacroRegion;
-                            satTo.Branch = shSite.Branch;
 
-                            var network = shTO.Network;//context.PORNetworks.FirstOrDefault(n => n.SiteBranch == satTo.Branch);
-                            if (network != null)
+
+                        var sampleItem = toItems.FirstOrDefault(s=>s.ShSite!=null|| s.ShFOL!=null);
+                        satTo.Network = shTO.Network;
+                        if (sampleItem != null)
+                        {
+
+                            if (sampleItem.ShSite != null)
                             {
-                                satTo.Network = network;
+                                satTo.Region = sampleItem.ShSite.MacroRegion;
+                                satTo.Branch = sampleItem.ShSite.Branch;
                             }
                             else
                             {
-                                result.Success = false;
-                                result.Message = "Ошибка.. не нашли нетворк для Branch " + satTo.Branch;
-                                result.Url = Url.Action("Index", "Home", new { Id = 1 }, Request.Url.Scheme);
-                                return Json(result);
+                                if(sampleItem.FOL!=null)
+                                {
+                                    satTo.Region = sampleItem.ShFOL.MacroRegion;
+                                    satTo.Branch = sampleItem.ShFOL.Branch;
+                                }
                             }
+                          
+                            
                         }
 
-                        else
-                        {
-                            result.Success = false;
-                            result.Message = "Ошибка.. не нашли Сайт";
-                            result.Url = Url.Action("Index", "Home", new { Id = 1 }, Request.Url.Scheme);
-                            return Json(result);
-                        }
+                        //else
+                        //{
+                        //    result.Success = false;
+                        //    result.Message = "Ошибка.. не нашли Сайт";
+                        //    result.Url = Url.Action("Index", "Home", new { Id = 1 }, Request.Url.Scheme);
+                        //    return Json(result);
+                        //}
 
 
                         var toMatItems = repository.GetToMaterialItems(model.TO).ToList();
@@ -530,14 +545,14 @@ namespace Intranet.Controllers
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         [CacheControl(HttpCacheability.NoCache)]
-       // [HttpErrorHandler]
+        // [HttpErrorHandler]
         public ActionResult GetTODataByIdGet(string TOId)
         {
             var to = HttpUtility.UrlDecode(TOId);
             var result = GetTODataById(to);
             //if (result.Data is Intranet.Models.TOViewModel)
             //{
-                return Json(((JsonResult)result).Data, JsonRequestBehavior.AllowGet);
+            return Json(((JsonResult)result).Data, JsonRequestBehavior.AllowGet);
             //}
             //else
             //{

@@ -168,6 +168,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\TOH\TOItemOtchetPredostHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\TOH\TORefresh.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\TOH\TOTotalAmmountUpdate.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHGRRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORDelRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORRequests.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHSAPCodeRequest.cs" />

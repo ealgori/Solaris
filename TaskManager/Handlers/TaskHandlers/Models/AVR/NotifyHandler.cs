@@ -97,6 +97,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 
             var musNetworkAVRs = TaskParameters.Context.ShAVRs.Where(a =>
             (!string.IsNullOrEmpty(a.MUSNetwork))
+            &&(!string.IsNullOrEmpty(a.VCActivity))
             && (!a.MUSNetworkNotifySend.HasValue)
             ).ToList();
 

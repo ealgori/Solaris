@@ -130,7 +130,7 @@ function AddHeaders(type) {
       
         
         default: {
-            $("#targetTable thead tr").append("<th>Номер сайта</th>")
+            $("#targetTable thead tr").append("<th>Номер сайта или FOL</th>")
                                        .append("<th>Адрес сайта</th>")
                                        .append("<th>Тип</th>")
                                        .append("<th>Кол-во</th>")
@@ -174,7 +174,7 @@ function AddRow(type,row) {
           
             
             default: {
-                $("#targetTable tbody tr:last").append('<td>{0}</td>'.f(row.Site))
+                $("#targetTable tbody tr:last").append('<td>{0}</td>'.f(row.Site?row.Site:row.FOL))
                                               .append('<td>{0}</td>'.f(row.SiteAddress))
                                                .append('<td name={1}  style="background: #B8D7F8;">{0}</td>'.f(row.Description, 'Items[{0}].Description'.f(index)))
                                                .append('<td><div name="{1}">{0}</div></td>'.f(row.SiteQuantity, 'Items[{0}].Quantity'.f(index)))

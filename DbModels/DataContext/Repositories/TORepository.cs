@@ -14,6 +14,8 @@ namespace DbModels.DataContext.Repositories
 {
     public class TORepository:IRepository
     {
+
+
         private Context Context { get; set; }
         public TORepository(Context context)
         {
@@ -24,218 +26,285 @@ namespace DbModels.DataContext.Repositories
             else
                 Context = context;
         }
-        public IEnumerable<TOItemViewModel> GetTOItemModels(string TO, bool simplify=false)
+
+        public List<ItemWSiteWFOL> GetToItemsExt(string TO)
+        {
+            var cachedSites = Context.ShSITEs.ToList();
+            var cachedFols = Context.ShFOLs.ToList();
+            var cachedToes = Context.ShTOes.ToList();
+            var plItemsCache = Context.PriceListRevisionItems.ToList();
+            var _items = GetTOItems(TO);
+            var _itemsWsf = new List<ItemWSiteWFOL>();
+            foreach (var item in _items)
+            {
+                var itemsf = new ItemWSiteWFOL();
+                itemsf.ShItem = item;
+                if (item.Site != null)
+                {
+                    itemsf.ShSite = cachedSites.FirstOrDefault(s => s.Site == item.Site);
+                }
+                if (item.FOL != null)
+                {
+                    itemsf.ShFOL = cachedFols.FirstOrDefault(f => f.FOL == item.FOL);
+                }
+                itemsf.ShTO = cachedToes.FirstOrDefault(t => t.TO == item.TOId);
+
+                if (item.IDItemFromPL.HasValue)
+                {
+                    itemsf.PLRI = plItemsCache.FirstOrDefault(i => i.Id == item.IDItemFromPL.Value);
+                }
+
+                if (itemsf.ShSite != null || itemsf.ShFOL != null)
+                {
+                    _itemsWsf.Add(itemsf);
+                }
+
+
+            }
+            return _itemsWsf;
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TO"></param>
+        /// <param name="simplify"></param>
+        /// <param name="exteded">Добавить в модели объекты из сх, для использования их свойств</param>
+        /// <returns></returns>
+        public IEnumerable<TOItemViewModel> GetTOItemModels(string TO, bool simplify=false, bool exteded=false)
         {
             var shTo = Context.ShTOes.Find(TO);
             
             if (shTo != null)
             {
+                var _itemsWsf = GetToItemsExt(TO);
 
-            
-                
-                var items = GetTOItems(TO).Join(Context.ShSITEs, s => s.Site, t => t.Site, (i, s) => new { i, s })
-                                           .Join(Context.ShTOes, i => i.i.TOId, t => t.TO, (i, t) => new { t, i.i, i.s })
-                                           .GroupJoin(Context.PriceListRevisionItems, t=>t.i.IDItemFromPL, pli=>pli.Id, (t,pli)=>new {t.t, t.i,t.s,pli }).ToList();
+                var items = _itemsWsf
+                    //.Join(Context.ShTOes, i => i.i.TOId, t => t.TO, (i, t) => new { t, i.i, i.s, i.f })
+                      //                     .GroupJoin(plItemsCache, t=>t.i.IDItemFromPL, pli=>pli.Id, (t,pli)=>new {t.t, t.i,t.s, t.f ,pli,  })
+                      .ToList();
                 if(simplify)
                 {
-                    return items.Where(i => i.t.TOType == shTo.TOType).Select(i => new TOItemViewModel()
+                    return items.Where(i => i.ShTO.TOType == shTo.TOType).Where(s=>s.ShSite!=null).Select(i => new TOItemViewModel()
                     {
-                        Site = i.s.Site,
-                        TO = i.t.TO,
-                        TOItem = i.i.TOItem,
-                        SiteAddress = i.s.Address,
+                        Site = i.ShSite.Site,
+                        TO = i.ShTO.TO,
+                        TOItem = i.ShItem.TOItem,
+                        SiteAddress = i.ShSite.Address,
                         //SiteQuantity = i.s.KolvoAMS,
-                        ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
+                        ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
                         //Description = i.s.VidTOAMS,
-                        SiteRegion = i.s.MacroRegion,
-                        SiteBranch = i.s.Branch,
-                        TOPlanDate = i.i.TOPlanDate,
-                        Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
+                        SiteRegion = i.ShSite.MacroRegion,
+                        SiteBranch = i.ShSite.Branch,
+                        TOPlanDate = i.ShItem.TOPlanDate,
+                        Price = i.PLRI != null ? i.PLRI.Price : 0,
                         //Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvoAMS : 0
 
 
                     });
                 }
+
+                var itemsViewModels = new List<TOItemViewModel>();
+
                 switch (shTo.TOType)
                 {
                     case "АМС":
                         {
-                            return items.Where(i => i.t.TOType == "АМС").Select(i => new TOItemViewModel()
+                            itemsViewModels = items.Where(i => i.ShTO.TOType == "АМС").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             { 
-                                Site = i.s.Site, 
-                                TO = i.t.TO, 
-                                TOItem = i.i.TOItem, 
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvoAMS,
-                                ItemId = i.i.IDItemFromPL.HasValue?i.i.IDItemFromPL.Value:0,
-                                Description = i.s.VidTOAMS,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count()>0?i.pli.FirstOrDefault().Price:0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price*i.s.KolvoAMS : 0
+                                Site = i.ShSite.Site, 
+                                TO = i.ShTO.TO, 
+                                TOItem = i.ShItem.TOItem, 
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoAMS,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue?i.ShItem.IDItemFromPL.Value:0,
+                                Description = i.ShSite.VidTOAMS,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI!=null?i.PLRI.Price:0,
+                                Total = i.PLRI!=null? i.PLRI.Price*i.ShSite.KolvoAMS : 0
                             
                             
-                            });
+                            }).ToList();
+                            break;
                         }
                     case "СКВ":
                         {
-                            return items.Where(i => i.t.TOType == "СКВ").Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "СКВ").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvoSKV,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.VidTOSKV,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvoSKV : 0
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoSKV,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.VidTOSKV,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * i.ShSite.KolvoSKV,
+                               
 
 
-                            });
+                            }).ToList();
+                            break;
                         }
-
                     case "пСКВ":
                         {
-                            return items.Where(i => i.t.TOType == "пСКВ").Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "пСКВ").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvopSKV,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TippSKV,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                 Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvopSKV : 0
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvopSKV,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TippSKV,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI!=null?i.PLRI.Price:0 * i.ShSite.KolvopSKV 
 
 
-                            });
+                            }).ToList();
+                            break;
                         }
                     case "Сайт ТО":
                         {
-                            return items.Where(i => i.t.TOType == "Сайт ТО").Select(i => new TOItemViewModel()
+                            itemsViewModels = items.Where(i => i.ShTO.TOType == "Сайт ТО").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
                                 SiteQuantity = 1,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
                                 Description = "ТО для сайта",
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1
 
 
-                            });
+                            }).ToList() ;
+                            break;
                         }
                     case "АУГПТ":
                         {
-                            return items.Where(i => i.t.TOType == "АУГПТ").Select(i => new TOItemViewModel()
+                            itemsViewModels = items.Where(i => i.ShTO.TOType == "АУГПТ").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvoAUGPT,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipAUGPT,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                 Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvoAUGPT : 0
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoAUGPT,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TipAUGPT,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * i.ShSite.KolvoAUGPT 
 
-                            });
+                            }).ToList();
+                            break;
                         }
                     case "СТАЦИОНАРНЫХ ГУ":
                         {
-                            return items.Where(i => i.t.TOType == "СТАЦИОНАРНЫХ ГУ").Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "СТАЦИОНАРНЫХ ГУ").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvoStacionarnihGU,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipStatcionarnoiGU,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvoStacionarnihGU : 0
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoStacionarnihGU,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TipStatcionarnoiGU,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * i.ShSite.KolvoStacionarnihGU 
 
-                            });
+                            }).ToList();
+                            break;
                         }
-
                     case "МОБИЛЬНЫХ ГУ":
                         {
-                            return items.Where(i => i.t.TOType == "МОБИЛЬНЫХ ГУ").Select(i => new TOItemViewModel()
+                            return itemsViewModels.Where(i => i.ShTO.TOType == "МОБИЛЬНЫХ ГУ").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = i.s.KolvoMobilnihGU,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipMobilnoiGU,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * i.s.KolvoMobilnihGU : 0
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoMobilnihGU,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TipMobilnoiGU,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * i.ShSite.KolvoMobilnihGU 
 
-                            });
+                            }).ToList();
+                            break;
                         }
 
                     case "ТО ВОЛС":
                         {
-                            return items.Where(i => i.t.TOType == "ТО ВОЛС").Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "ТО ВОЛС").Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
-                                SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipMobilnoiGU,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1:0
+                                // Волсы только к фолам
+                                //Site = i.ShSite != null ? i.ShSite.Site : string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue ? i.ShItem.TOPlanDate.Value.ToString("ddMMyyyy"):"no date"),
+                                FOL = i.ShFOL!=null
+                                    ?string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue 
+                                        ? i.ShItem.TOPlanDate.Value.ToString("dd.MM.yyyy") 
+                                        : "no date")
+                                    :"not mounted",
 
-                            });
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress =  i.ShSite!=null?i.ShSite.Address:string.Format("{0}-{1}",i.ShFOL.StartPoint, i.ShFOL.DestinationPoint),
+
+                                SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShFOL!=null?i.ShFOL.FOL+"_":"",
+                                //SiteRegion = i.s.MacroRegion,
+                                //SiteBranch = i.s.Branch,
+                                
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1
+
+                            }).ToList();
+                            break;
                         }
 
                     case "ТО БС":
                         {
-                            return items.Where(i => i.t.TOType == "ТО БС").Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "ТО БС").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
                                 SiteQuantity = 1,
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipMobilnoiGU,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TipMobilnoiGU,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1 
 
-                            });
+                            }).ToList();
+                            break;
                         }
 
                     //case "Сайт ТО":
@@ -260,30 +329,55 @@ namespace DbModels.DataContext.Repositories
 
                     default:
                         {
-                            return items.Select(i => new TOItemViewModel()
+                            itemsViewModels= items.Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
                             {
-                                Site = i.s.Site,
-                                TO = i.t.TO,
-                                TOItem = i.i.TOItem,
-                                SiteAddress = i.s.Address,
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
                                 SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
-                                ItemId = i.i.IDItemFromPL.HasValue ? i.i.IDItemFromPL.Value : 0,
-                                Description = i.s.TipMobilnoiGU,
-                                SiteRegion = i.s.MacroRegion,
-                                SiteBranch = i.s.Branch,
-                                TOPlanDate = i.i.TOPlanDate,
-                                Price = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price : 0,
-                                Total = i.pli.Count() > 0 ? i.pli.FirstOrDefault().Price * 1 : 0
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.TipMobilnoiGU,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1 
 
-                            });
+                            }).ToList();
+                            break;
                         }
 
                 }
+
+                if(exteded)
+                {
+                    foreach (var item in itemsViewModels)
+                    {
+                        var extModel = items.FirstOrDefault(i=>i.ShItem.TOItem== item.TOItem);
+                        item.ShItem = extModel.ShItem;
+                        item.ShSite = extModel.ShSite;
+                        item.ShFOL = extModel.ShFOL;
+                        item.PLRI = extModel.PLRI;
+                    }
+                }
+                return itemsViewModels;
 
                 
             }
             return null;
         }
+
+        public class ItemWSiteWFOL
+        {
+            public ShTOItem ShItem { get; set; }
+            public ShSITE ShSite { get; set; }
+            public ShFOL ShFOL { get; set; }
+            public ShTO ShTO { get; set; }
+            public PriceListRevisionItem PLRI { get; set; }
+        }
+
+
 
         public IQueryable<ShMatToItem> GetToMaterialItems(string TO)
         {
@@ -613,6 +707,16 @@ namespace DbModels.DataContext.Repositories
             public DateTime? TOPlanDate { get; set; }
             public decimal? Price { get; set; }
             public decimal? Total { get; set; }
+
+            public ShTOItem ShItem { get; set; }
+            public ShSITE ShSite { get; set; }
+            public ShFOL ShFOL { get; set; }
+            public ShTO ShTO { get; set; }
+            public PriceListRevisionItem PLRI { get; set; }
+
+
+
+
         }
 
         public class MatItemViewModel

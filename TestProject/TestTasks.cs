@@ -1009,16 +1009,16 @@ namespace TestProject
             //    var task = TaskFactory.GetTask(paramsdd, context);
             //    task.Process();
             //}
-            var b2 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8443, false);
-            File.WriteAllBytes(@"c:\temp\avrPORTest.xlsx", b2);
+            //var b2 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8443, false);
+            //File.WriteAllBytes(@"c:\temp\avrPORTest.xlsx", b2);
 
-            var b3 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8444, false);
-            File.WriteAllBytes(@"c:\temp\avrPORTest2.xlsx", b3);
+            //var b3 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8444, false);
+            //File.WriteAllBytes(@"c:\temp\avrPORTest2.xlsx", b3);
 
             var b4 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8453, false);
             File.WriteAllBytes(@"c:\temp\avrPORTest2.xlsx", b4);
 
-            var b = ExcelParser.EpplusInteract.CreateTOPOR.CreatePorFile(322,true);
+            var b = ExcelParser.EpplusInteract.CreateTOPOR.CreatePorFile(581,true);
             File.WriteAllBytes(@"c:\temp\toPORTest.xlsx", b);
 
         }
@@ -1348,6 +1348,17 @@ namespace TestProject
             {
 
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendNotifyHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+        [TestMethod]
+        public void SendWIHGRRequestTest()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHGRRequest") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }

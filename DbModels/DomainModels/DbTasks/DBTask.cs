@@ -46,6 +46,7 @@ namespace DbModels.DomainModels.DbTasks
         public string ImportFileName3 { get; set; }
         public string ImportFileName4 { get; set; }
         public string ImportFileName5 { get; set; }
+        public string ImportFileName6 { get; set; }
         /// <summary>
         /// Максимальное количество объектов содержащихся в файле импорта
         /// </summary>

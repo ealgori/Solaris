@@ -133,6 +133,17 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                    
                             break;
                         }
+
+                    case WIHInteract.Constants.InternalMailTypeAVRGR:
+                        {
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHrequests = shRequest.WIHrequests,
+                                CompletedByOD = DateTime.Now
+
+                            });
+                            break;
+                        }
                     case WIHInteract.Constants.InternalMailTypeTOPORDel: 
                         {
                             PORResult.Add(new ShWIHRequest
@@ -186,6 +197,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             var RejectedMails = redemtion.GetMails(new List<string> { WIHMailTypeRejected });
             TaskParameters.TaskLogger.LogInfo("Количество писем Rejected - " + RejectedMails.Count);
             List<ShWIHRequest> PORResult = new List<ShWIHRequest>();
+            List<ClearFaktVipolneniyaPodtv> GRResult = new List<ClearFaktVipolneniyaPodtv>();
             List<ShAddAgreement> AGRResult = new List<ShAddAgreement>();
           //  List<UpdateWIHDataMUS> MUSResult = new List<UpdateWIHDataMUS>();
             foreach (var mail in RejectedMails)
@@ -255,6 +267,24 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             break;
                         }
 
+                    case WIHInteract.Constants.InternalMailTypeAVRGR:
+                        {
+                            GRResult.Add(new ClearFaktVipolneniyaPodtv
+                            {
+                                AvrId = shRequest.AVRId,
+                               
+                            });
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHrequests = shRequest.WIHrequests,
+                                RejectedByOD = DateTime.Now,
+                                RejectedComment = RejectReason
+                            });
+
+                            break;
+
+                        }
+
                     case WIHInteract.Constants.InternalMailTypeTORecall:
                         {
 
@@ -308,6 +338,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             var CreatedMails = redemtion.GetMails(new List<string> { WIHMailTypeCreated });
             TaskParameters.TaskLogger.LogInfo("Количество писем Сreated - " + CreatedMails.Count);
             List<ShWIHRequest> PORResult = new List<ShWIHRequest>();
+         
             //List<UpdateWIHDataMUS> MUSResult = new List<UpdateWIHDataMUS>();
             foreach (var mail in CreatedMails)
             {
@@ -376,6 +407,18 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 WIHnumber = WIHId,
                                 WIHrequests = fileName,
                                 Type = WIHInteract.Constants.InternalMailTypeTORecall
+                            });
+                            break;
+                        }
+
+                    case WIHInteract.Constants.InternalMailTypeAVRGR:
+                        {
+
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHnumber = WIHId,
+                                WIHrequests = fileName,
+                                Type = WIHInteract.Constants.InternalMailTypeAVRGR
                             });
                             break;
                         }
@@ -454,6 +497,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             public string PO {get;set;}
             public bool Recall { get; set; }
             public string RecallComment { get; set; }
+        }
+
+        private class ClearFaktVipolneniyaPodtv
+        {
+            public string  AvrId{ get; set; }
+            public string  By { get; set; }
+            public DateTime? Date { get; set; }
         }
 
         

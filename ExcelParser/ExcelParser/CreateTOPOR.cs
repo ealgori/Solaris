@@ -128,12 +128,13 @@ namespace ExcelParser.EpplusInteract
                     dict.Add("PRItem", pr.PRItem);
                    }
                   
-                   var siteList = satTo.SATTOItems.Select(s=>s.Site).ToList();
-                   var sites = string.Join(", ", siteList );
+                   var siteList = satTo.SATTOItems.Where(s=>!string.IsNullOrEmpty(s.Site)).Select(s=>s.Site).ToList();
+                   var folList = satTo.SATTOItems.Where(s => !string.IsNullOrEmpty(s.FOL)).Select(s => s.FOL).ToList();
+                    var sites = string.Join(", ", siteList );
                    //var fixes = string.Join(", ", por.PorItems.Select(p => p.FIX).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray());
-                   //var fols = string.Join(", ", por.PorItems.Select(p => p.FOL).Where(p => !string.IsNullOrWhiteSpace(p)).ToArray());
+                   var fols = string.Join(", ", folList);
                    // var all = string.Join(", ", new List<string>() { sites, fixes, fols }.Where(t => !string.IsNullOrWhiteSpace(t)));
-                   var all = string.Join(", ", new List<string>() { sites, }.Where(t => !string.IsNullOrWhiteSpace(t)));
+                   var all = string.Join(", ", new List<string>() { sites, fols }.Where(t => !string.IsNullOrWhiteSpace(t)));
                    List<string> addresses = new List<string>();
                    foreach (var site in siteList)
                    {
@@ -142,6 +143,16 @@ namespace ExcelParser.EpplusInteract
                            addresses.Add(shSite.Address);
 
                    }
+
+                    foreach (var fol in folList)
+                    {
+                        var shFol = context.ShFOLs.FirstOrDefault(s => s.FOL == fol);
+                        if (shFol != null && !string.IsNullOrEmpty(shFol.StartPoint)&&!string.IsNullOrEmpty(shFol.DestinationPoint))
+                            addresses.Add(string.Format("{0} - {1}",shFol.StartPoint, shFol.DestinationPoint));
+
+                    }
+
+
                    var addressesString = string.Join(", ", addresses.Distinct());
                    dict.Add("Site", all);
                    dict.Add("Address", addressesString);
