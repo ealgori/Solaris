@@ -163,10 +163,19 @@ namespace ExcelParser.EpplusInteract
                    //if (_firstItem != null)
                    //{
                        var shSite = context.ShSITEs.FirstOrDefault(s=>s.Site== _firstItem.Site);
-                    //   if (shSite != null)
+
+                       if (shSite != null)
                        {
                            dict.Add("SiteBranch", shSite.Branch);
                        }
+                       else
+                        {
+                            var shFol = context.ShFOLs.FirstOrDefault(s => s.FOL == _firstItem.FOL);
+                            if(shFol!=null)
+                            {
+                                dict.Add("SiteBranch", shFol.Branch);
+                            }
+                        }
 
                   // }
 

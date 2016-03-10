@@ -31,9 +31,9 @@ namespace ExcelParser.ExcelParser
             EpplusService service = new EpplusService(new FileInfo(templatePath));
             using (Context context = new Context())
             {
-                var por = context.PORs.Find(porId);
+                var por = context.AVRPORs.Find(porId);
 
-                //  var por1 = context.PORs.Include("PORNetwork").FirstOrDefault(p => p.Id == porId);
+              
                 var pitems = por.PorItems.ToList();
 
                 foreach (var item in pitems)
@@ -45,7 +45,6 @@ namespace ExcelParser.ExcelParser
 
                 Dictionary<string, string> dict = new Dictionary<string, string>();
                 dict.Add("PO", poNumber);
-
                 var dataTable = pitems.ToDataTable(typeof(PORItem));
                 dataTable.Columns.Remove("POR");
                 dataTable.Columns.Remove("Id");

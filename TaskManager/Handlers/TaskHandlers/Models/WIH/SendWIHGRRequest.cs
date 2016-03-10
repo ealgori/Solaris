@@ -12,6 +12,13 @@ using WIHInteract;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
+    /// <summary>
+    /// 03.03.2016 написана, и изначально не используется. Причина- необохдимость наличия фактур в запросах GR
+    /// Типа тогда ЛАС делает двойную работу, так как и фактуры и GR забивает он.
+    /// Решено предоставлять им ежедневную рассылку с авр и его позициями на которых проставлено подтверждение выполения работ.
+    /// Скорее всего производиться будет сх сендером
+    /// 
+    /// </summary>
     public class SendWIHGRRequest:ATaskHandler
     {
         public SendWIHGRRequest(TaskParameters taskParams):base(taskParams)
@@ -27,7 +34,23 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             var confGrAVRs = TaskParameters.Context.ShAVRs.Where(a =>
                 a.FactVypolneniiaRabotPodtverzhdaiuCB == true
                 && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
-            ).ToList();
+               // && (a.Year=="2016"||a.Year=="2017")
+            //).Where(a=>
+            //   a.PurchaseOrderNumber == "4512643884"
+            //|| a.PurchaseOrderNumber == "4512629887"
+            //|| a.PurchaseOrderNumber == "4512662572"
+            //|| a.PurchaseOrderNumber == "4512655945"
+            //|| a.PurchaseOrderNumber == "4512655926"
+            //|| a.PurchaseOrderNumber == "4512643219"
+            //|| a.PurchaseOrderNumber == "4512555356"
+            //|| a.PurchaseOrderNumber == "4512643073"
+            //|| a.PurchaseOrderNumber == "4512643123"
+            //|| a.PurchaseOrderNumber == "4512643183"
+           
+
+            //)
+            
+            .ToList();
 
             if (test)
                 confGrAVRs = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == testAvr).ToList();
@@ -111,7 +134,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
         private string GenerateGRName(string avrId, string po)
         {
-            return string.Format("GR-{0}-{1}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath));
+            return string.Format("GR-{0}-{1}-{3}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath),DateTime.Now.ToString("ddMMyyyy"));
         }
     }
 }

@@ -331,6 +331,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName5, Objects = new ArrayList(AGRResult) });
             }
 
+            if(GRResult.Count>0)
+            {
+                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName6, Objects = new ArrayList(GRResult) });
+            }
+
             #endregion
         }
         private void ProcessCreated(RedemptionMailProcessor redemtion)

@@ -1139,7 +1139,16 @@ namespace TestProject
             using (Context context = new Context())
             {
 
-                SHInteract.Handlers.Solaris.UploadTOPOR.Handle(@"C:\Temp\UpdateImport.xlsx", @"C:\Temp\UpdateWithB.xlsx", "ИЖЕВСК_ТО_ГУ");
+                try
+                {
+                    SHInteract.Handlers.Solaris.UploadTOPOR.Handle(@"C:\Temp\test.gif", @"C:\Temp\test.gif", "SIB ТО ПРОЧЕЕ САЙТМОНТАЖ  ИЮНЬ 2016");
+                }
+                catch (Exception exc)
+                {
+
+                    throw;
+                }
+              
             }
 
         }

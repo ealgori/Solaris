@@ -10,6 +10,8 @@ using DbModels.DataContext.Repositories;
 using DbModels.DomainModels.ShClone;
 using System.Collections;
 using DbModels.Service;
+using MailProcessing;
+using Models;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
@@ -22,10 +24,10 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         public override bool Handle()
         {
             var readyToSendTOs = TaskParameters.Context.ShTOes.Where(t => !string.IsNullOrEmpty(t.TOTotalAmmountApproved)&& string.IsNullOrEmpty(t.PONumber)).ToList();
-            var testTO = "ТЮМЕНЬ_ТО_АУГПТ_2";
+            var testTO = "SIB ТО ВОЛС TMS ГТС 2016";
             bool test = false;
-            if (test)
-                readyToSendTOs = TaskParameters.Context.ShTOes.Where(t => t.TO == "ТЮМЕНЬ_ТО_АУГПТ_2").ToList();
+            //if (test)
+            //    readyToSendTOs = TaskParameters.Context.ShTOes.Where(t => t.TO == testTO).ToList();
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
             foreach (var readyToSendTO in readyToSendTOs)
             {
@@ -107,8 +109,21 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                         }
                         else
                         {
-                          
-                            requestList.Add(new ShWIHRequest() { TOid = satTo.TO, WIHrequests = fileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeTOPOR });
+                            if(!test)
+                                requestList.Add(new ShWIHRequest() { TOid = satTo.TO, WIHrequests = fileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeTOPOR });
+                        }
+                        try
+                        {
+                            SHInteract.Handlers.Solaris.UploadTOPOR.Handle(filePath, filePath1, satTo.TO);
+                        }
+                        catch (Exception exc)
+                        {
+
+                            RedemptionMailProcessor proc = new RedemptionMailProcessor("SOLARIS");
+                            proc.SendMail(
+                                new AutoMail() { Email = "aleksey.gorin@ericsson.com", Body = string.Format("Ошибка загрузки файлов в {0}: {1}, {2}.      {3}",satTo.TO, filePath, filePath1, exc.Message)  }
+                                
+                                );
                         }
                         SHInteract.Handlers.Solaris.UploadTOPOR.Handle(filePath, filePath1, satTo.TO);
                     }
