@@ -25,7 +25,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
  
  
  
-            var avrs = TaskParameters.Context.ShAVRs.Where(a=>a.Year!="2014").ToList();
+            var avrs = TaskParameters.Context.ShAVRs.Where(a=>a.Year!="2014")
+               
+                .ToList();
             var avrSubRegions = avrs.Select(a => a.Subregion).Distinct().ToList();
             var satSubregions = avrSubRegions.GroupJoin(TaskParameters.Context.SATSubregions, s => s, sub => sub.Name, (s, sub) => new {s=s, subregions=sub }).ToList();
 

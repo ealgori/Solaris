@@ -28,27 +28,27 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
                 {
 
                     var wsObjs = EpplusSimpleUniReport.ReadFile(attachment.FilePath, "DRT", 2);
-                    var objs = wsObjs.Where(o => o.Column8 == "TRUE" || o.Column8 == "True").ToList();
-                    var unApprovedObjs = wsObjs.Where(o => o.Column8.ToUpper() != "TRUE").ToList();
+                    var objs = wsObjs.Where(o => o.Column9 == "TRUE" || o.Column9 == "True").ToList();
+                    var unApprovedObjs = wsObjs.Where(o => o.Column9.ToUpper() != "TRUE").ToList();
                     List<TOApproveModel> model = new List<TOApproveModel>();
                     foreach (var obj in objs)
                     {
 
                         var to = new TOApproveModel();
                         to.ItemId = obj.Column3;
-                        to.Approve = obj.Column8;
+                        to.Approve = obj.Column9;
                         to.By = attachment.Mail.Sender;
                         to.Date = DateTime.Now;
-                        to.LinkToEridoc = obj.Column19;
+                        to.LinkToEridoc = obj.Column20;
                         DateTime workEndDate;
-                        if (DateTime.TryParse(obj.Column7, out workEndDate))
+                        if (DateTime.TryParse(obj.Column8, out workEndDate))
                         {
                             to.WorkEndDate = workEndDate;
                         }
                         else
                         {
                             double d;
-                            if (double.TryParse(obj.Column7, out d))
+                            if (double.TryParse(obj.Column8, out d))
                             {
                                 try
                                 {
@@ -68,7 +68,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
                     {
                         var row = new TOApproveModel();
                         row.ItemId = obj.Column3;
-                        row.LinkToEridoc = obj.Column19;
+                        row.LinkToEridoc = obj.Column20;
                         if (!string.IsNullOrEmpty(row.LinkToEridoc))
                             model2.Add(row);
                     }

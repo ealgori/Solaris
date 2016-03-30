@@ -29,13 +29,19 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         {
             bool test = false;
             string testAvr = "205490";
+
+         
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
 
             var confGrAVRs = TaskParameters.Context.ShAVRs.Where(a =>
                 a.FactVypolneniiaRabotPodtverzhdaiuCB == true
                 && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
-               // && (a.Year=="2016"||a.Year=="2017")
-            //).Where(a=>
+                //&& (a.Year == "2016" || a.Year == "2017")
+                && !a.GRCreated.HasValue
+            ).Where(a => a.AVRId == "205276")
+
+           
+            
             //   a.PurchaseOrderNumber == "4512643884"
             //|| a.PurchaseOrderNumber == "4512629887"
             //|| a.PurchaseOrderNumber == "4512662572"

@@ -112,14 +112,16 @@ namespace TestProject
         {
            using(Context context = new Context())
            {
-               var testAVR = "205126";
+                context.Database.Log = (s) => System.Diagnostics.Debug.WriteLine(s);
+                var testAVR = "205126";
                //var avr2 = context.ShAVRs.Where(AVRRepository.Base).FirstOrDefault(a=>a.AVRId==testAVR);
-                var request=  context.VCRequestsToCreate.Where(a => a.AVRId == testAVR).GroupBy(g=>g.VCRequestNumber).FirstOrDefault();
+                var request=  context.VCRequestsToCreate. Where(a => a.AVRId == testAVR).GroupBy(g=>g.VCRequestNumber).FirstOrDefault();
                 var musItems = context.SatMusItems.Where(i => i.VCRequestNumber == request.Key).ToList();
 
-              
-               var bytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(musItems, request.Key);
-               StaticHelpers.ByteArrayToFile(@"C:\Temp\AVROrderTest.xlsx", bytes);
+               
+                
+              // var bytes = ExcelParser.EpplusInteract.CreateAVROrder.CreateOrderFile(musItems, request.Key);
+               //StaticHelpers.ByteArrayToFile(@"C:\Temp\AVROrderTest.xlsx", bytes);
                //var avrs = AVRRepository.GetAvrForLimitsRecalculate(context);
 
            }

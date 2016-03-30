@@ -22,7 +22,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Billing
             string command1 = @"select '' as ShAVR, [PO Number] as PO,
 					 [Invoice Number] as Invoice, 
                       [Factura Number] as Factura, [document date] as DocumentDate, 
-                     [total amount] as TotalAmount, [receiving date] as ReceivingDate, 
+                     [total amount] as TotalAmount, 
+                    [receiving date] as ReceivingDate, 
                       [approved by od] as ApprovedByOD, comments as Comments, 
                      [passed to finance] as PassedToFinance, 
                      [scanned to ocr wf] as ScannedToocrwf, 
@@ -204,8 +205,13 @@ order by [item id] ";
           //  var shAvrfs = TaskParameters.Context.ShAVRf.ToList();
             var shAvrss = TaskParameters.Context.ShAVRs.ToList();
 
+            var testPO = "4512622268";
+            var row = POVympelcomManSerResult.FirstOrDefault(r => r.PurchasingDocument == "4512622268");
+              
+
             foreach (var item in POVympelcomManSerResult)
             {
+                
                 //ShAVR shAvr = shAvrfs.FirstOrDefault(avr => avr.PurchaseOrderNumber == item.PurchasingDocument);
                 //if (shAvr != null)
                 //{

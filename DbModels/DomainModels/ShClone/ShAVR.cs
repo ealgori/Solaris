@@ -163,9 +163,13 @@ namespace DbModels.DomainModels.ShClone
         public decimal? TotalVCReexpose { get; set; }
 
         public string VCActivity { get; set; }
+        /// <summary>
+        /// НЕ флаг выпуска GR. ЧТоб не ушел GR по тем, по кому уже выпущен. Для проверки ухода используются ВИХ запросы
+        /// </summary>
+        public DateTime? GRCreated { get; set; }
 
 
-        
+
 
     }
 

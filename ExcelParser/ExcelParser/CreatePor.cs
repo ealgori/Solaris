@@ -189,10 +189,10 @@ namespace ExcelParser.EpplusInteract
                 var summ = 0M;
                 foreach (var item in items)
                 {
-                    summ = summ + item.NetQty * item.Price;
+                    summ = summ + ((item.NetQty * item.Price).FinanceRound());
                 }
-                var total = items.Sum(pit=>pit.NetQty*pit.Price);
-                dict.Add("Total", total.ToString("0.00"));
+               // var total = items.Sum(pit=>(pit.NetQty*pit.Price).FinanceRound(2));
+                dict.Add("Total", summ.ToString("0.00"));
                 service.ReplaceDataInBook(dict);
                 
                 service.InsertTableToPatternCellInWorkBook( "Table", dataTable, new EpplusService.InsertTableParams() { PrintHeaders=true, StyledHeaders=true ,TableStyle = TableStyles.Medium7, ShowRowStripes=true, EmptyRowAfterHeaders=true });
