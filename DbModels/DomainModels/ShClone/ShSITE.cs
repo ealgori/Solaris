@@ -33,11 +33,15 @@ namespace DbModels.DomainModels.ShClone
         public decimal?  KolvoAUGPT  { get; set; }
         public int? Index { get; set; }
 
+        public string VidTOVOLS { get; set; }
+        public string VidTOprochee { get; set; }
+        public decimal? KolvoVOLS { get; set; }
+        public decimal? KolvoProchee { get; set; }
 
 
 
 
 
 
-	}
+    }
 }

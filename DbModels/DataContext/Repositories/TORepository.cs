@@ -258,31 +258,75 @@ namespace DbModels.DataContext.Repositories
 
                     case "ТО ВОЛС":
                         {
-                            itemsViewModels= items.Where(i => i.ShTO.TOType == "ТО ВОЛС").Select(i => new TOItemViewModel()
+                            var volsTOItems = items.Where(i => i.ShTO.TOType == "ТО ВОЛС").ToList();
+                            //List<TOItemViewModel> volsTOItemsVM = new List<TOItemViewModel>();
+                            foreach (var item in volsTOItems)
                             {
-                                // Волсы только к фолам
-                                //Site = i.ShSite != null ? i.ShSite.Site : string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue ? i.ShItem.TOPlanDate.Value.ToString("ddMMyyyy"):"no date"),
-                                FOL = i.ShFOL!=null
-                                    ?string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue 
-                                        ? i.ShItem.TOPlanDate.Value.ToString("dd.MM.yyyy") 
-                                        : "no date")
-                                    :"not mounted",
+                                var volsItem = new TOItemViewModel();
+                                if (item.ShFOL!=null)
+                                {
+                                    volsItem.Site = string.Format("{0}({1})", item.ShFOL.FOL, item.ShItem.TOPlanDate.HasValue ? item.ShItem.TOPlanDate.Value.ToString("ddMMyyyy") : "no date");
+                                    volsItem.FOL = string.Format("{0}({1})", item.ShFOL.FOL, item.ShItem.TOPlanDate.HasValue
+                                                    ? item.ShItem.TOPlanDate.Value.ToString("dd.MM.yyyy")
+                                                    : "no date");
+                                    volsItem.SiteAddress = string.Format("{0}-{1}", item.ShFOL.StartPoint, item.ShFOL.DestinationPoint);
+                                    volsItem.SiteQuantity = 1;
+                                    volsItem.Description = item.ShFOL.FOL;
+                                    
+                                }
+                                else
+                                {
+                                    if(item.ShSite!=null)
+                                    {
+                                        volsItem.Site = item.ShSite.Site;
+                                        
+                                        volsItem.SiteAddress = item.ShSite.Address;
+                                        volsItem.SiteQuantity = item.ShSite.KolvoVOLS;
+                                        volsItem.Description = item.ShSite.VidTOVOLS;
+                                        volsItem.SiteRegion = item.ShSite.MacroRegion;
+                                        volsItem.SiteBranch = item.ShSite.Branch;
+                                    }
+                                }
 
-                                TO = i.ShTO.TO,
-                                TOItem = i.ShItem.TOItem,
-                                SiteAddress =  i.ShSite!=null?i.ShSite.Address:string.Format("{0}-{1}",i.ShFOL.StartPoint, i.ShFOL.DestinationPoint),
+                                volsItem.TO = item.ShTO.TO;
+                                volsItem.TOItem = item.ShItem.TOItem;
+                                volsItem.ItemId = item.ShItem.IDItemFromPL.HasValue ? item.ShItem.IDItemFromPL.Value : 0;
+                                volsItem.TOPlanDate = item.ShItem.TOPlanDate;
+                                volsItem.Price = item.PLRI != null ? item.PLRI.Price : 0;
+                                volsItem.Total = item.PLRI != null ? item.PLRI.Price : 0 * 1;
 
-                                SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
-                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
-                                Description = i.ShFOL!=null?i.ShFOL.FOL+"_":"",
-                                //SiteRegion = i.s.MacroRegion,
-                                //SiteBranch = i.s.Branch,
+                                itemsViewModels.Add(volsItem);
+                            }
+                          
+                            
+                            
+                            
+                            //.Select(i => new TOItemViewModel()
+                            //{
+                            //    // Волсы только к фолам
+                            //    Site = i.ShSite != null ? i.ShSite.Site : 
+                            //    string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue ? i.ShItem.TOPlanDate.Value.ToString("ddMMyyyy"):"no date"),
+                            //    FOL = i.ShFOL!=null
+                            //        ?string.Format("{0}({1})", i.ShFOL.FOL, i.ShItem.TOPlanDate.HasValue 
+                            //            ? i.ShItem.TOPlanDate.Value.ToString("dd.MM.yyyy") 
+                            //            : "no date")
+                            //        :"not mounted",
+
+                            //    TO = i.ShTO.TO,
+                            //    TOItem = i.ShItem.TOItem,
+                            //    SiteAddress =  i.ShSite!=null?i.ShSite.Address:string.Format("{0}-{1}",i.ShFOL.StartPoint, i.ShFOL.DestinationPoint),
+
+                            //    SiteQuantity = 1, // 1 тк. 1 раз в месяц. я так понимаю. ежемесячно
+                            //    ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                            //    Description = i.ShFOL!=null?i.ShFOL.FOL+"_":"",
+                            //    SiteRegion = i.ShSite != null ? i.ShSite.MacroRegion:null,
+                            //    SiteBranch = i.ShSite != null ? i.ShSite.Branch:null,
                                 
-                                TOPlanDate = i.ShItem.TOPlanDate,
-                                Price = i.PLRI != null ? i.PLRI.Price : 0,
-                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1
+                            //    TOPlanDate = i.ShItem.TOPlanDate,
+                            //    Price = i.PLRI != null ? i.PLRI.Price : 0,
+                            //    Total = i.PLRI != null ? i.PLRI.Price : 0 * 1
 
-                            }).ToList();
+                            //}).ToList();
                             break;
                         }
 
@@ -326,6 +370,28 @@ namespace DbModels.DataContext.Repositories
 
                     //        });
                     //    }
+
+                    case "ТО прочее":
+                        {
+                            itemsViewModels= items.Where(i => i.ShTO.TOType == "ТО прочее").Where(s => s.ShSite != null).Select(i => new TOItemViewModel()
+                            {
+                                Site = i.ShSite.Site,
+                                TO = i.ShTO.TO,
+                                TOItem = i.ShItem.TOItem,
+                                SiteAddress = i.ShSite.Address,
+                                SiteQuantity = i.ShSite.KolvoProchee,
+                                ItemId = i.ShItem.IDItemFromPL.HasValue ? i.ShItem.IDItemFromPL.Value : 0,
+                                Description = i.ShSite.VidTOprochee,
+                                SiteRegion = i.ShSite.MacroRegion,
+                                SiteBranch = i.ShSite.Branch,
+                                TOPlanDate = i.ShItem.TOPlanDate,
+                                Price = i.PLRI != null ? i.PLRI.Price : 0,
+                                Total = i.PLRI != null ? i.PLRI.Price : 0 * 1 
+
+                            }).ToList();
+                            break;
+                        }
+
 
                     default:
                         {

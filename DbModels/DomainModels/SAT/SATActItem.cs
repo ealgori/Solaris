@@ -15,6 +15,7 @@ namespace DbModels.DomainModels.SAT
         public string Description { get; set; }
         public string Unit { get; set; }
         public string Site { get; set; }
+        public string FOL { get; set; }
         public string SiteAddress { get; set; }
     }
 

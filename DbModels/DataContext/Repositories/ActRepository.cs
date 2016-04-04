@@ -17,6 +17,7 @@ namespace DbModels.DataContext.Repositories
         private List<ShMatToItem> _cachedShMatToItems;
         private List<ShSITE> _cachedShSites;
         private List<ShAct> _cachedActs;
+       
 
         public ActRepository(Context context = null)
         {
@@ -28,6 +29,7 @@ namespace DbModels.DataContext.Repositories
             _cachedShMatToItems = context.ShMatTOItems.ToList();
             _cachedShSites = context.ShSITEs.ToList();
             _cachedActs = context.ShActs.ToList();
+            
         }
 
 
@@ -316,10 +318,19 @@ namespace DbModels.DataContext.Repositories
                 //item.SATAct = act;
                 item.ShId = serv.shItem.TOItem;
                 item.Site = serv.shItem.Site;
+                item.FOL = serv.shItem.FOL;
                 var shSite = _cachedShSites.FirstOrDefault(s=>s.Site==item.Site);
                 if (shSite != null)
                 {
                     item.SiteAddress = shSite.Address;
+                }
+                else
+                {
+                    var shFOL = Context.ShFOLs.FirstOrDefault(f => f.FOL == item.FOL);
+                    if (shFOL != null)
+                    {
+                        item.SiteAddress = string.Format("{0}-{1}", shFOL.StartPoint, shFOL.DestinationPoint);
+                    }
                 }
 
 

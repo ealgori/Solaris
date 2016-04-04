@@ -199,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Handlers\TaskHandlers\Models\Billing\Mapping.xlsx" />
     <None Include="Handlers\TaskHandlers\Models\POR\POR to SH Handler.doc" />
     <None Include="packages.config" />
     <None Include="Templates\PrintOut.xlsx" />

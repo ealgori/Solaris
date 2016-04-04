@@ -11,11 +11,11 @@ using CommonFunctions;
 
 namespace ExcelParser.EpplusInteract
 {
-   public static  class CreateAct
+    public static class CreateAct
     {
         private static readonly string TemplatePath = @"\\RU00112284\SolarisTemplates\AKT.xlsm";
 
-        public static byte[] CreateActFile(int ActId, bool draft=false)
+        public static byte[] CreateActFile(int ActId, bool draft = false)
         {
             EpplusService service = new EpplusService(new FileInfo(TemplatePath));
             using (Context context = new Context())
@@ -30,7 +30,7 @@ namespace ExcelParser.EpplusInteract
                     var act = context.SATActs.Find(ActId);
                     if (!act.UploadedToSH)
                         return null;
-                    
+
                     var actServices = repository.GetSATActServices(act);
                     var actMaterials = repository.GetSATActMaterials(act);
 
@@ -48,14 +48,14 @@ namespace ExcelParser.EpplusInteract
                     var itemSpecTable = _itemSpecTable.GroupBy(g => g.Description).OrderBy(o => o.Key).Select((i, ind) => new ItemSpecViewModel()
                     {
                         Description = i.FirstOrDefault().Description,
-                        Price = i.Sum(p => p.PricePerItem*p.Quantity),
+                        Price = i.Sum(p => p.PricePerItem * p.Quantity),
                         PricePerItem = i.FirstOrDefault().PricePerItem,
                         Quantity = i.Sum(q => q.Quantity),
                         Units = i.FirstOrDefault().Units,
                         Id = ind + 1,
                         SId = string.Format("{0}.XXX", ind + 1),
                         Empty = "#merger(1,1)",
-                        
+
                     }).ToList();
                     var itemSpecTableDataTable = itemSpecTable.ToDataTable();
                     itemSpecTableDataTable.Columns.Remove("Id");
@@ -63,10 +63,10 @@ namespace ExcelParser.EpplusInteract
                     {
                         Description = i.Description,
                         Empty = "#merger(1,0)",
-                        Price = i.Price*i.Quantity,
+                        Price = i.Price * i.Quantity,
                         PricePerItem = i.Price,
                         Quantity = i.Quantity,
-                        Units = string.IsNullOrEmpty(i.Unit)?"шт":i.Unit,
+                        Units = string.IsNullOrEmpty(i.Unit) ? "шт" : i.Unit,
                         Id = ind + 1,
                         Site = string.Format("{0}", i.Site)
                     }).ToList();
@@ -76,17 +76,17 @@ namespace ExcelParser.EpplusInteract
 
 
                         new ItemObjectCardViewModel()
-                    {
-                        Description = i.Description,
-                        Empty = "#merger(1,0)",
-                        Price = i.Price,
-                        Address = i.SiteAddress,
-                        Quantity = i.Quantity,
-                        Site = string.Format("{0}", i.Site),
-                        FactDate = i.FactDate,
-                        Id = ind + 1,
-                        SId = string.Format("{1}.{0}", (ind + 1).ToString("000"), gind + 1)
-                    })).SelectMany(x => x).ToList();
+                        {
+                            Description = i.Description,
+                            Empty = "#merger(1,0)",
+                            Price = i.Price,
+                            Address = i.SiteAddress,
+                            Quantity = i.Quantity,
+                            Site = i.Site!=null?i.Site:i.FOL,
+                            FactDate = i.FactDate,
+                            Id = ind + 1,
+                            SId = string.Format("{1}.{0}", (ind + 1).ToString("000"), gind + 1)
+                        })).SelectMany(x => x).ToList();
                     var itemCardDataTable = itemObjectCardTable.ToDataTable();
                     itemCardDataTable.Columns.Remove("Id");
 
@@ -95,7 +95,7 @@ namespace ExcelParser.EpplusInteract
                     service.InsertTableToPatternCellInWorkBook("ItemMatSpecTable", itemSpecMatTable.ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                     service.InsertTableToPatternCellInWorkBook("ItemObjectCardTable", itemCardDataTable, new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, CopyFirstRowStyle = true, MinSeparatedRows = 0 });
                     Dictionary<string, string> dict = new Dictionary<string, string>();
-                   
+
                     string servicendsText;
                     string materialndsText;
                     string totalndsText;
@@ -119,19 +119,19 @@ namespace ExcelParser.EpplusInteract
                         cardNDSText = "кроме того НДС - 18%, что составляет #TotalNDS# рублей";
 
                     }
-                    decimal serviceTotal = actServices.Sum(s=>s.Price*s.Quantity);
+                    decimal serviceTotal = actServices.Sum(s => s.Price * s.Quantity);
                     decimal materialTotal = actMaterials.Sum(s => s.Price * s.Quantity);
 
-                    var totalwoNDS = serviceTotal+ materialTotal;
+                    var totalwoNDS = serviceTotal + materialTotal;
                     var nds = totalwoNDS * ndskoeff;
-                    var totalWNDS = totalwoNDS+nds;
-                    var serviceTotalNDS = actServices.Sum(s=>s.Price*s.Quantity) * ndskoeff;
+                    var totalWNDS = totalwoNDS + nds;
+                    var serviceTotalNDS = actServices.Sum(s => s.Price * s.Quantity) * ndskoeff;
                     var serviceTotalWNDS = serviceTotal + serviceTotalNDS;
 
                     dict.Add("StartDate", act.StartDate.ToString("dd.MM.yyyy"));
                     dict.Add("EndDate", act.EndDate.ToString("dd.MM.yyyy"));
                     dict.Add("PONumber", act.PONumber);
-                    dict.Add("PODate", act.PODate.HasValue?act.PODate.Value.ToString("dd.MM.yyyy"):"");
+                    dict.Add("PODate", act.PODate.HasValue ? act.PODate.Value.ToString("dd.MM.yyyy") : "");
                     dict.Add("ActId", act.ActName);
                     dict.Add("NDSText", string.Format("{0:P0}", ndskoeff));
                     dict.Add("ServiceNDSText", servicendsText);
@@ -181,73 +181,82 @@ namespace ExcelParser.EpplusInteract
                     //if (_firstItem != null)
                     //{
                     var shSite = context.ShSITEs.FirstOrDefault(s => s.Site == _firstItem.Site);
-                    //   if (shSite != null)
+                    var shFOL = context.ShFOLs.FirstOrDefault(s => s.FOL == _firstItem.FOL);
+                    if (shSite != null)
                     {
                         dict.Add("SiteBranch", shSite.Branch);
                     }
-
-                    // }
-
-
-
-
-
-                    service.ReplaceDataInBook(dict, true);
-                    service.CellsMerger();
-
-                    var stream = new MemoryStream();
-                    if (draft)
-                        if (!service.Draft())
+                    else
+                    {
+                        if (shFOL != null)
                         {
-                           // если не удалось вставить драфт, то ничего не отправляем
-                            return null;
+                            dict.Add("SiteBranch", shFOL.Branch);
                         }
-                    service.app.SaveAs(stream);
-                    return StaticHelpers.ReadToEnd(stream);
-                }
+                        else
+                            throw new Exception($"Позиция {_firstItem.Id} не привязана ни к сайту ни к фолу");
+                    }
+                
+
+
+
+
+
+                service.ReplaceDataInBook(dict, true);
+                service.CellsMerger();
+
+                var stream = new MemoryStream();
+                if (draft)
+                    if (!service.Draft())
+                    {
+                        // если не удалось вставить драфт, то ничего не отправляем
+                        return null;
+                    }
+                service.app.SaveAs(stream);
+                return StaticHelpers.ReadToEnd(stream);
             }
+        }
            return null;
        }
 
-        public class ItemSpecViewModel
-        {
-            public int Id { get; set; }
-            public string SId { get; set; }
-            public string Description { get; set; }
-            public string Empty { get; set; }
-            public string Empty1 { get; set; }
-            public decimal Quantity { get; set; }
-            public string Units { get; set; }
-            public decimal PricePerItem { get; set; }
-            public decimal Price { get; set; }
-
-        }
-
-        public class ItemSpecMatViewModel
-        {
-            public int Id { get; set; }
-            public string Site { get; set; }
-            public string Description { get; set; }
-            public string Empty { get; set; }
-            public decimal Quantity { get; set; }
-            public string Units { get; set; }
-            public decimal PricePerItem { get; set; }
-            public decimal Price { get; set; }
-
-        }
-
-        public class ItemObjectCardViewModel
-        {
-            public int Id { get; set; }
-            public string SId { get; set; }
-            public string Site { get; set; }
-            public string Address { get; set; }
-            public string Description { get; set; }
-            public string Empty { get; set; }
-            public decimal Quantity { get; set; }
-            public DateTime? FactDate { get; set; }
-            public decimal Price { get; set; }
-        }
+    public class ItemSpecViewModel
+    {
+        public int Id { get; set; }
+        public string SId { get; set; }
+        public string Description { get; set; }
+        public string Empty { get; set; }
+        public string Empty1 { get; set; }
+        public decimal Quantity { get; set; }
+        public string Units { get; set; }
+        public decimal PricePerItem { get; set; }
+        public decimal Price { get; set; }
 
     }
+
+    public class ItemSpecMatViewModel
+    {
+        public int Id { get; set; }
+        public string Site { get; set; }
+        public string Description { get; set; }
+        public string Empty { get; set; }
+        public decimal Quantity { get; set; }
+        public string Units { get; set; }
+        public decimal PricePerItem { get; set; }
+        public decimal Price { get; set; }
+
+    }
+
+    public class ItemObjectCardViewModel
+    {
+        public int Id { get; set; }
+        public string SId { get; set; }
+        public string Site { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
+        public string Empty { get; set; }
+        public decimal Quantity { get; set; }
+        public DateTime? FactDate { get; set; }
+        public decimal Price { get; set; }
+    }
+
+}
 }
