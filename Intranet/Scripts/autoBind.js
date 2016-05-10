@@ -43,7 +43,7 @@ function AutoFillKendoComboBoxTO(key) {
             var description = descriptionField.html();
             var price = GetPriceListItemPrice(val);
             // находим все похожие дискрипшены
-            var sameDescriptionFields = $('td[name$="Description"]:contains("' + description + '")').not(descriptionField);
+            var sameDescriptionFields = $('td[name$="Description"]:contains("' + description + '"):visible').not(descriptionField);
            // console.log(sameDescriptionFields);
             // находим для каждой позишн ади
             sameDescriptionFields.each(function () {

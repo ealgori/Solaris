@@ -34,6 +34,7 @@ using CommonFunctions.Extentions;
 using UnidecodeSharpFork;
 using ShClone.UniReport;
 using System.Data;
+using TaskManager.Handlers.TaskHandlers.Models.WIH;
 
 
 
@@ -200,16 +201,16 @@ namespace TestProject
         [TestMethod]
         public void Transliterate()
         {
-            var path = @"C:\Temp\PriceDescription.xlsx";
-            var wsObjs = EpplusSimpleUniReport.ReadFile(path, "Sheet1", 2);
-            foreach (var price in wsObjs)
-            {
-                price.Column5 = price.Column4.Unidecode();
-            }
+            var path = @"C:\Temp\Logs\04.04.2016\0330 SH tracking.xlsb";
+            var wsObjs = EpplusSimpleUniReport.ReadFile(path, "zzpomon", 2);
+            //foreach (var price in wsObjs)
+            //{
+            //    price.Column5 = price.Column4.Unidecode();
+            //}
 
 
-            var bytes = NpoiInteract.DataTableToExcel(wsObjs.ToDataTable());
-            CommonFunctions.StaticHelpers.ByteArrayToFile(@"C:\temp\TranslateItems.xls", bytes);
+            //var bytes = NpoiInteract.DataTableToExcel(wsObjs.ToDataTable());
+            //CommonFunctions.StaticHelpers.ByteArrayToFile(@"C:\temp\TranslateItems.xls", bytes);
 
         }
 
@@ -903,7 +904,19 @@ namespace TestProject
             }
 
         }
+        [TestMethod]
+            public void TypeCheckHandler()
+            {
+                var props = typeof(TaskManager.Handlers.TaskHandlers.Models.Billing.DataToSH.TOVympelcomManSer).GetProperties();
+                using (Context context = new Context())
+                {
 
+                    DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "TypeCheckHandler") };
+                    var task = TaskFactory.GetTaskTest(paramsdd, context);
+                    task.Process();
+                }
+
+            }
 [TestMethod]
         public void TestMaterialize()
         {
@@ -1374,6 +1387,27 @@ namespace TestProject
                 task.Process();
             }
         } 
+
+        [TestMethod]
+        public void TestTwoMonthRange()
+        {
+            var trueDate1 = new DateTime(2016, 1, 1);
+            var trueDate2 = new DateTime(2016, 2, 1);
+            var trueDate3 = new DateTime(2016, 2, 28);
+
+            var falseDate1 = new DateTime(2016, 3, 1);
+            var falseDate2 = new DateTime(2016, 4, 1);
+
+            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate1,DateTime.Now));
+            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate2, DateTime.Now));
+            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate3, DateTime.Now));
+            Assert.IsFalse(SendWIHGRRequest.TwoMonthRange(falseDate1, DateTime.Now));
+            Assert.IsFalse(SendWIHGRRequest.TwoMonthRange(falseDate2, DateTime.Now));
+
+
+
+        }
+
         [TestMethod]
         public void FolderBackUpHandler()
         {

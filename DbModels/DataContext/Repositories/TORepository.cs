@@ -688,24 +688,26 @@ namespace DbModels.DataContext.Repositories
         {
             string ecrAddToSol = "ECR-ADD-TO-SOL";
               var itemModels = GetSATTOPORItemModels(id);
-              var groupped = itemModels.Where(t => t.Cat == "Service" && t.Code != ecrAddToSol).GroupBy(g => g.Code).Select(
-               (i, index) => new PORTOItem()
-               {
-                   No = index + 1,
-                   Cat = i.FirstOrDefault().Cat,
-                   Code = i.FirstOrDefault().Code,
-                   Plant = "2349",
-                   NetQty = i.Sum(it => it.NetQty),
-                   ItemCat = "N",
-                   PRtype = "3",
-                   POrg = "1439",
-                   GLacc = "402601",
-                   Price = i.FirstOrDefault().Price,
-                   PRUnit = "1",
-                   Vendor = i.FirstOrDefault().Vendor,
-                   Plandate = i.Max(p => p.Plandate),
-                   Description = i.FirstOrDefault().PriceListRevisionItem.Name,
-                   PriceListRevisionItem = i.FirstOrDefault().PriceListRevisionItem
+            var groupped = itemModels.Where(t => t.Cat == "Service" && t.Code != ecrAddToSol).GroupBy(g => g.Code).Select(
+             (i, index) => new PORTOItem()
+             {
+                 No = index + 1,
+                 Cat = i.FirstOrDefault().Cat,
+                 Code = i.FirstOrDefault().Code,
+                 Plant = "2349",
+                 NetQty = i.Sum(it => it.NetQty),
+                 ItemCat = "N",
+                 PRtype = "3",
+                 POrg = "1439",
+                 GLacc = "402601",
+                 Price = i.FirstOrDefault().Price,
+                 PRUnit = "1",
+                 Vendor = i.FirstOrDefault().Vendor,
+                 Plandate = i.Max(p => p.Plandate),
+                 Description = i.FirstOrDefault().PriceListRevisionItem.Name,
+                 PriceListRevisionItem = i.FirstOrDefault().PriceListRevisionItem
+                 //ItemId = "Нет, потому что у нас группировка"
+                  
 
                }
 

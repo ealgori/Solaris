@@ -168,6 +168,8 @@ namespace DbModels.DomainModels.ShClone
         /// </summary>
         public DateTime? GRCreated { get; set; }
 
+        public string TypeCheck { get; set; }
+        public DateTime? ObjectCreateDate { get; set; }
 
 
 

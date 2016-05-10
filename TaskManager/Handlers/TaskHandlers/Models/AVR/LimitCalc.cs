@@ -21,7 +21,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         {
             var checkItemImport = new List<ItemCheckImport>();
             var limitExecUpdate = new List<LimitExecImport>();
-           
+            
 
             var limits = TaskParameters.Context.ShLimits.ToList();
             foreach (var limit  in limits)
@@ -48,12 +48,15 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                     }
                  
 
-                    checkItemImport.Add(new ItemCheckImport() { ItemId = item.AVRItemId, InLimit = inLimit });
+                    checkItemImport.Add(new ItemCheckImport() { ItemId = item.AVRItemId, InLimit = inLimit, NeedVCReexpose = !inLimit  });
                 }
                 if(lastValue!=limit.Executed)
                     limitExecUpdate.Add(new LimitExecImport() {  LimitCode = limit.LimitCode, Executed = limit.Executed});
 
             }
+
+       
+
 
           
            

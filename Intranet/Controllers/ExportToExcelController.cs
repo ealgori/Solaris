@@ -133,7 +133,9 @@ namespace Intranet.Controllers
                                             PriceListRevisionItemName = item.Name,
                                             PriceListRevisionItemUnit = item.Unit,
                                             PriceListRevisionItemPrice = item.Price,
-                                            PriceListRevisionItemExcistedInSAP = item.SAPCode.ExistedInSAP
+                                            PriceListRevisionItemExcistedInSAP = item.SAPCode.ExistedInSAP,
+                                            PriceListRevisionItemId = item.Id
+
 
                                         };
                                         model.Add(mod);
@@ -185,6 +187,7 @@ namespace Intranet.Controllers
             public string PriceListRevisionItemUnit { get; set; }
             public decimal PriceListRevisionItemPrice { get; set; }
             public bool PriceListRevisionItemExcistedInSAP { get; set; }
+            public int PriceListRevisionItemId { get; set; }
 
         }
 

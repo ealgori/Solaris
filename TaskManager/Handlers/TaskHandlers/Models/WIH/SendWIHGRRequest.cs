@@ -28,20 +28,22 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         public override bool Handle()
         {
             bool test = false;
-            string testAvr = "205490";
+            string testAvr = "207150";
 
-         
+         // текущая дата больше, чем эта и два месяца и первое число.
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
-
+            var now = DateTime.Now;
             var confGrAVRs = TaskParameters.Context.ShAVRs.Where(a =>
                 a.FactVypolneniiaRabotPodtverzhdaiuCB == true
-                && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
-                //&& (a.Year == "2016" || a.Year == "2017")
-                && !a.GRCreated.HasValue
-            ).Where(a => a.AVRId == "205276")
+                && a.WorkEnd.HasValue
 
-           
-            
+                && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
+                && (a.Year == "2016" || a.Year == "2017")
+                && !a.GRCreated.HasValue
+            )
+
+
+
             //   a.PurchaseOrderNumber == "4512643884"
             //|| a.PurchaseOrderNumber == "4512629887"
             //|| a.PurchaseOrderNumber == "4512662572"
@@ -52,18 +54,18 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             //|| a.PurchaseOrderNumber == "4512643073"
             //|| a.PurchaseOrderNumber == "4512643123"
             //|| a.PurchaseOrderNumber == "4512643183"
-           
+
 
             //)
-            
-            .ToList();
+
+            .ToList().Where(a=> TwoMonthRange(a.WorkEnd,now)).ToList();
 
             if (test)
                 confGrAVRs = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == testAvr).ToList();
 
             var _cachedWihRequests = TaskParameters.Context.ShWIHRequests.Where(w => w.Type == WIHInteract.Constants.InternalMailTypeAVRGR).ToList();
             var _cachedSATPors = TaskParameters.Context.AVRPORs.ToList();
-            var now = DateTime.Now;
+           
             foreach (var avr in confGrAVRs)
             {
                 var wihRequests = _cachedWihRequests.Where(r => r.AVRId == avr.AVRId).ToList();
@@ -141,6 +143,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         private string GenerateGRName(string avrId, string po)
         {
             return string.Format("GR-{0}-{1}-{3}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath),DateTime.Now.ToString("ddMMyyyy"));
+        }
+
+        public static bool TwoMonthRange(DateTime? date, DateTime now)
+        {
+            if (!date.HasValue)
+                return false;
+            return (
+                now >=
+                date.Value.AddMonths(2)
+                    .AddDays(-date.Value.Day + 1));
         }
     }
 }

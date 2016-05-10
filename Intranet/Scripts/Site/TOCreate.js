@@ -131,15 +131,81 @@ function AddHeaders(type) {
         
         default: {
             $("#targetTable thead tr").append("<th>Номер сайта или FOL</th>")
-                                       .append("<th>Адрес сайта</th>")
+                                       .append("<th>  Адрес сайта </th>")
                                        .append("<th>Тип</th>")
                                        .append("<th>Кол-во</th>")
                                        .append("<th>Код</th>")
                                        .append("<th>Цена</th>")
                                        .append("<th>Сумма</th>");
+            $("#targetTable .header:first").after(`
+                <thead class="filter-tab">
+                    <tr class="filters">
+                        <th><input type="text" id="site-filter" class="form-control" placeholder=""></th>
+                        <th><input type="text" id="address-filter" class="form-control" placeholder=""></th>
+                        <th><input type="text" id="type-filter" class="form-control" placeholder=""></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                `);
+
+            $("#site-filter").keyup(function () {
+                FilterTable();
+            });
+            $("#address-filter").keyup(function () {
+                FilterTable();
+            });
+            $("#type-filter").keyup(function () {
+                FilterTable();
+            });
         }
     }
+
+  
 }
+
+function FilterTable ()
+{
+   
+
+    
+    var siteFilterText = $("#site-filter").val();
+    var addressFilterText = $("#address-filter").val();
+    var typeFilterText = $("#type-filter").val();
+    //var siteRex = new RegExp(siteFilterText, 'i');
+    //var addressRex = new RegExp(addressFilterText, 'i');
+    //var typeRex = new RegExp(typeFilterText, 'i');
+
+    if (!siteFilterText && !addressFilterText && !typeFilterText) {
+        $('#targetTable tbody tr').show();
+    }
+    else {
+        var trs = $('#targetTable tbody tr');
+
+        $(trs).hide();
+
+        if(siteFilterText)
+            trs = trs.filter($('tr:has(td:nth-child(1):contains(' + siteFilterText + '))'));
+        if(addressFilterText)
+            trs = trs.filter($('tr:has(td:nth-child(2):contains(' + addressFilterText + '))'));
+        if(typeFilterText)
+            trs = trs.filter($('tr:has(td:nth-child(3):contains(' + typeFilterText + '))'));
+
+        trs.show();
+
+        //$('targetTable tbody tr').filter(function () {
+        //    return siteRex.test($(this).text());// || addressRex.test($(this).text()) || typeRex.test($(this).text());
+        //}).show();
+    }
+
+       
+       
+
+    
+}
+
 
 String.prototype.format = String.prototype.f = function () {
     var args = arguments;
@@ -234,7 +300,9 @@ function AddMatRow(type,row) {
     }
 }
 function ClearTable() {
+    $(".filter-tab").remove();
     $("#targetTable thead tr").remove();
+   
     $("#targetTable tbody tr").remove();
      $("#materialTable thead tr").remove();
     $("#materialTable tbody tr").remove();
@@ -487,3 +555,6 @@ function ColoredTable() {
     }
     emptyInputs=null;
 }
+
+
+

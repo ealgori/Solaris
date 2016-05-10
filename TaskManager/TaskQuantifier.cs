@@ -414,6 +414,15 @@ namespace TaskManager
                         task.EmailHandler = null;
                         break;
                     }
+                    case "TypeCheckHandler":
+                    {
+                        task.TaskHandler = new TypeCheckHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                        task.ConvertHandler = null;
+                        task.EmailHandler = null;
+                        break;
+                    }
                 default:
                     {
 

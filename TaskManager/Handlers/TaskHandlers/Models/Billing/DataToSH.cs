@@ -152,8 +152,11 @@ order by [item id] ";
            var InvoiceVymManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<InvoiceVymManSer>("MAStorage", command1);
            //avr
             var POVympelcomManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<POVympelcomManSer>("MAStorage", command2);
+            
             //to
             var TOVympelcommanSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<TOVympelcomManSer>("MAStorage", command3);
+            TOVympelcommanSerResult = TOVympelcommanSerResult.Where(r => r.PurchasingDocument == "4512965927").ToList();
+
             //var InvoiceVymManSerResult =new List<InvoiceVymManSer>();
             //var POVympelcomManSerResult = new List<POVympelcomManSer>();
            // var TOVympelcommanSerResult = new List<TOVympelcomManSer>();
@@ -183,48 +186,36 @@ order by [item id] ";
 
 
                 });
-
+          
             foreach (var item in InvoiceVymManSerResult)
             {
-                //ShAVR shAvr = TaskParameters.Context.ShAVRf.FirstOrDefault(avr => avr.PurchaseOrderNumber == item.PO);
-                //if (shAvr != null)
-                //{
-                //    item.ShAVR = shAvr.AVRId;
-                //}
-                //else
-                //{
+              
                     ShAVR shAvr = TaskParameters.Context.ShAVRs.FirstOrDefault(avr => avr.PurchaseOrderNumber == item.PO);
                     if (shAvr != null)
                     {
                         item.ShAVR = shAvr.AVRId;
                     }
-                //}
+                
             }
             InvoiceVymManSerResult = InvoiceVymManSerResult.Where(avr => !string.IsNullOrEmpty(avr.ShAVR)).ToList();
 
-          //  var shAvrfs = TaskParameters.Context.ShAVRf.ToList();
+         
             var shAvrss = TaskParameters.Context.ShAVRs.ToList();
 
-            var testPO = "4512622268";
-            var row = POVympelcomManSerResult.FirstOrDefault(r => r.PurchasingDocument == "4512622268");
-              
+            var testPO  = "4512981234";
+            var row = POVympelcomManSerResult.FirstOrDefault(r => r.PurchasingDocument == testPO);
+            //POVympelcomManSerResult = POVympelcomManSerResult.Where(p => p.PurchasingDocument == testPO).ToList();
 
             foreach (var item in POVympelcomManSerResult)
             {
                 
-                //ShAVR shAvr = shAvrfs.FirstOrDefault(avr => avr.PurchaseOrderNumber == item.PurchasingDocument);
-                //if (shAvr != null)
-                //{
-                //    item.ShAVR = shAvr.AVRId;
-                //}
-                //else
-                //{
+              
                     ShAVR shAvr = shAvrss.FirstOrDefault(avr => avr.PurchaseOrderNumber == item.PurchasingDocument);
                     if (shAvr != null)
                     {
                         item.ShAVR = shAvr.AVRId;
                     }
-                //}
+               
             }
             POVympelcomManSerResult = POVympelcomManSerResult.Where(avr => !string.IsNullOrEmpty(avr.ShAVR)).ToList();
             var shToes = TaskParameters.Context.ShTOes.ToList();

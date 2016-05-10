@@ -10,5 +10,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ImportClasses
     {
         public string LimitCode { get; set; }
         public decimal? Executed { get; set; }
+
+       
     }
 }

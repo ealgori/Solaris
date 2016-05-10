@@ -316,7 +316,7 @@
             $(this).val(NumParse($(this).val()).toString().replace('.', ','));
         });
         $("[id$='Koeff']").width(80).kendoNumericTextBox({
-            decimals: 4,
+            decimals: 6,
             min: 0,
             change: CodeOnChange
         });
@@ -331,20 +331,37 @@
         //            spinners: false
         //        });
         $("[id$='Price']").each(function () {
-            $(this).val(NumParse($(this).val()).toString().replace('.', ','));
+            $(this).val(round2Fixed(NumParse($(this).val())).toString().replace('.', ','));
         });
        
         $("[id$='PricePerItemSH']").each(function () {
-            $(this).val(NumParse($(this).val()).toString().replace('.', ','));
+            $(this).val(round2Fixed(NumParse($(this).val())).toString().replace('.', ','));
         });
         $("[id$='PricePerItem']").each(function () {
-            $(this).val(NumParse($(this).val()).toString().replace('.', ','));
+            $(this).val(round2Fixed(NumParse($(this).val())).toString().replace('.', ','));
         });
         $("[id$='PriceSH']").each(function () {
-            $(this).val(NumParse($(this).val()).toString().replace('.', ','));
+            $(this).val(round2Fixed(NumParse($(this).val())).toString().replace('.', ','));
         });
        
     }
+
+    function round2Fixed(value) {
+        value = +value;
+
+        if (isNaN(value))
+            return NaN;
+
+        // Shift
+        value = value.toString().split('e');
+        value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + 2) : 2)));
+
+        // Shift back
+        value = value.toString().split('e');
+        return (+(value[0] + 'e' + (value[1] ? (+value[1] - 2) : -2))).toFixed(2);
+    }
+
+
     ///Высвечиваем сообщение при сабмите формы
     function FormOnComplete(data) {
         $("#por-message").empty();

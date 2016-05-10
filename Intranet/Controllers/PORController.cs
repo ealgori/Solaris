@@ -266,6 +266,17 @@ namespace Intranet.Controllers
                                                 porItem.FOL = itemMod.SiteFol;
                                                 porItem.Coeff = itemMod.Koeff;
                                                 porItem.ItemId = itemMod.AVRItemId.Value;
+
+                                                var controlPrice = (porItem.Price * porItem.NetQty);
+                                                if (controlPrice!=controlPrice.FinanceRound())
+                                                {
+                                                    porItem.NetQty = 1;
+                                                    porItem.Price = controlPrice.FinanceRound();
+                                                }
+                                               
+
+
+
                                                 context.PORItems.Add(porItem);
                                             }
                                             #endregion
@@ -463,9 +474,18 @@ namespace Intranet.Controllers
                 var por = context.PORs.Find(Id);
                 if (por != null)
                 {
+                    try
+                    {
+                        var porBytes = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(Id);
+                        Response.AddHeader("Content-Disposition", "attachment; filename=\"" + string.Format("POR-{0}-{1}-{2}.xlsx", por.Network, por.PrintDate.ToString("yyyyMMddHHmmss"), Id));
+                        return File(porBytes, ".xlsx");
+                    }
+                    catch (Exception exc)
+                    {
 
-                    Response.AddHeader("Content-Disposition", "attachment; filename=\"" + string.Format("POR-{0}-{1}-{2}.xlsx", por.Network, por.PrintDate.ToString("yyyyMMddHHmmss"), Id));
-                    return File(ExcelParser.EpplusInteract.CreatePor.CreatePorFile(Id), ".xlsx");
+                        return Content(string.Format("{0}", exc.Message));
+                    }
+                   
                 }
 
             }

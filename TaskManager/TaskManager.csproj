@@ -135,6 +135,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\AVR\CreateVCRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\SendVCRequestHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\SaveMailToAdmin2.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\AVR\TypeCheckHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\UploadVCReqToCreateHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\VCRequestAnalyzer.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\BackUps\BackUpHandler.cs" />
@@ -144,6 +145,8 @@
     <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler2.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\DistributionHandler3.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\GR_TO\Matching.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\GR_TO\Models\SAPRow.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSignedHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSWBSRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSyncHandler.cs" />

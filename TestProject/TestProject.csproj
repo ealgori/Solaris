@@ -81,9 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\AstelitOHDB\TestProject\bin\Debug1\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NpoiInteract">
-      <HintPath>..\..\..\..\AstelitOHDB\TestProject\bin\Debug1\NpoiInteract.dll</HintPath>
-    </Reference>
     <Reference Include="RedemptionInteract">
       <HintPath>..\..\..\..\AstelitOHDB\TestProject\bin\Debug1\RedemptionInteract.dll</HintPath>
     </Reference>
@@ -123,6 +120,10 @@
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
+      <Project>{cd807a95-25eb-4f71-a017-e537d58de0af}</Project>
+      <Name>NpoiInteract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DbModels\DbModels.csproj">
       <Project>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</Project>
       <Name>DbModels</Name>

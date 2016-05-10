@@ -41,6 +41,7 @@ namespace DbModels.DomainModels.ShClone
         public DateTime? OtchetPredostavlenVCfact  { get; set; }
         public string LinkToReportinEridoc  { get; set; }
         public string AddAgreementId { get; set; }
+        //public DateTime? GRSend { get; set; }
 
 
     }

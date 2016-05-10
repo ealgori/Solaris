@@ -10,5 +10,6 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ImportClasses
     {
         public int ItemId { get; set; }
         public bool? InLimit { get; set; }
+        public bool NeedVCReexpose { get; set; }
     }
 }
