@@ -423,6 +423,15 @@ namespace TaskManager
                         task.EmailHandler = null;
                         break;
                     }
+                case "SendWIHGRTORequestsHandler":
+                    {
+                        task.TaskHandler = new SendWIHGRTORequestsHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                        task.ConvertHandler = null;
+                        task.EmailHandler = null;
+                        break;
+                    }
                 default:
                     {
 

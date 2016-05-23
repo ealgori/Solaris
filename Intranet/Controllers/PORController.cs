@@ -268,7 +268,11 @@ namespace Intranet.Controllers
                                                 porItem.ItemId = itemMod.AVRItemId.Value;
 
                                                 var controlPrice = (porItem.Price * porItem.NetQty);
-                                                if (controlPrice!=controlPrice.FinanceRound())
+                                                if ((controlPrice!=controlPrice.FinanceRound())
+                                                    || porItem.Price!= porItem.Price.FinanceRound()
+                                                    || porItem.NetQty != porItem.NetQty.FinanceRound()
+
+                                                    )
                                                 {
                                                     porItem.NetQty = 1;
                                                     porItem.Price = controlPrice.FinanceRound();

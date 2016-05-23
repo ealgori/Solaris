@@ -61,6 +61,33 @@ namespace TestProject
             SHInteract.Handlers.Astelit.PORUploader.Handle(filePath, poName, arhFilePath);
         }
 
+
+        [TestMethod]
+        public void Combinatoric()
+        {
+            //Combinations combs = new Combinations(new List<int> { 1, 2, 3, 4, 5 },3);
+            //while (combs.MoveNext())
+            //{
+
+            //    Array thisComb = (Array)combs.Current;
+
+            //    //for (int i = 0; i < thisComb.Length; i++)
+            //    //{
+            //    //    // Just access the value. This requres boxing.
+            //    //    int nVal00 = (int)thisComb.GetValue(i);
+            //    //    // Just access the value. This requres no boxing.
+            //    //    Object nVal01 = thisComb.GetValue(i);
+            //    //}
+
+            //}
+            var list = new List<int> { 1, 2, 3, 4, 5 };
+            var combs = list.GetKCombs(3).ToList();
+            foreach (var comb in combs)
+            {
+                var a = comb.ToList();
+            }
+        }
+
         [TestMethod]
         public void PropisTest()
         {
@@ -104,8 +131,9 @@ namespace TestProject
         [TestMethod]
         public void TestAstelitFileDownloader()
         {
-            SHInteract.Handlers.Astelit.FileDownloader downloader = new SHInteract.Handlers.Astelit.FileDownloader("ASTELIT");
-            downloader.Download("KI0844", null);
+            
+            //SHInteract.Handlers.FileDownloader downloader = new SHInteract.Handlers.FileDownloader("ASTELIT");
+            //downloader.Download("KI0844", null);
         }
           
         [TestMethod]
@@ -1379,6 +1407,9 @@ namespace TestProject
         [TestMethod]
         public void SendWIHGRRequestTest()
         {
+            
+
+
             using (Context context = new Context())
             {
 
@@ -1391,18 +1422,20 @@ namespace TestProject
         [TestMethod]
         public void TestTwoMonthRange()
         {
-            var trueDate1 = new DateTime(2016, 1, 1);
-            var trueDate2 = new DateTime(2016, 2, 1);
-            var trueDate3 = new DateTime(2016, 2, 28);
+            DateTime? trueDate1 = new DateTime(2016, 1, 1);
+            DateTime? trueDate2 = new DateTime(2016, 2, 1);
+            DateTime? trueDate3 = new DateTime(2016, 2, 28);
 
-            var falseDate1 = new DateTime(2016, 3, 1);
-            var falseDate2 = new DateTime(2016, 4, 1);
+            DateTime? falseDate1 = new DateTime(2016, 3, 1);
+            DateTime? falseDate2 = new DateTime(2016, 4, 1);
 
-            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate1,DateTime.Now));
-            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate2, DateTime.Now));
-            Assert.IsTrue(SendWIHGRRequest.TwoMonthRange(trueDate3, DateTime.Now));
-            Assert.IsFalse(SendWIHGRRequest.TwoMonthRange(falseDate1, DateTime.Now));
-            Assert.IsFalse(SendWIHGRRequest.TwoMonthRange(falseDate2, DateTime.Now));
+            var now = new DateTime(2016, 4, 1);
+
+            Assert.IsTrue(trueDate1.TwoMonthRange(now));
+            Assert.IsTrue(trueDate2.TwoMonthRange(now));
+            Assert.IsTrue(trueDate3.TwoMonthRange(now));
+            Assert.IsFalse(falseDate1.TwoMonthRange(now));
+            Assert.IsFalse(falseDate2.TwoMonthRange(now));
 
 
 

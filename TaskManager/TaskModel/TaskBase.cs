@@ -100,7 +100,7 @@ namespace TaskManager.TaskModel
                 if (ImportHandler != null)
                 {
                     ImportHandler.Import();
-                }
+               }
                 TaskParameters.TaskLog.Status = "Finished";
                 log.Success = true;
                 }
@@ -118,7 +118,9 @@ namespace TaskManager.TaskModel
             }
            
         }
-      
+
+
+
 
 
 

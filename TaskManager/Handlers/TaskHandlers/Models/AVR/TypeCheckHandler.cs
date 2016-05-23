@@ -48,7 +48,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             //    avr2016 = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == "200001").ToList();
             //}
             var avrWithfLimit = avr2016.Where(a => a.Items.Any(i => i.Limit != null)).ToList();
-            var withoutLimit = avr2016.Except(avrWithfLimit).ToList();
+            var withoutLimit = avr2016.Except(avrWithfLimit).
+                Where(i=>i.Items.Count>0). // для исключения авр без позиций.их проверять пока еще рано.
+                ToList();
             var inLimitAVRS = avrWithfLimit.Where(a =>
                                 a.Items.Where(i => i.Limit != null)
                                 .All(i =>

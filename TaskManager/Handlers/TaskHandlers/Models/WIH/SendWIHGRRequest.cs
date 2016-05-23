@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.TaskParamModels;
+using CommonFunctions.Extentions;
 using WIHInteract;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
@@ -19,53 +20,87 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
     /// Скорее всего производиться будет сх сендером
     /// 
     /// </summary>
-    public class SendWIHGRRequest:ATaskHandler
+    public class SendWIHGRRequest : ATaskHandler
     {
-        public SendWIHGRRequest(TaskParameters taskParams):base(taskParams)
+        public SendWIHGRRequest(TaskParameters taskParams) : base(taskParams)
         {
 
         }
         public override bool Handle()
         {
             bool test = false;
-            string testAvr = "207150";
+            string testAvr = "207241";
 
-         // текущая дата больше, чем эта и два месяца и первое число.
+            // текущая дата больше, чем эта и два месяца и первое число.
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
             var now = DateTime.Now;
             var confGrAVRs = TaskParameters.Context.ShAVRs.Where(a =>
-                a.FactVypolneniiaRabotPodtverzhdaiuCB == true
-                && a.WorkEnd.HasValue
+             a.FactVypolneniiaRabotPodtverzhdaiuCB == true
+            && a.WorkEnd.HasValue
 
-                && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
-                && (a.Year == "2016" || a.Year == "2017")
-                && !a.GRCreated.HasValue
+             && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
+            && (a.Year == "2016" || a.Year == "2017")
+            && !a.GRCreated.HasValue
+            // )
+            //a.PurchaseOrderNumber == "4512444164" ||
+            //a.PurchaseOrderNumber == "4513003468" ||
+            //a.PurchaseOrderNumber == "4513041239" ||
+            //a.PurchaseOrderNumber == "4513041272" ||
+            //a.PurchaseOrderNumber == "4513041371" ||
+            //a.PurchaseOrderNumber == "4513041822" ||
+            //a.PurchaseOrderNumber == "4513041942" ||
+            //a.PurchaseOrderNumber == "4513042244" ||
+            //a.PurchaseOrderNumber == "4513042411" ||
+            //a.PurchaseOrderNumber == "4513042509" ||
+            //a.PurchaseOrderNumber == "4513042728" ||
+            //a.PurchaseOrderNumber == "4513042881" ||
+            //a.PurchaseOrderNumber == "4513042884" ||
+            //a.PurchaseOrderNumber == "4513042915" ||
+            //a.PurchaseOrderNumber == "4513042958" ||
+            //a.PurchaseOrderNumber == "4513042990" ||
+            //a.PurchaseOrderNumber == "4513043027" ||
+            //a.PurchaseOrderNumber == "4513043032" ||
+            //a.PurchaseOrderNumber == "4513043056" ||
+            //a.PurchaseOrderNumber == "4513043094" ||
+            //a.PurchaseOrderNumber == "4513043128" ||
+            //a.PurchaseOrderNumber == "4513043210" ||
+            //a.PurchaseOrderNumber == "4513043237" ||
+            //a.PurchaseOrderNumber == "4513043286" ||
+            //a.PurchaseOrderNumber == "4513043332" ||
+            //a.PurchaseOrderNumber == "4513043392" ||
+            //a.PurchaseOrderNumber == "4513043518" ||
+            //a.PurchaseOrderNumber == "4513043592" ||
+            //a.PurchaseOrderNumber == "4513043682" ||
+            //a.PurchaseOrderNumber == "4513044215" ||
+            //a.PurchaseOrderNumber == "4513044576" ||
+            //a.PurchaseOrderNumber == "4513044751" ||
+            //a.PurchaseOrderNumber == "4513045187" ||
+            //a.PurchaseOrderNumber == "4513045357" ||
+            //a.PurchaseOrderNumber == "4513028594" ||
+            //a.PurchaseOrderNumber == "4512444164"
+
+
+
+
             )
-
-
-
-            //   a.PurchaseOrderNumber == "4512643884"
-            //|| a.PurchaseOrderNumber == "4512629887"
-            //|| a.PurchaseOrderNumber == "4512662572"
-            //|| a.PurchaseOrderNumber == "4512655945"
-            //|| a.PurchaseOrderNumber == "4512655926"
-            //|| a.PurchaseOrderNumber == "4512643219"
-            //|| a.PurchaseOrderNumber == "4512555356"
-            //|| a.PurchaseOrderNumber == "4512643073"
-            //|| a.PurchaseOrderNumber == "4512643123"
-            //|| a.PurchaseOrderNumber == "4512643183"
-
-
-            //)
-
-            .ToList().Where(a=> TwoMonthRange(a.WorkEnd,now)).ToList();
+            // смотрим, что позже, дата выпуска по или время окончания работ, и от этого позднего высчитываем TwoMonthRange
+            .ToList()
+            .Where(a =>
+                ////Max(a.WorkEnd, a.DataVipuskaPO) // это не включать
+                a.WorkEnd.TwoMonthRange(now))
+              .ToList();
 
             if (test)
+            {
+                var _confGrAVRs = confGrAVRs.Where(a => a.AVRId == testAvr).ToList();
                 confGrAVRs = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == testAvr).ToList();
+                var res = confGrAVRs.FirstOrDefault().WorkEnd.TwoMonthRange(DateTime.Now);
+
+            }
 
             var _cachedWihRequests = TaskParameters.Context.ShWIHRequests.Where(w => w.Type == WIHInteract.Constants.InternalMailTypeAVRGR).ToList();
             var _cachedSATPors = TaskParameters.Context.AVRPORs.ToList();
-           
+
             foreach (var avr in confGrAVRs)
             {
                 var wihRequests = _cachedWihRequests.Where(r => r.AVRId == avr.AVRId).ToList();
@@ -75,7 +110,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     if (satPors.Count > 0)
                     {
                         var satPor = satPors.OrderByDescending(s => s.PrintDate).FirstOrDefault();
-                        var grBytes = ExcelParser.ExcelParser.CreateGR.CreateGRFile(satPor.Id, avr.PurchaseOrderNumber , TaskParameters.DbTask.TemplatePath);
+                        var grBytes = ExcelParser.ExcelParser.CreateGR.CreateGRFile(satPor.Id, avr.PurchaseOrderNumber, TaskParameters.DbTask.TemplatePath);
                         if (grBytes == null)
                         {
                             TaskParameters.TaskLogger.LogError(string.Format("Ошибка генерации GR для авр: {0}", avr.AVRId));
@@ -129,7 +164,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     }
 
                 }
-               
+
             }
             if (requestList.Count > 0)
             {
@@ -142,17 +177,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
         private string GenerateGRName(string avrId, string po)
         {
-            return string.Format("GR-{0}-{1}-{3}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath),DateTime.Now.ToString("ddMMyyyy"));
+            return string.Format("GR-{0}-{1}-{3}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath), DateTime.Now.ToString("ddMMyyyy"));
         }
 
-        public static bool TwoMonthRange(DateTime? date, DateTime now)
-        {
-            if (!date.HasValue)
-                return false;
-            return (
-                now >=
-                date.Value.AddMonths(2)
-                    .AddDays(-date.Value.Day + 1));
-        }
+
     }
 }
