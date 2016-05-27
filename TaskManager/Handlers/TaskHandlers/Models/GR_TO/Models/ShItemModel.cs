@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbModels.DomainModels.ShClone;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,18 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Models
         public string  GR { get; set; }
         public string MaterialCode { get; set; }
         public DateTime? TOFactDate { get; set; }
+        public DateTime? TOPlanDate { get; set; }
         public string TO { get; set; }
         public string PO { get; set; }
 
-       
+        public string Vendor { get; set; }
+
+        public bool WorkConfirmedByEricsson { get; set; }
+        public string  ActId { get; set; }
+
+        public ShAct ShAct { get; set; }
+
+
 
         public int CompareTo(ShItemModel obj)
         {

@@ -20,6 +20,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
         public FirstHandleResult Handle(List<ShItemModel> toItems, List<SAPItemModel> sapItems, LogManager logManager)
         {
 
+            var hr = new FirstHandleResult();
+
+            logManager.Add(toItems, sapItems, $"Init", LogStatus.Init);
+
+            if (toItems.Count==0)
+            {
+                logManager.Add(toItems.Select(s => s).ToList(), sapItems, $"отсутствуют позиции сх", LogStatus.Error);
+                return null;
+            }
+
             //проверка на присутствие количеств
             if(toItems.Any(i=>!i.Qty.HasValue)||toItems.Any(i=>!i.Price.HasValue))
             {
@@ -46,32 +56,46 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
 
 
             var shApprItems = toItems.Where(i => i.TOFactDate.HasValue).ToList();
-            var shApprQty = shApprItems.Sum(s => s.Qty);
-            var sapGRQty = sapItems.Sum(s => s.GRQty);
-
-            // в сх принятых должно быть больше или равно, чем в сап GR
-            if (sapGRQty > shApprQty)
+            if(shApprItems.Count==0)
             {
-                logManager.Add(shApprItems, sapItems, $"В сапе GR больше, чем принято позиций в СХ sh:{shApprQty} ; sap {sapGRQty}", LogStatus.Error);
+                logManager.Add(toItems, sapItems, $"В сх позиции еще не приняты", LogStatus.Debug);
                 return null;
             }
 
+            var shApprQty = shApprItems.Sum(s => s.Qty);
+            var sapGRQty = sapItems.Sum(s => s.GRQty);
 
-            var hr = new FirstHandleResult();
+
             hr.ShModels = shApprItems;
             hr.SAPRows = sapItems;
-
-            var fmCount = shApprQty - sapGRQty;
-
-            if (fmCount == 0) //for made
+            // в сх принятых должно быть больше или равно, чем в сап GR
+            if (sapGRQty >= shApprQty)
             {
-                logManager.Add(shApprItems, sapItems, $"Свежепринятые позиции отсутствуют. Идем на след итер. sh:{shApprQty} ; sap:{sapGRQty}", LogStatus.Debug);
-
+                logManager.Add(shApprItems, sapItems, $"В сапе GR больше, чем принято позиций в СХ sh:{shApprQty} ; sap {sapGRQty}", LogStatus.Error);
+                hr.ManGRItems = shApprItems.Where(i => string.IsNullOrEmpty(i.GR)).ToList();
+                return hr;
             }
             else
             {
                 hr.Succeed = true;
             }
+
+
+           
+           
+
+            //var fmCount = shApprQty - sapGRQty;
+
+            //if (fmCount == 0) //for made
+            //{
+            //    hr.ShModels = shApprItems.Where(i => string.IsNullOrEmpty(i.GR)).ToList();
+            //    logManager.Add(shApprItems, sapItems, $"Свежепринятые позиции отсутствуют. Идем на след итер. sh:{shApprQty} ; sap:{sapGRQty}", LogStatus.Debug);
+
+            //}
+            //else
+            //{
+               
+            //}
 
 
 

@@ -12,5 +12,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Models
         public string MaterialCode { get; set; }
         public decimal Qty { get; set; }
         public decimal Price { get; set; }
+
+        public string Vendor { get; set; }
+
+        public string TOItem { get; set; }
+
+        public string  Act { get; set; }
+        public string FactDate { get; set; }
     }
 }

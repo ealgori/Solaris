@@ -84,5 +84,8 @@ namespace DbModels.Models.Pors
         public virtual PriceListRevisionItem PriceListRevisionItem { get; set; }
         public virtual POR POR { get; set; }
         public string ItemId { get; set; }
+
+        public string Act { get; set; }
+        
     }
 }

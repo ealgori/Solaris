@@ -80,7 +80,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.LogModels
 
     public enum LogStatus
     {
-        Debug, Error, Info
+        Init, Debug, Error, Info
     }
 
 

@@ -25,10 +25,20 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
         {
 
             var hr = new SecondHandlerResult();
-            var tmrItems = toItems.Where(i => i.TOFactDate.TwoMonthRange(date)).ToList();
+            var tmrItems = toItems.Where(i => 
+            i.TOFactDate.Max(i.TOPlanDate).TwoMonthRange(date)
+            && i.WorkConfirmedByEricsson
+            && i.ShAct!=null
+            && i.ShAct.ActApprovedDate.HasValue
+            ).ToList();
+            if(tmrItems.Count==0)
+            {
+                logManager.Add(toItems, sapItems, $"Нет позиций с подходящими датами приемки, подтвержденными работами или принятыми актами", LogStatus.Debug);
+                return null; 
+            }
             if (tmrItems.Count != toItems.Count)
             {
-                logManager.Add(toItems, null, $"После фильтра по дате осталось :{tmrItems.Count} из {toItems.Count}", LogStatus.Debug);
+                logManager.Add(toItems, sapItems, $"После фильтра по дате осталось :{tmrItems.Count} из {toItems.Count}", LogStatus.Debug);
             }
 
             var grCount = sapItems.Sum(r => r.GRQty);
@@ -36,20 +46,21 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
 
 
             // общее количество GR в Сап должно быть меньше.
-            // если оно больше, значит надо в сх проставить ручной gr
+            // если оно больше, значит надо в сх проставить ручной gr (отказался пока от этой идеи)
 
-            if (grCount > tmrCount)
+            if (grCount >= tmrCount)
             {
-                logManager.Add(tmrItems, sapItems, $"В сапе принято больше , чем в сх осталось после фильтра по дате : sapGr:{grCount} из  shApprF:{tmrCount}", LogStatus.Error);
-                return null ;
-            }
-            if (grCount == tmrCount)
-            {
-                logManager.Add(tmrItems, sapItems, $"Количество GR в СХ и сап совпало. пометим все позиции как ручные, если они не помечены  ({tmrCount})", LogStatus.Debug);
-                hr.ShModels = tmrItems;
-
+                logManager.Add(tmrItems, sapItems, $"В сапе принято больше либо равно , чем в сх осталось после фильтра по дате : sapGr:{grCount} из  shApprF:{tmrCount}", LogStatus.Error);
+                hr.ManGRItems = tmrItems.Where(i => string.IsNullOrEmpty(i.GR)).ToList();
                 return hr;
             }
+            //if (grCount == tmrCount)
+            //{
+            //    logManager.Add(tmrItems, sapItems, $"Количество GR в СХ и сап совпало. пометим все позиции как ручные, если они не помечены  ({tmrCount})", LogStatus.Debug);
+            //    hr.ShModels = 
+
+            //    return hr;
+            //}
 
 
             // набираем позиции из сх, для которых будем делать GR, чтобы потом проставить им отметки
@@ -61,6 +72,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
                 logManager.Add(tmrItems, sapItems, $"Среди позиций сх не удалось выделить {shSapDif} позиций для GR", LogStatus.Error);
                 return null;
             }
+            else
+            {
+                // помечаем без GR как ручные
+                hr.ManGRItems = hr.ManGRItems = tmrItems.Except(itemsForGr).Where(i => string.IsNullOrEmpty(i.GR)).ToList();
+            }
 
             // набираем позиции из сапа, в которые будет допринимать количество позиций
 
@@ -70,6 +86,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
             {
                 logManager.Add(tmrItems, sapItems, $"Среди позиций САП не удалось выделить {shSapDif} позиций для GR", LogStatus.Error);
                 return null;
+            }
+            /// допишем, с каких позиций ТО этот сап заполнялся
+            foreach (var item in grItemModels)
+            {
+                item.TOItem = string.Join(",", itemsForGr.Select(i => i.Id));
             }
 
            

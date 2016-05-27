@@ -77,6 +77,7 @@
     <Compile Include="ExcelParser\CreatePorDel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExcelParser\CreateTOGR.cs" />
     <Compile Include="ExcelParser\CreateTOPOR.cs" />
     <Compile Include="ExcelParser\CreateTORequest.cs" />
     <Compile Include="ExcelParser\CreateTORequestDel.cs" />
@@ -104,9 +105,7 @@
       <Name>DbModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StaticHelpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

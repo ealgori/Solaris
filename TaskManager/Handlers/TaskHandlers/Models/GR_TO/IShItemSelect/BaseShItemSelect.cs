@@ -21,7 +21,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
             selected = new List<ShItemModel>();
 
             // нас интересуют только позиции без GR
-            shItems = shItems.Where(s => string.IsNullOrEmpty(s.GR)).ToList();
+            shItems = shItems.Where(s => string.IsNullOrEmpty(s.GR)).OrderByDescending(i=>i.TOFactDate ).ToList();
 
             var totalQty = shItems.Sum(s => s.Qty);
             if(totalQty<qty)
@@ -38,7 +38,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
                 return true;
             }
            
-            for (int i = 2; i < shItems.Count; i++)
+            for (int i = 2; i <= shItems.Count; i++)
             {
                 var combs = shItems.GetKCombs(i);
                 var suitable = combs.FirstOrDefault(it => it.Sum(b => b.Qty)==qty);

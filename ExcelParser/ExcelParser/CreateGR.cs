@@ -21,7 +21,7 @@ namespace ExcelParser.ExcelParser
         //private static  string TemplatePath = @"\\RU00112284\SolarisTemplates\POR.xlsx";
         private static string TemplatePath = @"\\RU00112284\p\OrderTemplates\GRTemplates\GRTemplate.xlsx";
 
-        public static byte[] CreateGRFile(int porId, string poNumber, string templatePath)
+        public  static byte[] CreateGRFile(int porId, string poNumber, string templatePath)
         {
 
             if(string.IsNullOrEmpty(templatePath))

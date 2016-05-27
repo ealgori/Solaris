@@ -11,6 +11,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle.HandleResult
     {
         public List<ShItemModel> ShModels { get; set; }
         public List<GRItemModel> GRModels { get; set; }
+        public List<ShItemModel> ManGRItems { get; set; }
+        public string PO { get; set; }
+
         public bool Succeed { get; set; }
     }
 }

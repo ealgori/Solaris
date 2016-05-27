@@ -148,7 +148,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
            {
 
 
-              // TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(requestList) });
+               TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(requestList) });
            }
            if (agreemImportModels.Count>0)
            {
@@ -179,11 +179,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
        public string GenerateTOPorName(DateTime date)
        {
-           return string.Format("DEL-POR-TO-{0}.xlsx", date.ToString("yyyyMMdd_HHmmss_ffff"));
+           return string.Format("DEL-POR-TO-{0}.xlsx", date.ToString("yyMMdd_HHmmss_ffff"));
        }
        public string GeneratedTORequestName(DateTime date)
        {
-           return string.Format("DEL-TOR-TO-{0}.xlsx", date.ToString("yyyyMMdd_HHmmss_ffff"));
+           return string.Format("DEL-TOR-TO-{0}.xlsx", date.ToString("yyMMdd_HHmmss_ffff"));
        }
         
    }
