@@ -30,12 +30,12 @@ namespace ExcelParser.ExcelParser
 
                
 
-                foreach (var item in items)
-                {
-                    item.Description = string.Format("{0} ({1})", item.Description, item.Description.CUnidecode());
+                //foreach (var item in items)
+                //{
+                //    item.Description = string.Format("{0} ({1})", item.Description, item.Description.CUnidecode());
 
 
-                }
+                //}
 
                 Dictionary<string, string> dict = new Dictionary<string, string>();
                 dict.Add("PO", poNumber);

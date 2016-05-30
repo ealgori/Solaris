@@ -12,6 +12,9 @@ using TaskManager.TaskParamModels;
 using CommonFunctions.Extentions;
 using TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle.HandleResult;
 using DbModels.Models.Pors;
+using WIHInteract;
+using System.IO;
+using DbModels.DomainModels.ShClone;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
@@ -28,7 +31,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             string manualGR = "Manual GR";
             var itemGRNameModels = new List<TOItemGRNameImport>();
             var GRModels = new List<SecondHandlerResult>();
+            List<ShWIHRequest> requestList = new List<ShWIHRequest>();
+            var logGrModels = new List<LogGRModel>();
+
             bool test = false;
+            bool jugging = true;
 
             var toItems = TaskParameters.Context.ShTOes.Where(t => t.Year == "2016" && !string.IsNullOrEmpty(t.PONumber)).
                 Join(TaskParameters.Context.SubContractors, t => t.Subcontractor, i => i.ShName, (t, v) => new { TO = t, Vendor = v }).// джойним с подрядчиками
@@ -58,26 +65,54 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             if (test)
             {
                 toItems = toItems.Where(t =>
-                //t.Key == "4512498621"
-                //||t.Key == "4512678010"
-                //||t.Key == "4512718056"
-                //||t.Key == "4512718449"
-                //||t.Key == "4512718661"
-                t.Key == "4512489038"
+                t.Key == "4512498621"
+                || t.Key == "4512678010"
+                || t.Key == "4512718056"
+                || t.Key == "4512718449"
+                || t.Key == "4512718661"
+
 
 
                 ).ToList();
             }
 
-            string path = @"C:\Temp\Logs\19.05.2016\zzpomon.xlsx";
-            ISapReader reader = new XlsxSapReader(path);
+            // чтение сап файла
+            var reportFolder = TaskParameters.DbTask.EmailSendFolder;
+            if (!Directory.Exists(reportFolder))
+            {
+                TaskParameters.TaskLogger.LogError($"Папка недоступна:{reportFolder}");
+                return false;
+            }
+            var reportFile = Directory.GetFiles(reportFolder, "*zzpomon*.xlsx", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            if (!File.Exists(reportFile))
+                return false;
+
+            var reportDatedPath = CommonFunctions.StaticHelpers.GetDatedPath(reportFolder);
+            ISapReader reader = new XlsxSapReader(reportFile);
             reader.Read();
             if (!reader.Succeed)
             {
-                TaskParameters.TaskLogger.LogError($"Ошибка чтения файла {path}");
+                TaskParameters.TaskLogger.LogError($"Ошибка чтения файла {reportFile}");
                 return false;
             }
+            else
+            {
+              
 
+
+            }
+            // переместить папку в лог
+
+            if (!Directory.Exists(reportDatedPath))
+            {
+                Directory.CreateDirectory(reportDatedPath);
+            }
+            File.Move(reportFile, Path.Combine(reportDatedPath, Path.GetFileName(reportFile)));
+
+
+
+
+            // перебор позиций по номеру ПО
             var logManager = new LogManager();
             var firstPart = new FirstPart();
             var secondPart = new SecondPart();
@@ -150,16 +185,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                     if (!sResult.Succeed)
                     {
-                        // значит все совпадает. надо пометить позиции без GR как мануал
-                       
+                        // значит все совпадает.
+
 
                         continue;
                     }
 
                     sResult.PO = items.Key;
-           
 
-                    
+
+
                     GRModels.Add(sResult);
                     //просто логи
                     var grQty = sResult.GRModels.Sum(s => s.Qty);
@@ -172,82 +207,157 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 }
             }
 
+            // компановка для отправки
 
-           // if (!test)
+            if (GRModels.Count > 0)
             {
-                
-
-                if (GRModels.Count > 0)
+                GRModels.ForEach(r =>
                 {
-                    GRModels.ForEach(r =>
-                    {
-                        r.GRModels
-                            .ForEach(i => {
-                                i.Act = string.Join(",", r.ShModels.Select(m => m.ActId));
-                                i.TOItem = string.Join(",", r.ShModels.Select(m => m.Id));
-                                i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("dd.MM.yyyy"))); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
+                    r.GRModels
+                        .ForEach(i =>
+                        {
+                            i.Act = string.Join(",", r.ShModels.Select(m => m.ActId));
+                            i.TOItem = string.Join(",", r.ShModels.Select(m => m.Id));
+                            i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("dd.MM.yyyy"))); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
                             });
 
 
-                    });
+                });
 
-                    int count = 0;
-                    var groupByPO = GRModels.GroupBy(g => g.PO);
-                    foreach (var group in groupByPO)
+                var now = DateTime.Now;
+                int count = 0;
+                var groupByPO = GRModels.GroupBy(g => g.PO);
+                foreach (var group in groupByPO)
+                {
+                    count++;
+                    var grItems = group
+                        .SelectMany(g => g.GRModels)
+                        .Select(i => new PORTOItem
+                        {
+                            No = int.Parse(i.POItemId),
+                            Code = i.MaterialCode,
+                            Cat = "Service",
+                            Plant = "2349",
+                            NetQty = i.Qty,
+                            ItemCat = "N",
+                            PRtype = "3",
+                            POrg = "1439",
+                            GLacc = "402601",
+                            Price = i.Price,
+                            Curr = "RUB",
+                            Vendor = i.Vendor,
+                            Act = i.Act,
+                            ItemId = i.TOItem,
+                            Description = i.FactDate
+
+
+                        }).ToList();
+
+                    /// компановка отправка
+                    var grBytes = ExcelParser.ExcelParser.CreateTOGR.CreateGRFile(grItems, group.Key, TaskParameters.DbTask.TemplatePath);
+                    var grFileName = $"GR_{group.Key}_{DateTime.Now.ToString("yyMMddHHmmssfff")}{(jugging ? "-N" : "")}.xlsx";
+                    var archive = Path.Combine(TaskParameters.DbTask.ArchiveFolder, now.ToString(@"yyyy\\MM\\dd"));
+                    if (!Directory.Exists(archive))
                     {
-                        count++;
-                        var grItems = group
-                            .SelectMany(g => g.GRModels)
-                            .Select(i => new PORTOItem
-                            {
-                                No = int.Parse(i.POItemId),
-                                Code = i.MaterialCode,
-                                Cat = "Service",
-                                Plant = "2349",
-                                NetQty = i.Qty,
-                                ItemCat = "N",
-                                PRtype = "3",
-                                POrg = "1439",
-                                GLacc = "402601",
-                                Price = i.Price,
-                                Curr = "RUB",
-                                Vendor = i.Vendor,
-                                Act = i.Act,
-                                ItemId = i.TOItem,
-                                Description = i.FactDate
-                                 
-                            }).ToList();
-
-
-                        var bytes = ExcelParser.ExcelParser.CreateTOGR.CreateGRFile(grItems, group.Key, TaskParameters.DbTask.TemplatePath);
-                        var GRName = $"GR_{group.Key}_{DateTime.Now.ToString("yyMMddHHmmssfff")}.xlsx";
-
-                        CommonFunctions.StaticHelpers.ByteArrayToFile($@"C:\Temp\123\{GRName}", bytes);
-
-                        // отправка
-                        // если успешно, добавление на импорт позиций
-                        //itemGRNameModels.AddRange(
-                        // group.SelectMany(g=>g.ShModels)
-                        // .Select(s => new TOItemGRNameImport { Id = s.Id, GRName = "GRName" }));
-
-
-                        // добавление на импорт запросов
-
-
-
-
+                        try
+                        {
+                            Directory.CreateDirectory(archive);
+                        }
+                        catch (Exception exc)
+                        {
+                            TaskParameters.TaskLogger.LogError(string.Format("Ошибка создания папки  '{0}'; {1}", archive, exc.Message));
+                            continue;
+                        }
+                    }
+                    var filePath = Path.Combine(archive, grFileName);
+                    if (!CommonFunctions.StaticHelpers.ByteArrayToFile(filePath, grBytes))
+                    {
+                        TaskParameters.TaskLogger.LogError(string.Format("Ошибка при сохранении файла:'{0}'", filePath));
+                        continue;
                     }
 
-                    // группировка по по
+                    string internalMailType = WIHInteract.Constants.InternalMailTypeTOGR;
+                    var mailInf = MailInfoFactory.GetGRInfo(internalMailType, filePath);
 
+                    string result = "jugging";
+                    if (!jugging)
+                    {
+                        result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS", test);
+                    }
+                    if (string.IsNullOrEmpty(result) || (string.IsNullOrWhiteSpace(result)))
+                    {
+                        TaskParameters.TaskLogger.LogError(string.Format("Функция отправки письма не вернула ConversationIndex "));
+                    }
+                    else
+                    {
+                        // еще все позиции из гр пометить и добавить на импорт
+                        var shItems = group
+                           .SelectMany(g => g.ShModels)
+                           .Select(s => new TOItemGRNameImport { Id = s.Id, GRName = grFileName })
+                           .ToList();
+                        itemGRNameModels.AddRange(shItems);
+
+                        // еще в лог для Егорова
+
+                        logGrModels.AddRange(
+                            grItems.Select(i => new LogGRModel
+                            {
+                                Network = group.Key,
+                                Act = i.Act,
+                                Code = i.Code,
+                                Description = i.Description,
+                                ItemId = i.ItemId,
+                                GRQty = i.NetQty,
+                                POItem = i.No.ToString(),
+                                Price = i.Price,
+                                Vendor = i.Vendor
+                            })
+                            );
+
+
+
+
+                        string toName = group.SelectMany(g => g.ShModels).FirstOrDefault().TO;
+                        requestList.Add(new ShWIHRequest() { TOid = toName, WIHrequests = grFileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeTOGR });
+                    }
                 }
+            }
+
+            if (!jugging)
+            {
                 if (itemGRNameModels.Count > 0)
                 {
                     TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(itemGRNameModels) });
                 }
+                if (requestList.Count > 0)
+                {
+                    TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName2, Objects = new ArrayList(requestList) });
+                }
             }
-            var logBytes = NpoiInteract.DataTableToExcel(logManager.AsTable().ToDataTable());
-            CommonFunctions.StaticHelpers.ByteArrayToFile(@"C:\Temp\123\logs.xls", logBytes);
+
+
+            try
+            {
+                var logBytes = NpoiInteract.DataTableToExcel(logManager.AsTable().ToDataTable());
+                CommonFunctions.StaticHelpers.ByteArrayToFile(Path.Combine(
+                    reportDatedPath
+                    , $"{DateTime.Now.ToString("yyyyMMddHHmmss")}logs.xls"), logBytes);
+            }
+            catch (Exception ex)
+            {
+
+                TaskParameters.TaskLogger.LogError($"Ошибка сохранения файла лога по пути {reportDatedPath}");
+            }
+            if (logGrModels.Count > 0)
+            {
+                var emailParams = new EmailParams(new List<string> {
+                "dmitriy.b.egorov@ericsson.com",
+                "aleksey.gorin@ericsson.com" }
+                , "GR TO log");
+                emailParams.DataTables.Add("Log.xls", logGrModels.ToDataTable());
+                TaskParameters.EmailHandlerParams.EmailParams.Add(emailParams);
+            }
+
 
 
             // импорт
@@ -264,6 +374,27 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         {
             public string Id { get; set; }
             public string GRName { get; set; }
+        }
+
+
+        public class LogGRModel
+        {
+
+            public string Network { get; set; }
+            public string POItem { get; set; }
+            public string Code { get; set; }
+
+            public decimal GRQty { get; set; }
+
+            public decimal Price { get; set; }
+
+            public string Vendor { get; set; }
+
+            public string Description { get; set; }
+
+            public string ItemId { get; set; }
+
+            public string Act { get; set; }
         }
     }
 }

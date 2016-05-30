@@ -91,6 +91,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
             foreach (var item in grItemModels)
             {
                 item.TOItem = string.Join(",", itemsForGr.Select(i => i.Id));
+                item.Vendor = itemsForGr.FirstOrDefault().Vendor;
             }
 
            

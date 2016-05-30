@@ -139,16 +139,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                         }
 
                         string internalMailType = WIHInteract.Constants.InternalMailTypeAVRGR;
-                        WIHMailInformation mailInf = new WIHMailInformation();
-                        mailInf.InternalMailType = internalMailType;
-                        mailInf.FilePath = filePath;
-                        mailInf.MailBoxSigmun = "ESOLARIS";
-                        mailInf.Project = "MS-SOLARIS";
-                        mailInf.Subject = "GR WIH Request";
-                        mailInf.Email = "technical.box.for.solaris@ericsson.com";
-                        mailInf.ResponsibleTeam = "ROD Sofia";
-                        mailInf.SystemComponent = "Other";
-                        mailInf.CertificationCode = "L2302RODSofia_AO";
+                        var mailInf = MailInfoFactory.GetGRInfo(internalMailType, filePath);
 
                         var result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS", test);
                         if (string.IsNullOrEmpty(result) || (string.IsNullOrWhiteSpace(result)))

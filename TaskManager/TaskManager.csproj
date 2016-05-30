@@ -187,6 +187,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\TOH\TORefresh.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\TOH\TOTotalAmmountUpdate.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\ArrayList.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\MailInfoFactory.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHGRRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHGRTORequestsHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORDelRequest.cs" />
