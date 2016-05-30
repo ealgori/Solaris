@@ -20,6 +20,7 @@ namespace TestProject.GR_TO_Test
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHGRTORequestsHandler") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
+
             }
         }
     }
