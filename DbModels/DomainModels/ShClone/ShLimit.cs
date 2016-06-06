@@ -23,6 +23,7 @@ namespace DbModels.DomainModels.ShClone
         public virtual ICollection<ShAVRItem> ShAVRitems { get; set; }
 
         public decimal? InitValue { get; set; }
+        public string Alias { get; set; }
 
     }
 }

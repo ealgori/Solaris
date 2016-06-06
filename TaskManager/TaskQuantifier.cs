@@ -23,6 +23,7 @@ using TaskManager.Handlers.TaskHandlers.Models.Acts;
 using TaskManager.Handlers.TaskHandlers.Models.BackUps;
 using TaskManager.Handlers.TaskHandlers.Models.AVR;
 using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers;
+using TaskManager.Handlers.TaskHandlers.Models.Limits;
 //using TaskManager.Handlers.TaskHandlers.Models.POR;
 //using TaskManager.Handlers.TaskHandlers.Models.MUSForms;
 //using TaskManager.Handlers.TaskHandlers.Models.PO;
@@ -420,12 +421,21 @@ namespace TaskManager
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters); ;
                         task.ConvertHandler = null;
-                        task.EmailHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
                     }
                 case "SendWIHGRTORequestsHandler":
                     {
                         task.TaskHandler = new SendWIHGRTORequestsHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
+                case "LimitsAutoImportHandler":
+                    {
+                        task.TaskHandler = new LimitsAutoImportHandler(task.TaskParameters);
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters);
                         task.ConvertHandler = null;

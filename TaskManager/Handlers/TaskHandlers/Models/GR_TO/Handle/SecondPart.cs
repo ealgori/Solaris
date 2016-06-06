@@ -24,12 +24,22 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
         public SecondHandlerResult Handle(List<ShItemModel> toItems, List<SAPItemModel> sapItems, DateTime date, LogManager logManager)
         {
 
+            var toTypeBezPodtv = "Регулярный без подтверждения выполнения работ";
+
             var hr = new SecondHandlerResult();
-            var tmrItems = toItems.Where(i => 
-            i.TOFactDate.Max(i.TOPlanDate).TwoMonthRange(date)
-            && i.WorkConfirmedByEricsson
-            && i.ShAct!=null
-            && i.ShAct.ActApprovedDate.HasValue
+            var tmrItems = toItems.Where(i =>
+                // i.TOFactDate.Max(i.TOPlanDate).TwoMonthRange(date) // 02.06.2016 решили отменить
+                //&&
+                i.WorkConfirmedByEricsson
+                &&
+                (
+                    (i.ObichniyReqularniyTO != toTypeBezPodtv
+                    && i.ShAct != null   
+                    && i.ShAct.ActApprovedDate.HasValue)
+                    ||
+                    (i.ObichniyReqularniyTO == toTypeBezPodtv) // для регулятрных без подтверждения работ нет необходимост вообще обращать внимания на акт.
+                )
+                
             ).ToList();
             if(tmrItems.Count==0)
             {

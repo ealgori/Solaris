@@ -575,6 +575,19 @@ namespace TestProject
         }
 
         [TestMethod]
+        public void LimitsAutoImportHandlerTest()
+        {
+
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "LimitsAutoImportHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+
+        }
+        [TestMethod]
         public void UploadVCReqToCreateHandler()
         {
 

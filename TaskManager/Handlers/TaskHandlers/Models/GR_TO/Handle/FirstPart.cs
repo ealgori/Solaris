@@ -69,7 +69,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
             hr.ShModels = shApprItems;
             hr.SAPRows = sapItems;
             // в сх принятых должно быть больше или равно, чем в сап GR
-            if (sapGRQty >= shApprQty)
+            if (sapGRQty > shApprQty)
             {
                 logManager.Add(shApprItems, sapItems, $"В сапе GR больше, чем принято позиций в СХ sh:{shApprQty} ; sap {sapGRQty}", LogStatus.Error);
                 hr.ManGRItems = shApprItems.Where(i => string.IsNullOrEmpty(i.GR)).ToList();

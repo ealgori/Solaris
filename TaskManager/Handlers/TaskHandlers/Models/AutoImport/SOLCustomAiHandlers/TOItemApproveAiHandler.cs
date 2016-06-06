@@ -28,8 +28,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
                 {
 
                     var wsObjs = EpplusSimpleUniReport.ReadFile(attachment.FilePath, "DRT", 2);
-                    var objs = wsObjs.Where(o => o.Column9 == "TRUE" || o.Column9 == "True").ToList();
-                    var unApprovedObjs = wsObjs.Where(o => o.Column9.ToUpper() != "TRUE").ToList();
+                    var objs = wsObjs.Where(o => o.Column9.ToUpper() == "TRUE" ||o.Column9=="1").ToList();
+                    var unApprovedObjs = wsObjs.Where(o => o.Column9.ToUpper() == "FALSE"||o.Column9=="0").ToList();
                     List<TOApproveModel> model = new List<TOApproveModel>();
                     foreach (var obj in objs)
                     {

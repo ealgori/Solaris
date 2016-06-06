@@ -27,6 +27,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Models
 
         public ShAct ShAct { get; set; }
 
+        public string ObichniyReqularniyTO { get; set; }
+        public bool ExcludeFromTO { get; set; }
+
 
 
         public int CompareTo(ShItemModel obj)

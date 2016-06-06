@@ -130,7 +130,8 @@
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\LimitExecImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRStatusImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\ShVCRequestImport.cs" />
-    <Compile Include="Handlers\TaskHandlers\Models\AVR\LimitCalc.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitAI\FileReader.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitCalc.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\NotifyHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\CreateVCRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\SendVCRequestHandler.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\GR_TO\SapItemSelect\ISapItemSelect.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\GR_TO\SapReader\ISapReader.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\GR_TO\SapReader\XlsxSapReader.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitAI\LimitsAutoImportHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSignedHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSWBSRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\MUSForms\MUSSyncHandler.cs" />

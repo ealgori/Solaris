@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Handlers.TaskHandlers.Models.GR_TO.Models;
 using CommonFunctions.Extentions;
+using System.Diagnostics;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
 {
@@ -37,9 +38,30 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
                 selected.Add(sameQtyItem);
                 return true;
             }
-           
+
+            if (shItems.Sum(i => i.Qty) == qty)
+            {
+                selected = shItems;
+                return true;
+            }
+
+            var _tempList = new List<ShItemModel>();
+            foreach (var item in shItems)
+            {
+                _tempList.Add(item);
+                if(_tempList.Sum(i=>i.Qty)==qty)
+                {
+                    selected = _tempList;
+                    return true;
+                }
+            }
+
+
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
             for (int i = 2; i <= shItems.Count; i++)
             {
+               
+                watch.Start();
                 var combs = shItems.GetKCombs(i);
                 var suitable = combs.FirstOrDefault(it => it.Sum(b => b.Qty)==qty);
                 if(suitable!=null)
@@ -47,8 +69,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO
                     selected = suitable.ToList();
                     return true;
                 }
-               
-                   
+                watch.Stop();
+                Console.WriteLine("{0}:{1} - {2}", i, shItems.Count, watch.Elapsed.ToString());
+                Debug.WriteLine("{0}:{1} - {2}", i, shItems.Count, watch.Elapsed.ToString());
+                watch.Reset();
+
+
             }
             return false;
 

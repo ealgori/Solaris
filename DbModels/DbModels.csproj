@@ -127,6 +127,10 @@
     <Compile Include="DomainModels\Solaris\PriceListMap.cs" />
     <Compile Include="DomainModels\Solaris\PurchaseRequest.cs" />
     <Compile Include="DomainModels\WIH\WIHRequest.cs" />
+    <Compile Include="Migrations\201606010958311_fadf.cs" />
+    <Compile Include="Migrations\201606010958311_fadf.Designer.cs">
+      <DependentUpon>201606010958311_fadf.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -167,6 +171,11 @@
       <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
       <Name>WIHInteract</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606010958311_fadf.resx">
+      <DependentUpon>201606010958311_fadf.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

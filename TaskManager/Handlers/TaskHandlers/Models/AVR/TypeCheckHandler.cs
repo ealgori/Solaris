@@ -116,7 +116,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             }
             if (eMailModels.Count > 0)
             {
-                var emailParam = new EmailParams(new List<string>() { DistributionConstants.EalgoriEmail }, "AVR type change missmatch");
+                var emailParam = new EmailParams(new List<string>() { DistributionConstants.EalgoriEmail, "dmitriy.b.egorov@ericsson.com" }, "AVR type change missmatch");
                 emailParam.DataTables.Add("avr.xls",eMailModels.ToDataTable());
                 emailParam.HtmlBody = "Тип этих АВР требует изменения, однако их анализ уже был произведен.";
                 TaskParameters.EmailHandlerParams.EmailParams.Add(emailParam);

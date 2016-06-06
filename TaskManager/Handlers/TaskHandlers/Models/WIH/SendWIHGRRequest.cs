@@ -29,7 +29,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         public override bool Handle()
         {
             bool test = false;
+            bool jogging = true;
             string testAvr = "207241";
+            List<string> poList = new List<string>();
 
             // текущая дата больше, чем эта и два месяца и первое число.
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
@@ -85,10 +87,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             )
             // смотрим, что позже, дата выпуска по или время окончания работ, и от этого позднего высчитываем TwoMonthRange
             .ToList()
-            .Where(a =>
+            //.Where(a =>
                 ////Max(a.WorkEnd, a.DataVipuskaPO) // это не включать
-                a.WorkEnd.TwoMonthRange(now))
-              .ToList();
+                //a.WorkEnd.TwoMonthRange(now)) // 02.06.2016 - решено отменить эту практику
+              //.ToList()
+              ;
 
             if (test)
             {
@@ -117,7 +120,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             continue;
                         }
                         // сохраним файл GR в архив
-                        var grFileName = GenerateGRName(avr.AVRId, avr.PurchaseOrderNumber);
+                        var grFileName = GenerateGRName(avr.AVRId, avr.PurchaseOrderNumber,jogging);
                         var archive = Path.Combine(TaskParameters.DbTask.ArchiveFolder, now.ToString(@"yyyy\\MM\\dd"));
                         if (!Directory.Exists(archive))
                         {
@@ -140,16 +143,19 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                         string internalMailType = WIHInteract.Constants.InternalMailTypeAVRGR;
                         var mailInf = MailInfoFactory.GetGRInfo(internalMailType, filePath);
-
-                        var result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS", test);
-                        if (string.IsNullOrEmpty(result) || (string.IsNullOrWhiteSpace(result)))
+                        poList.Add(avr.PurchaseOrderNumber);
+                        if (!jogging)
                         {
-                            TaskParameters.TaskLogger.LogError(string.Format("Функция отправки письма не вернула ConversationIndex "));
-                        }
-                        else
-                        {
+                            var result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS", test);
+                            if (string.IsNullOrEmpty(result) || (string.IsNullOrWhiteSpace(result)))
+                            {
+                                TaskParameters.TaskLogger.LogError(string.Format("Функция отправки письма не вернула ConversationIndex "));
+                            }
+                            else
+                            {
 
-                            requestList.Add(new ShWIHRequest() { AVRId = avr.AVRId, WIHrequests = grFileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeAVRGR });
+                                requestList.Add(new ShWIHRequest() { AVRId = avr.AVRId, WIHrequests = grFileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeAVRGR });
+                            }
                         }
 
                     }
@@ -157,6 +163,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 }
 
             }
+            var bytes = NpoiInteract.DataTableToExcel(poList.ToDataTable());
+            CommonFunctions.StaticHelpers.ByteArrayToFile(@"C:\Temp\123\avrGRLogs.xls", bytes);
+
             if (requestList.Count > 0)
             {
 
@@ -166,9 +175,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             return true;
         }
 
-        private string GenerateGRName(string avrId, string po)
+        private string GenerateGRName(string avrId, string po, bool jogging)
         {
-            return string.Format("GR-{0}-{1}-{3}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath), DateTime.Now.ToString("ddMMyyyy"));
+            return string.Format("GR-{0}-{1}-{3}{4}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath), DateTime.Now.ToString("ddMMyyyy"),jogging?"-N":"");
         }
 
 

@@ -56,10 +56,34 @@ namespace TestProject.GR_TO_Test.ShItemSelect
             else
                 Assert.Fail();
 
+
+
+
+            // дополнительно - пробег по всем(хак)
+            summ = 47.3M;
+            if (baseShItemSelect.Select(models, summ, out selected))
+            {
+                if (selected.Sum(s => s.Qty) != summ)
+                    Assert.Fail();
+            }
+            else
+                Assert.Fail();
+
+            // дополнительно - пробег до середины(хак)
+            summ = 36M;
+            if (baseShItemSelect.Select(models, summ, out selected))
+            {
+                if (selected.Sum(s => s.Qty) != summ)
+                    Assert.Fail();
+            }
+            else
+                Assert.Fail();
+
+
             // отсутствие количества и цены
             // присутствие GR
-            
-             
+
+
 
 
 

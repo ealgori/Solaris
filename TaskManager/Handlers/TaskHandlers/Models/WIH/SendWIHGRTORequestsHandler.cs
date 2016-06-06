@@ -34,7 +34,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
             var logGrModels = new List<LogGRModel>();
 
-            bool test = false;
+            bool test = true;
             bool jugging = true;
 
             var toItems = TaskParameters.Context.ShTOes.Where(t => t.Year == "2016" && !string.IsNullOrEmpty(t.PONumber)).
@@ -44,6 +44,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     new ShItemModel
                     {
                         TO = t.TO.TO,
+                        ObichniyReqularniyTO = t.TO.ObichniyRegulyarniyTO.Trim(),
                         PO = t.TO.PONumber,
                         Id = t.Item.TOItem,
                         Price = t.Item.PriceFromPL,
@@ -54,7 +55,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                         GR = t.Item.GRName,
                         Vendor = t.Vendor.SAPNumber,
                         WorkConfirmedByEricsson = t.Item.WorkConfirmedByEricsson,
-                        ActId = t.Item.ActId
+                        ActId = t.Item.ActId,
+                        ExcludeFromTO = t.Item.ExcludeWork.HasValue?t.Item.ExcludeWork.Value:false
 
 
 
@@ -65,11 +67,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             if (test)
             {
                 toItems = toItems.Where(t =>
-                t.Key == "4512498621"
-                || t.Key == "4512678010"
-                || t.Key == "4512718056"
-                || t.Key == "4512718449"
-                || t.Key == "4512718661"
+                t.Key == "4512587435"
+                || t.Key == "4512587047"
+                //|| t.Key == "4512718056"
+                //|| t.Key == "4512718449"
+                //|| t.Key == "4512718661"
 
 
 
@@ -102,12 +104,14 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
             }
             // переместить папку в лог
-
-            if (!Directory.Exists(reportDatedPath))
+            if (!test)
             {
-                Directory.CreateDirectory(reportDatedPath);
+                if (!Directory.Exists(reportDatedPath))
+                {
+                    Directory.CreateDirectory(reportDatedPath);
+                }
+                File.Move(reportFile, Path.Combine(reportDatedPath, Path.GetFileName(reportFile)));
             }
-            File.Move(reportFile, Path.Combine(reportDatedPath, Path.GetFileName(reportFile)));
 
 
 
@@ -117,8 +121,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             var firstPart = new FirstPart();
             var secondPart = new SecondPart();
             DateTime processDate = DateTime.Now;
+            var icount = toItems.Count();
+            var counter = 0;
+
             foreach (var items in toItems)
             {
+                counter++;
+                TaskParameters.TaskLogger.LogDebug($"{items.Key} - {counter}:{icount}");
                 var sapRows = reader.Rows
                     .Where(r => string.IsNullOrEmpty(r.PODeletionIndicator))
                     .Where(r => r.PO == items.Key)
@@ -216,9 +225,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     r.GRModels
                         .ForEach(i =>
                         {
-                            i.Act = string.Join(",", r.ShModels.Select(m => m.ActId));
+                            i.Act = string.Join(",", r.ShModels.Select(m => m.ActId).Distinct());
                             i.TOItem = string.Join(",", r.ShModels.Select(m => m.Id));
-                            i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("dd.MM.yyyy"))); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
+                            i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("MM").Distinct())); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
                             });
 
 
