@@ -67,11 +67,41 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             if (test)
             {
                 toItems = toItems.Where(t =>
-                t.Key == "4512587435"
-                || t.Key == "4512587047"
-                //|| t.Key == "4512718056"
-                //|| t.Key == "4512718449"
-                //|| t.Key == "4512718661"
+                t.Key == "4512589865"
+                ||t.Key == "4512630685"
+                || t.Key == "4512634138"
+
+
+                // t.Key == "4512489091"
+                //|| t.Key == "4512489134"
+                //|| t.Key == "4512489997"
+                //|| t.Key == "4512490527"
+                //|| t.Key == "4512550973"
+                //|| t.Key == "4512556317"
+                //|| t.Key == "4512587439"
+                //|| t.Key == "4512587488"
+                //|| t.Key == "4512642044"
+                //|| t.Key == "4512718845"
+                //|| t.Key == "4512769050"
+                //|| t.Key == "4512769539"
+                //|| t.Key == "4512769670"
+                //|| t.Key == "4512769841"
+                //|| t.Key == "4512773172"
+                //|| t.Key == "4512773207"
+                //|| t.Key == "4512773245"
+                //|| t.Key == "4512773362"
+                //|| t.Key == "4512773476"
+                //|| t.Key == "4512773539"
+                //|| t.Key == "4512773664"
+                //|| t.Key == "4512773716"
+                //|| t.Key == "4512774059"
+                //|| t.Key == "4512788668"
+                //|| t.Key == "4512894853"
+                //|| t.Key == "4512894898"
+                //|| t.Key == "4512894911"
+                //|| t.Key == "4512975749"
+                //|| t.Key == "4512975989"
+                //|| t.Key == "4512587741"
 
 
 
@@ -141,12 +171,14 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                     })
                     .ToList();
-                var itemsGroupBySapCode = items.GroupBy(i => new { i.MaterialCode, i.Price });
-                foreach (var itemsByCode in itemsGroupBySapCode)
-                {
+                var itemsGroupBySapCode = items.GroupBy(i => new {
+                    //i.MaterialCode,
+                    i.Price });
+                foreach (var itemsByCode in itemsGroupBySapCode)    // 07.06.2016 - пробуем отказаться от группировке по материал коду
+                {                                                   // 
                     var sapRowsByCode = sapRows.Where(r =>
-                    r.MaterialCode == itemsByCode.Key.MaterialCode
-                    && r.Price == itemsByCode.Key.Price
+                    //r.MaterialCode == itemsByCode.Key.MaterialCode&&
+                    r.Price == itemsByCode.Key.Price
 
                     ).ToList();
 
@@ -225,9 +257,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     r.GRModels
                         .ForEach(i =>
                         {
-                            i.Act = string.Join(",", r.ShModels.Select(m => m.ActId).Distinct());
+                            i.Act = string.Join(",", r.ShModels.Select(m => m.ActId).Distinct().ToList());
                             i.TOItem = string.Join(",", r.ShModels.Select(m => m.Id));
-                            i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("MM").Distinct())); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
+                            i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("MM")).Distinct().ToList()); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
                             });
 
 
@@ -291,7 +323,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                     string result = "jugging";
                     if (!jugging)
                     {
-                        result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS", test);
+                        result = WIHInteractor.SendMailToWIHRussia(mailInf, "SOLARIS");
                     }
                     if (string.IsNullOrEmpty(result) || (string.IsNullOrWhiteSpace(result)))
                     {
@@ -364,6 +396,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 "aleksey.gorin@ericsson.com" }
                 , "GR TO log");
                 emailParams.DataTables.Add("Log.xls", logGrModels.ToDataTable());
+                emailParams.HtmlBody += TaskParameters.DbTask.ArchiveFolder;
                 TaskParameters.EmailHandlerParams.EmailParams.Add(emailParams);
             }
 

@@ -144,6 +144,17 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             });
                             break;
                         }
+
+                    case WIHInteract.Constants.InternalMailTypeTOGR:
+                        {
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHrequests = shRequest.WIHrequests,
+                                CompletedByOD = DateTime.Now
+
+                            });
+                            break;
+                        }
                     case WIHInteract.Constants.InternalMailTypeTOPORDel: 
                         {
                             PORResult.Add(new ShWIHRequest
@@ -274,6 +285,24 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 AvrId = shRequest.AVRId,
                                
                             });
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHrequests = shRequest.WIHrequests,
+                                RejectedByOD = DateTime.Now,
+                                RejectedComment = RejectReason
+                            });
+
+                            break;
+
+                        }
+
+                    case WIHInteract.Constants.InternalMailTypeTOGR:
+                        {
+                            //GRResult.Add(new ClearFaktVipolneniyaPodtv
+                            //{
+                            //    AvrId = shRequest.AVRId,
+
+                            //});
                             PORResult.Add(new ShWIHRequest
                             {
                                 WIHrequests = shRequest.WIHrequests,
@@ -427,6 +456,19 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             });
                             break;
                         }
+                    case WIHInteract.Constants.InternalMailTypeTOGR:
+                        {
+
+                            PORResult.Add(new ShWIHRequest
+                            {
+                                WIHnumber = WIHId,
+                                WIHrequests = fileName,
+                                Type = WIHInteract.Constants.InternalMailTypeTOGR
+                            });
+                            break;
+                        }
+
+
                     case WIHInteract.Constants.InternalMailTypeSAPCODE:
                         {
                             var request = TaskParameters.Context.WIHRequests.FirstOrDefault(wr => wr.Filename == fileName);

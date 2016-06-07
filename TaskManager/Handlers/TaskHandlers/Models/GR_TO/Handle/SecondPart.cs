@@ -31,19 +31,20 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
                 // i.TOFactDate.Max(i.TOPlanDate).TwoMonthRange(date) // 02.06.2016 решили отменить
                 //&&
                 i.WorkConfirmedByEricsson
+                &&!i.ExcludeFromTO
                 &&
                 (
                     (i.ObichniyReqularniyTO != toTypeBezPodtv
-                    && i.ShAct != null   
+                    && i.ShAct != null
                     && i.ShAct.ActApprovedDate.HasValue)
                     ||
                     (i.ObichniyReqularniyTO == toTypeBezPodtv) // для регулятрных без подтверждения работ нет необходимост вообще обращать внимания на акт.
                 )
-                
+
             ).ToList();
             if(tmrItems.Count==0)
             {
-                logManager.Add(toItems, sapItems, $"Нет позиций с подходящими датами приемки, подтвержденными работами или принятыми актами", LogStatus.Debug);
+                logManager.Add(toItems, sapItems, $"Нет позиций с подтвержденными работами или принятыми актами", LogStatus.Debug);
                 return null; 
             }
             if (tmrItems.Count != toItems.Count)

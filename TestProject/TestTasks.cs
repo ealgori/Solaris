@@ -949,6 +949,8 @@ namespace TestProject
             public void TypeCheckHandler()
             {
                 var props = typeof(TaskManager.Handlers.TaskHandlers.Models.Billing.DataToSH.TOVympelcomManSer).GetProperties();
+            try
+            {
                 using (Context context = new Context())
                 {
 
@@ -956,6 +958,13 @@ namespace TestProject
                     var task = TaskFactory.GetTaskTest(paramsdd, context);
                     task.Process();
                 }
+            }
+            catch (Exception exc)
+            {
+
+                throw;
+            }
+           
 
             }
 [TestMethod]
