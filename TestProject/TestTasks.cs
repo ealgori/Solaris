@@ -91,9 +91,16 @@ namespace TestProject
         [TestMethod]
         public void PropisTest()
         {
-           var number=   13452.22M;
+
+
+
+            var number=   13452.22M;
             MoneyToStr ds = new MoneyToStr("UAH", "UKR", "");
-            var res  = ds.convertValue((double)(number));
+
+            ds = null;
+
+
+            var res  = ds?.convertValue((double)(number));
             // var result = CommonFunctions.InWords.Валюта.Рубли.Пропись(number, CommonFunctions.InWords.Заглавные.Первая);
 
         }
@@ -1422,6 +1429,17 @@ namespace TestProject
             {
 
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendNotifyHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+        [TestMethod]
+        public void SendToSubcontractorHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendToSubcontractorHandler") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }

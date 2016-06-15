@@ -442,6 +442,15 @@ namespace TaskManager
                         task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
                     }
+                case "SendToSubcontractorHandler":
+                    {
+                        task.TaskHandler = new SendToSubcontractorHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
                 default:
                     {
 

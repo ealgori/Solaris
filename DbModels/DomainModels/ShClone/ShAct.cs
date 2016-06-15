@@ -22,6 +22,12 @@ namespace DbModels.DomainModels.ShClone
         public decimal? ObshayaStoimost { get; set; }
        
         public DateTime? ActApprovedDate { get; set; }
+        /// <summary>
+        /// Дата автоматической отправки подрядчику
+        /// </summary>
+        public DateTime? SendToSubcontracor { get; set; }
+        //Дата создания объекта
+        public DateTime? CreateDate { get; set; }
 
     }
 }

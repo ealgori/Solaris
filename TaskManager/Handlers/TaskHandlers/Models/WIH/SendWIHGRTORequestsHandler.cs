@@ -34,8 +34,10 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
             var logGrModels = new List<LogGRModel>();
 
+            // смотрим конкретные ПО
             bool test = true;
-            bool jugging = true;
+            // ничего не отправляем
+            bool jugging = false;
 
             var toItems = TaskParameters.Context.ShTOes.Where(t => t.Year == "2016" && !string.IsNullOrEmpty(t.PONumber)).
                 Join(TaskParameters.Context.SubContractors, t => t.Subcontractor, i => i.ShName, (t, v) => new { TO = t, Vendor = v }).// джойним с подрядчиками
@@ -56,7 +58,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                         Vendor = t.Vendor.SAPNumber,
                         WorkConfirmedByEricsson = t.Item.WorkConfirmedByEricsson,
                         ActId = t.Item.ActId,
-                        ExcludeFromTO = t.Item.ExcludeWork.HasValue?t.Item.ExcludeWork.Value:false
+                        ExcludeFromTO = t.Item.ExcludeWork.HasValue ? t.Item.ExcludeWork.Value : false
 
 
 
@@ -67,41 +69,23 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             if (test)
             {
                 toItems = toItems.Where(t =>
-                t.Key == "4512589865"
-                ||t.Key == "4512630685"
+
+
+                t.Key == "4512719067"
+                || t.Key == "4512779897"
+                || t.Key == "4512787648"
+                || t.Key == "4512819364"
+                || t.Key == "4512819397"
+                || t.Key == "4512629500"
+                || t.Key == "4512769638"
+                || t.Key == "4512773270"
                 || t.Key == "4512634138"
+                || t.Key == "4512589865"
+                || t.Key == "4512769462"
+                || t.Key == "4512622251"
+                || t.Key == "4512769087"
+                || t.Key == "4512916261"
 
-
-                // t.Key == "4512489091"
-                //|| t.Key == "4512489134"
-                //|| t.Key == "4512489997"
-                //|| t.Key == "4512490527"
-                //|| t.Key == "4512550973"
-                //|| t.Key == "4512556317"
-                //|| t.Key == "4512587439"
-                //|| t.Key == "4512587488"
-                //|| t.Key == "4512642044"
-                //|| t.Key == "4512718845"
-                //|| t.Key == "4512769050"
-                //|| t.Key == "4512769539"
-                //|| t.Key == "4512769670"
-                //|| t.Key == "4512769841"
-                //|| t.Key == "4512773172"
-                //|| t.Key == "4512773207"
-                //|| t.Key == "4512773245"
-                //|| t.Key == "4512773362"
-                //|| t.Key == "4512773476"
-                //|| t.Key == "4512773539"
-                //|| t.Key == "4512773664"
-                //|| t.Key == "4512773716"
-                //|| t.Key == "4512774059"
-                //|| t.Key == "4512788668"
-                //|| t.Key == "4512894853"
-                //|| t.Key == "4512894898"
-                //|| t.Key == "4512894911"
-                //|| t.Key == "4512975749"
-                //|| t.Key == "4512975989"
-                //|| t.Key == "4512587741"
 
 
 
@@ -129,7 +113,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             }
             else
             {
-              
+
 
 
             }
@@ -171,9 +155,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                     })
                     .ToList();
-                var itemsGroupBySapCode = items.GroupBy(i => new {
+                var itemsGroupBySapCode = items.GroupBy(i => new
+                {
                     //i.MaterialCode,
-                    i.Price });
+                    i.Price
+                });
                 foreach (var itemsByCode in itemsGroupBySapCode)    // 07.06.2016 - пробуем отказаться от группировке по материал коду
                 {                                                   // 
                     var sapRowsByCode = sapRows.Where(r =>
@@ -260,7 +246,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             i.Act = string.Join(",", r.ShModels.Select(m => m.ActId).Distinct().ToList());
                             i.TOItem = string.Join(",", r.ShModels.Select(m => m.Id));
                             i.FactDate = string.Join(",", r.ShModels.Select(m => m.TOFactDate.Value.ToString("MM")).Distinct().ToList()); /// потенцияальная возможность ошибки, если факт дэйт не заполнен вдруг
-                            });
+                        });
 
 
                 });

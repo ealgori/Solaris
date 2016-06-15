@@ -49,7 +49,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
             }
             if (tmrItems.Count != toItems.Count)
             {
-                logManager.Add(toItems, sapItems, $"После фильтра по дате осталось :{tmrItems.Count} из {toItems.Count}", LogStatus.Debug);
+                var itemsSumm = toItems.Sum(s => s.Qty * s.Price);
+                var tmpItemsSumm = tmrItems.Sum(s => s.Qty * s.Price);
+                logManager.Add(toItems, sapItems, $"После фильтра по дате осталось :{tmrItems.Count}({tmpItemsSumm}) из {toItems.Count}({itemsSumm})", LogStatus.Debug);
             }
 
             var grCount = sapItems.Sum(r => r.GRQty);

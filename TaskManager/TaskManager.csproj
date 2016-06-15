@@ -104,6 +104,7 @@
     <Compile Include="Handlers\ImportHandlers\Models\Models\ImportClasses\SurfaceImporter.cs" />
     <Compile Include="Handlers\TaskHandlers\Abstract\ATaskHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Acts\ActsInvoiceLinkingHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Acts\SendToSubcontractor.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAIQuantifier.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoReport.Rev2.cs" />

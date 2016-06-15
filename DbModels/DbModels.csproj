@@ -139,6 +139,14 @@
     <Compile Include="Migrations\201606071314277_fdfal.Designer.cs">
       <DependentUpon>201606071314277_fdfal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606081026562_fdfa1.cs" />
+    <Compile Include="Migrations\201606081026562_fdfa1.Designer.cs">
+      <DependentUpon>201606081026562_fdfa1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606100943166_fdfad.cs" />
+    <Compile Include="Migrations\201606100943166_fdfad.Designer.cs">
+      <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -189,6 +197,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606071314277_fdfal.resx">
       <DependentUpon>201606071314277_fdfal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606081026562_fdfa1.resx">
+      <DependentUpon>201606081026562_fdfa1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606100943166_fdfad.resx">
+      <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

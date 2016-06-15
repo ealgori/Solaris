@@ -56,6 +56,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             {
                 //получаем неотосланные сап коды
                 List<SapCodeViewModel> scvModel = StaticHelpers.GetStoredProcDataFromContext<SapCodeViewModel>(context, "SendSapCodes", null);
+
+                // проверим сап кода для исключения дублей.
+                var groups = scvModel.GroupBy(g => g.Code);
+                var grMore1 = groups.Where(g => g.Count() > 1);
+                if (grMore1.Count()>0)
+                {
+                    TaskParameters.TaskLogger.LogError($"Ошибка. Дубликаты сап кодов.{string.Join(",", grMore1.Select(g=>g.Key).ToList())}");
+                    return false;
+                }
+
                 string emailId = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string fileName = string.Format("newSapCodes({0}).xlsx", emailId);
 
@@ -100,10 +110,20 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                         foreach (var sc in scvModel)
                         {
-                            var code = context.SAPCodes.FirstOrDefault(sco => sco.Code == sc.Code);
-                            code.ExistedInSAP = true;
-                            code.EmailId = fileName;
-                            context.SaveChanges();
+                            var codes = context.SAPCodes.Where(sco => sco.Code == sc.Code).ToList();
+                            if(codes.Count>1)
+                            {
+                                TaskParameters.TaskLogger.LogError($"Ошибка! Сапкодов {sc.Code} больше одного. ");
+                                Console.ReadLine();
+                            }
+
+                            var code = codes.FirstOrDefault();
+                            if (code != null)
+                            {
+                                code.ExistedInSAP = true;
+                                code.EmailId = fileName;
+                                context.SaveChanges();
+                            }
 
                         }
                         // создаем запись о запросе в вих.

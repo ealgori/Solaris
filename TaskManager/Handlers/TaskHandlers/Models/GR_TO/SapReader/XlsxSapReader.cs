@@ -27,7 +27,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.SapReader
         }
         public void Read()
         {
-            var wsObjs = EpplusSimpleUniReport.ReadFile(FilePath, "zzpomon", 2);
+            var wsObjs = EpplusSimpleUniReport.ReadFile(FilePath, null, 2);
             if(wsObjs==null||wsObjs.Count==0)
             {
                 throw new Exception($"Не удается прочитать файл {FilePath}");

@@ -43,10 +43,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
               !string.IsNullOrEmpty(a.Year)
               && a.ObjectCreateDate>minCreateDate
               ).ToList();
-            //if(test)
-            //{
-            //    avr2016 = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == "200001").ToList();
-            //}
+            if (test)
+            {
+                var contains = avr2016.Where(a=>a.AVRId=="207924").ToList();
+                avr2016 = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == "207924").ToList();
+
+            }
             var avrWithfLimit = avr2016.Where(a => a.Items.Any(i => i.Limit != null)).ToList();
             var withoutLimit = avr2016.Except(avrWithfLimit).
                 Where(i=>i.Items.Count>0). // для исключения авр без позиций.их проверять пока еще рано.

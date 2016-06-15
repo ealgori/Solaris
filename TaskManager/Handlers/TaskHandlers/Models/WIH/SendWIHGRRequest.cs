@@ -29,8 +29,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         public override bool Handle()
         {
             bool test = false;
-            bool jogging = true;
-            string testAvr = "207241";
+            bool jogging = false;
+            string testAvr = "201329";
             List<string> poList = new List<string>();
 
             // текущая дата больше, чем эта и два месяца и первое число.
@@ -43,43 +43,15 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
              && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
             && (a.Year == "2016" || a.Year == "2017")
             && !a.GRCreated.HasValue
-            // )
-            //a.PurchaseOrderNumber == "4512444164" ||
-            //a.PurchaseOrderNumber == "4513003468" ||
-            //a.PurchaseOrderNumber == "4513041239" ||
-            //a.PurchaseOrderNumber == "4513041272" ||
-            //a.PurchaseOrderNumber == "4513041371" ||
-            //a.PurchaseOrderNumber == "4513041822" ||
-            //a.PurchaseOrderNumber == "4513041942" ||
-            //a.PurchaseOrderNumber == "4513042244" ||
-            //a.PurchaseOrderNumber == "4513042411" ||
-            //a.PurchaseOrderNumber == "4513042509" ||
-            //a.PurchaseOrderNumber == "4513042728" ||
-            //a.PurchaseOrderNumber == "4513042881" ||
-            //a.PurchaseOrderNumber == "4513042884" ||
-            //a.PurchaseOrderNumber == "4513042915" ||
-            //a.PurchaseOrderNumber == "4513042958" ||
-            //a.PurchaseOrderNumber == "4513042990" ||
-            //a.PurchaseOrderNumber == "4513043027" ||
-            //a.PurchaseOrderNumber == "4513043032" ||
-            //a.PurchaseOrderNumber == "4513043056" ||
-            //a.PurchaseOrderNumber == "4513043094" ||
-            //a.PurchaseOrderNumber == "4513043128" ||
-            //a.PurchaseOrderNumber == "4513043210" ||
-            //a.PurchaseOrderNumber == "4513043237" ||
-            //a.PurchaseOrderNumber == "4513043286" ||
-            //a.PurchaseOrderNumber == "4513043332" ||
-            //a.PurchaseOrderNumber == "4513043392" ||
-            //a.PurchaseOrderNumber == "4513043518" ||
-            //a.PurchaseOrderNumber == "4513043592" ||
-            //a.PurchaseOrderNumber == "4513043682" ||
-            //a.PurchaseOrderNumber == "4513044215" ||
-            //a.PurchaseOrderNumber == "4513044576" ||
-            //a.PurchaseOrderNumber == "4513044751" ||
-            //a.PurchaseOrderNumber == "4513045187" ||
-            //a.PurchaseOrderNumber == "4513045357" ||
-            //a.PurchaseOrderNumber == "4513028594" ||
-            //a.PurchaseOrderNumber == "4512444164"
+            && (
+            a.PurchaseOrderNumber == "4513135611" ||
+            a.PurchaseOrderNumber == "4513170177" ||
+            a.PurchaseOrderNumber == "4513170184" ||
+            a.PurchaseOrderNumber == "4513170167" ||
+            a.PurchaseOrderNumber == "4513186035" 
+
+
+            )
 
 
 
