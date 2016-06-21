@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug2\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -131,6 +131,8 @@
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\LimitExecImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRStatusImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\ShVCRequestImport.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDistrHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\NewAVRDistrHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitAI\FileReader.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitCalc.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\NotifyHandler.cs" />

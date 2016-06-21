@@ -32,14 +32,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Handle
                 //&&
                 i.WorkConfirmedByEricsson
                 &&!i.ExcludeFromTO
-                &&
-                (
-                    (i.ObichniyReqularniyTO != toTypeBezPodtv
-                    && i.ShAct != null
-                    && i.ShAct.ActApprovedDate.HasValue)
-                    ||
-                    (i.ObichniyReqularniyTO == toTypeBezPodtv) // для регулятрных без подтверждения работ нет необходимост вообще обращать внимания на акт.
-                )
+                && i.ShAct != null
+                && i.ShAct.ActApprovedDate.HasValue
+            //&& // 17.06.2016. Решили что на акт всер авно надо обращать внимание
+            //(
+            //    (i.ObichniyReqularniyTO != toTypeBezPodtv
+            //    && i.ShAct != null
+            //    && i.ShAct.ActApprovedDate.HasValue)
+            //    ||
+            //    (i.ObichniyReqularniyTO == toTypeBezPodtv) // для регулятрных без подтверждения работ нет необходимост вообще обращать внимания на акт.
+            //)
 
             ).ToList();
             if(tmrItems.Count==0)

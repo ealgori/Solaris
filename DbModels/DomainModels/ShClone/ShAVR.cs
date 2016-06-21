@@ -171,6 +171,8 @@ namespace DbModels.DomainModels.ShClone
         public string TypeCheck { get; set; }
         public DateTime? ObjectCreateDate { get; set; }
 
+        public DateTime? SendToSubc { get; set; }
+
 
 
     }

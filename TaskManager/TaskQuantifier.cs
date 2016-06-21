@@ -451,6 +451,25 @@ namespace TaskManager
                         task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
                     }
+
+                case "EmptyAVRDistrHandler":
+                    {
+                        task.TaskHandler = new EmptyAVRDistrHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        //task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
+                case "NewAVRDistrHandler":
+                    {
+                        task.TaskHandler = new NewAVRDistrHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
                 default:
                     {
 

@@ -5,6 +5,7 @@ using DbModels.DataContext;
 
 using System.Linq;
 using TaskManager;
+using System.Reflection;
 
 namespace TestProject.GR_TO_Test
 {
@@ -14,14 +15,27 @@ namespace TestProject.GR_TO_Test
         [TestMethod]
         public void SendWIHGRTORequestsHandler()
         {
-            using (Context context = new Context())
+
+            try
+            {
+              
+
+                
+                using (Context context = new Context())
+                        {
+
+                            DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHGRTORequestsHandler") };
+                            var task = TaskFactory.GetTaskTest(paramsdd, context);
+                            task.Process();
+
+                        }
+            }
+            catch (Exception ex)
             {
 
-                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHGRTORequestsHandler") };
-                var task = TaskFactory.GetTaskTest(paramsdd, context);
-                task.Process();
-
+                throw;
             }
+          
         }
     }
 }

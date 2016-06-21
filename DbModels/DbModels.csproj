@@ -98,6 +98,7 @@
     <Compile Include="DomainModels\Metadata\FKAttribute.cs" />
     <Compile Include="DomainModels\Metadata\ExcludeAttribute.cs" />
     <Compile Include="DomainModels\SAT\VCRequestToCreate.cs" />
+    <Compile Include="DomainModels\ShClone\ShFilialStruct.cs" />
     <Compile Include="DomainModels\ShClone\ShAct.cs" />
     <Compile Include="DomainModels\ShClone\ShAddAgreement.cs" />
     <Compile Include="DomainModels\ShClone\ShAVR.cs" />
@@ -146,6 +147,38 @@
     <Compile Include="Migrations\201606100943166_fdfad.cs" />
     <Compile Include="Migrations\201606100943166_fdfad.Designer.cs">
       <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606161007548_fdfdfa.cs" />
+    <Compile Include="Migrations\201606161007548_fdfdfa.Designer.cs">
+      <DependentUpon>201606161007548_fdfdfa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606161110466_fdfdfa2.cs" />
+    <Compile Include="Migrations\201606161110466_fdfdfa2.Designer.cs">
+      <DependentUpon>201606161110466_fdfdfa2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606170656318_fdfdf.cs" />
+    <Compile Include="Migrations\201606170656318_fdfdf.Designer.cs">
+      <DependentUpon>201606170656318_fdfdf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606170735021_fdfdff.cs" />
+    <Compile Include="Migrations\201606170735021_fdfdff.Designer.cs">
+      <DependentUpon>201606170735021_fdfdff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606171003046_fdfdffg.cs" />
+    <Compile Include="Migrations\201606171003046_fdfdffg.Designer.cs">
+      <DependentUpon>201606171003046_fdfdffg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606171116596_fdfdffgо.cs" />
+    <Compile Include="Migrations\201606171116596_fdfdffgо.Designer.cs">
+      <DependentUpon>201606171116596_fdfdffgо.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606200736337_fdfdffgоа.cs" />
+    <Compile Include="Migrations\201606200736337_fdfdffgоа.Designer.cs">
+      <DependentUpon>201606200736337_fdfdffgоа.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606210654048_fdfdffgоаs.cs" />
+    <Compile Include="Migrations\201606210654048_fdfdffgоаs.Designer.cs">
+      <DependentUpon>201606210654048_fdfdffgоаs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -203,6 +236,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606100943166_fdfad.resx">
       <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606161007548_fdfdfa.resx">
+      <DependentUpon>201606161007548_fdfdfa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606161110466_fdfdfa2.resx">
+      <DependentUpon>201606161110466_fdfdfa2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606170656318_fdfdf.resx">
+      <DependentUpon>201606170656318_fdfdf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606170735021_fdfdff.resx">
+      <DependentUpon>201606170735021_fdfdff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606171003046_fdfdffg.resx">
+      <DependentUpon>201606171003046_fdfdffg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606171116596_fdfdffgо.resx">
+      <DependentUpon>201606171116596_fdfdffgо.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606200736337_fdfdffgоа.resx">
+      <DependentUpon>201606200736337_fdfdffgоа.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606210654048_fdfdffgоаs.resx">
+      <DependentUpon>201606210654048_fdfdffgоаs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -60,12 +60,12 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Interop.Redemption">
-      <HintPath>\\RU00112284\p\Soft\Libs\Interop.Redemption.dll</HintPath>
+    <Reference Include="Interop.Redemption2016">
+      <HintPath>\\RU00112284\p\Libs\Interop.Redemption2016.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\..\AstelitOHDB\TestProject\bin\Debug1\Ionic.Zip.dll</HintPath>
+      <HintPath>\\RU00112284\p\Libs\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>

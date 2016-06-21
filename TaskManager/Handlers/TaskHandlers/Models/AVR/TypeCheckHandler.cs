@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskManager.Handlers.TaskHandlers.Models.Email;
 using TaskManager.TaskParamModels;
 using CommonFunctions.Extentions;
+using DbModels.DomainModels.ShClone;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AVR
 {
@@ -20,6 +21,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
         public override bool Handle()
         {
             bool test = false;
+            string testAvr = "207945";
             string bidType04 = "04- Лимитированные работы (необходимо перевыставить Вымпелком)";
             string bidType00 = "00- Обычная (работы предусмотрены в контракте Вымпелком)";
             string bidChecked = "Checked";
@@ -45,8 +47,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
               ).ToList();
             if (test)
             {
-                var contains = avr2016.Where(a=>a.AVRId=="207924").ToList();
-                avr2016 = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == "207924").ToList();
+                var contains = avr2016.Where(a=>a.AVRId== testAvr).ToList();
+                avr2016 = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == testAvr).ToList();
 
             }
             var avrWithfLimit = avr2016.Where(a => a.Items.Any(i => i.Limit != null)).ToList();
@@ -58,6 +60,15 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                                 .All(i =>
                                     i.InLimit.HasValue
                                     && i.InLimit.Value == true)).ToList();
+            if(test)
+            {
+                Func<ShAVRs, bool> equal = a => a.AVRId == testAvr;
+                var withLim = avrWithfLimit.Where(equal);
+                var woLim = withoutLimit.Where(equal);
+                var inLim = inLimitAVRS.Where(equal);
+            }
+
+
             foreach (var avr in inLimitAVRS)
             {
 

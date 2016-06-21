@@ -1252,13 +1252,22 @@ namespace TestProject
         [TestMethod]
         public void ActToSHHandler()
         {
-            using (Context context = new Context())
+            try
+            {
+                using (Context context = new Context())
+                {
+
+                    DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "ActToSHHandler") };
+                    var task = TaskFactory.GetTaskTest(paramsdd, context);
+                    task.Process();
+                }
+            }
+            catch (Exception exc)
             {
 
-                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "ActToSHHandler") };
-                var task = TaskFactory.GetTaskTest(paramsdd, context);
-                task.Process();
+                throw;
             }
+            
 
         }
         [TestMethod]
@@ -1491,6 +1500,28 @@ namespace TestProject
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }
+        }
+        [TestMethod]
+        public void EmptyAVRDistrHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "EmptyAVRDistrHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+        [TestMethod]
+        public void NewAVRDistrHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "NewAVRDistrHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
         }  
         [TestMethod]
         public void ItemPrepriceUploadHandler()
@@ -1594,6 +1625,8 @@ namespace TestProject
         [TestMethod]
         public void GetWIHNumbers()
         {
+            //RedemptionMailProcessor processor2 = new RedemptionMailProcessor("VCSRS");
+            //var mails2 = processor2.GetMails(new List<string> { " created" });
             RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
             var mails = processor.GetMails(new List<string> { " created" });
             List<string> WIH = new List<string>();

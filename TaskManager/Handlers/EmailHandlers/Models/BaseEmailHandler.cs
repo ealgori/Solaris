@@ -66,7 +66,7 @@ namespace TaskManager.Handlers.EmailHandlers.Models
                             }
                         mail.Body = param.HtmlBody;
                         //Отправляем
-                        interactor.SendMail(mail);
+                        interactor.SendMail(mail,null,param.TestRecipients);
 
 
                     }

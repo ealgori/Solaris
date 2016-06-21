@@ -25,7 +25,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Acts
         {
             var test = true;
 
-            DateTime startDate = new DateTime(2016,05,1);
+            DateTime startDate = new DateTime(2016,06,15);
             Expression<Func<ShAct, bool>> actExpr = a=>
             !string.IsNullOrEmpty(a.ActLink)
             &&a.ActApprovedDate.HasValue
@@ -54,12 +54,22 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Acts
                             {
                                 AutoMail mail = new AutoMail
                                 {
-                                    Subject = $"Act {shTO.TO}-{act.Act}",
-                                    Email = contact.Contact,
+                                    Subject = $"Act {shTO.TO}-({act.Act})",
+                                    Email = contact.EMailAddress,
 
                                 };
                                 mail.Attachments.Add(new Attachment() { FilePath=act.ActLink});
-                                var result = processor.SendMail(mail,null,test?DistributionConstants.EalgoriEmail:null);
+                                var result = processor.SendMail(mail,null,test?
+                                    string.Join(";",
+                                    new List<string>
+                                    {
+                                        DistributionConstants.EalgoriEmail,
+                                        DistributionConstants.EgorovEmail,
+                                        DistributionConstants.PodoruevEmail,
+                                        DistributionConstants.BorshevEmail,
+                                    }
+                                    )
+                                    :null);
                                 if(!string.IsNullOrEmpty(result))
                                 {
                                     importModels.Add(new ActSendDateImport { Act=act.Act, SendDate = now });
@@ -89,7 +99,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Acts
                 TaskParameters.EmailHandlerParams.EmailParams.Add(param);
 
             }
-            if(importModels.Count>0&&!test)
+            if(importModels.Count>0)
             {
                 TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(importModels) });
 

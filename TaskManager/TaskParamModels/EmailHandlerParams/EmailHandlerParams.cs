@@ -18,5 +18,20 @@ namespace TaskManager.TaskParamModels
             EmailParams = new List<EmailParams>();
 
         }
+
+        public void Add(List<string> recipients, List<string> ccrecipients,  string subject, bool allowWOAttach, string body, List<string> attachments, string testRecipients = null  )
+        {
+            EmailParams param = new EmailParams(recipients, subject);
+           
+            param.CCRecipients =ccrecipients;
+            param.AllowWithoutAttachments = allowWOAttach;
+            param.HtmlBody = body;
+            param.FilePaths = attachments;
+            param.TestRecipients = testRecipients;
+
+            EmailParams.Add(param);
+
+
+        }
     }
 }

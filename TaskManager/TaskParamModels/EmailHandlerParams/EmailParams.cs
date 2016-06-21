@@ -44,6 +44,8 @@ namespace TaskManager.TaskParamModels
         /// Позволяет производить отправку письма, даже если нет аттачментов, что в обычно ситуации не происходит
         /// </summary>
         public bool AllowWithoutAttachments { get; set; }
+        // тестовые ресипиенты
+        public string TestRecipients { get; set; }
 
 
         public EmailParams(List<string> recipients, string subject, string tempSaveData = "", string name = "NoNameEmailSend")

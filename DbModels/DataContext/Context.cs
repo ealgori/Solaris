@@ -98,8 +98,11 @@ namespace DbModels.DataContext
 
         public DbSet<ShVCRequest> ShVCRequests { get; set; }
         public DbSet<ShLimit> ShLimits { get; set; }
+
+        public DbSet<ShFilialStruct> ShFilialStruct { get; set; }
+
         #endregion
-        
+
         //#region WO
         //public DbSet<RANContract> RANContracts { get; set; }
         //public DbSet<RANEarlyStart> RANEarlyStarts { get; set; }

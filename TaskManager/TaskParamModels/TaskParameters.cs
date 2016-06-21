@@ -25,6 +25,8 @@ namespace TaskManager.TaskParamModels
         public ImportHandlerParams ImportHandlerParams { get; set; }
 
         public EmailHandlerParams EmailHandlerParams { get; set; }
+
+       
         #endregion
 
         public TaskParameters()
