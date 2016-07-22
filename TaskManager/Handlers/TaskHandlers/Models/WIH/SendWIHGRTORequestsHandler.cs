@@ -37,7 +37,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             // смотрим конкретные ПО
             bool test = false;
             // ничего не отправляем
-            bool jugging = true;
+            bool jugging = false;
 
             var toItems = TaskParameters.Context.ShTOes.Where(t => t.Year == "2016" && !string.IsNullOrEmpty(t.PONumber)).
                 Join(TaskParameters.Context.SubContractors, t => t.Subcontractor, i => i.ShName, (t, v) => new { TO = t, Vendor = v }).// джойним с подрядчиками
@@ -71,20 +71,20 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 toItems = toItems.Where(t =>
 
 
-                t.Key == "4512774195"
-                //|| t.Key == "4512779897"
-                //|| t.Key == "4512787648"
-                //|| t.Key == "4512819364"
-                //|| t.Key == "4512819397"
-                //|| t.Key == "4512629500"
-                //|| t.Key == "4512769638"
-                //|| t.Key == "4512773270"
-                //|| t.Key == "4512634138"
-                //|| t.Key == "4512589865"
-                //|| t.Key == "4512769462"
-                //|| t.Key == "4512622251"
-                //|| t.Key == "4512769087"
-                //|| t.Key == "4512916261"
+               t.Key == "4513118211"
+//|| t.Key == "4512630069"
+//|| t.Key == "4512826552"
+//|| t.Key == "4512826651"
+//|| t.Key == "4512826721"
+//|| t.Key == "4512826771"
+//|| t.Key == "4512920101"
+//|| t.Key == "4512920140"
+//|| t.Key == "4512920427"
+//|| t.Key == "4512974646"
+//|| t.Key == "4512974674"
+//|| t.Key == "4512975149"
+
+
 
 
 

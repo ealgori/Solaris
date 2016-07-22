@@ -37,7 +37,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.SAT
                             {
                                     Directory.CreateDirectory(datedPath);
                             }
-                                    string fileName = string.Format("ACT-{0}.xlsm", act.sat.ActName);
+                                    string fileName = string.Format("ACT-{0}.zip", act.sat.ActName);
                                     string filePath = Path.Combine(datedPath, fileName);
                                     CommonFunctions.StaticHelpers.ByteArrayToFile(filePath, actBytes);
 

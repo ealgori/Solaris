@@ -20,15 +20,23 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Limits
         public override bool Handle()
         {
             var models = new List<LimitImport>();
-            RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
-            var mails = processor.GetMails(new List<string> { "#Limits#" }).OrderByDescending(m => m.Date).ToList();
-            foreach (var mail in mails)
+            //RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
+            //var mails = processor.GetMails(new List<string> { "#Limits#" }).OrderByDescending(m => m.Date).ToList();
+            //foreach (var mail in mails)
+            //{
+            //    var attachments = mail.Attachments.Where(a => Path.GetExtension(a.FilePath).ToLower() == ".xlsx");
+
+            /// просили переделать на файлы
+            var files = Directory.GetFiles(TaskParameters.DbTask.ArchiveFolder, "*.xlsx", SearchOption.TopDirectoryOnly);
+            foreach (var file in files)
             {
-                var attachments = mail.Attachments.Where(a => Path.GetExtension(a.FilePath).ToLower() == ".xlsx");
-                foreach (var attach in attachments)
+                // var filePath = @"C:\Temp\Logs\31.05.2016\lim.xlsx";
+
+                try
                 {
-                   // var filePath = @"C:\Temp\Logs\31.05.2016\lim.xlsx";
-                    var rows = EpplusInteract.EpplusSimpleUniReport.ReadFile(attach.FilePath, "Итого", 3);
+
+
+                    var rows = EpplusInteract.EpplusSimpleUniReport.ReadFile(file, "Итого", 3);
                     // бежим по первой строчке, пока есть значен
                     var header = rows[0];
                     var props = typeof(EpplusInteract.SimpleUniReportRow).GetProperties();
@@ -78,28 +86,41 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Limits
 
 
                     }
+                    try
+                    {
+                        File.Move(Path.Combine(TaskParameters.DbTask.ArchiveFolder, Path.GetFileName(file)), Path.Combine(TaskParameters.DbTask.EmailSendFolder, Path.GetFileName(file)));
+                    }
+                    catch (Exception)
+                    {
 
-
-
-
-
-
-
-
+                        TaskParameters.TaskLogger.LogError($"Файл заблокирован {file}");
+                    }
 
                 }
-                if (models.Count() > 0)
+                catch (Exception exc)
                 {
-                    TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(models) });
+
+                    TaskParameters.TaskLogger.LogError($"Ошибка работы с файлом {file}. Видимо неверный формат файла");
                 }
 
-                var emailParam = new EmailParams(new List<string>() { mail.Email }, "LimitImport");
-                emailParam.AllowWithoutAttachments = true;
-                emailParam.HtmlBody = "Приветствую. Файл прогружен";
-                TaskParameters.EmailHandlerParams.EmailParams.Add(emailParam);
-                processor.MoveToSuccess(mail.ConversationId);
+
+
+
+
 
             }
+            if (models.Count() > 0)
+            {
+                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(models) });
+            }
+
+            //var emailParam = new EmailParams(new List<string>() { mail.Email }, "LimitImport");
+            //emailParam.AllowWithoutAttachments = true;
+            //emailParam.HtmlBody = "Приветствую. Файл прогружен";
+            //TaskParameters.EmailHandlerParams.EmailParams.Add(emailParam);
+            //processor.MoveToSuccess(mail.ConversationId);
+
+            //}
             return true;
 
         }

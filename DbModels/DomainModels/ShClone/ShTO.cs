@@ -33,5 +33,7 @@ namespace DbModels.DomainModels.ShClone
         public int? PlanObektov { get; set; }
         public string ObichniyRegulyarniyTO  { get; set; }
         public bool NotForPOR { get; set; }
+
+        public string Region { get; set; }
     }
 }

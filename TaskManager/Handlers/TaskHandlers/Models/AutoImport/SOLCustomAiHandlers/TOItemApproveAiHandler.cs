@@ -83,10 +83,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
                         List<TOApproveModel> model3 = new List<TOApproveModel>();
                         //using (Context context = new Context())
                         //{
-
+                        var shToItemsCached = context.ShTOItems.ToList();
+                       
                         foreach (var obj in unApprovedObjs)
                         {
-                            var shItem = context.ShTOItems.Find(obj.Column3);
+                            var shItem = shToItemsCached.Find(r=>r.TOItem ==obj.Column3);
                             if (shItem != null)
                                 if (shItem.WorkConfirmedByEricsson)
                                     if (string.IsNullOrEmpty(shItem.ActId))

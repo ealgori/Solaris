@@ -21,9 +21,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Acts
         {
 
         }
+        /// <summary>
+        /// свежесозаднные акты отпраялем адресатам из контактов
+        /// </summary>
+        /// <returns></returns>
         public override bool Handle()
         {
-            var test = true;
+            var test = false;
 
             DateTime startDate = new DateTime(2016,06,15);
             Expression<Func<ShAct, bool>> actExpr = a=>
@@ -59,14 +63,15 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Acts
 
                                 };
                                 mail.Attachments.Add(new Attachment() { FilePath=act.ActLink});
-                                var result = processor.SendMail(mail,null,test?
+                                var result = processor.SendMail(mail,null
+                                    ,test?
                                     string.Join(";",
                                     new List<string>
                                     {
                                         DistributionConstants.EalgoriEmail,
                                         DistributionConstants.EgorovEmail,
-                                        DistributionConstants.PodoruevEmail,
-                                        DistributionConstants.BorshevEmail,
+                                        shTO.Region=="Ural"?DistributionConstants.PodoruevEmail:null,
+                                        shTO.Region!="Ural"?DistributionConstants.BorshevEmail:null,
                                     }
                                     )
                                     :null);

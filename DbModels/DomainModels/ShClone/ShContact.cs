@@ -13,6 +13,8 @@ namespace DbModels.DomainModels.ShClone
         public string EMailAddress { get; set; }
         public string SubcFace { get; set; }
         public bool WithOutVAT { get; set; }
+        public string ActUploadEmail { get; set; }
+        public string ActFIO { get; set; }
 
     }
 }

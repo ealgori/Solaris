@@ -50,7 +50,7 @@
       <HintPath>\\RU00112284\p\Soft\Libs\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
-      <HintPath>\\RU00112284\p\Soft\Libs\Ionic.Zip.dll</HintPath>
+      <HintPath>\\RU00112284\p\Libs\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>\\RU00112284\p\Soft\Libs\NPOI.dll</HintPath>
@@ -59,6 +59,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -83,6 +84,9 @@
     <Compile Include="ExcelParser\CreateTORequestDel.cs" />
     <Compile Include="ExcelParser\EpplusService.cs" />
     <Compile Include="ExcelParser\SubcReport.cs" />
+    <Compile Include="ExcelParser\TOAct\IActGenerator.cs" />
+    <Compile Include="ExcelParser\TOAct\OldFormatActGen.cs" />
+    <Compile Include="ExcelParser\TOAct\XLSFormatActGen.cs" />
     <Compile Include="ExportToExcel\NPOIExcelExport.cs" />
     <Compile Include="ExportToExcel\NPOIReportService.cs" />
     <Compile Include="Extentions\Extention.cs" />
@@ -92,6 +96,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\EDiadocApi\EDiadocApi\EDiadocApi.csproj">
+      <Project>{7dca0394-7cb4-48d5-afff-f772f27e667f}</Project>
+      <Name>EDiadocApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>

@@ -137,11 +137,11 @@ namespace ExcelParser.EpplusInteract
                    dict.Add("TotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(totalwoNDS,CommonFunctions.InWords.Заглавные.Первая));
                    dict.Add("TotalNDS", nds.ToString("F"));
                    dict.Add("TotalWNDS", totalWNDS.ToString("F"));
-                   dict.Add("DogNum",satTo.NomerDogovora );
+                   dict.Add("DogNum",satTo.ProceListNumbers );
                    var shTO = context.ShTOes.Find(satTo.TO);
                    if(shTO!=null)
                     dict.Add("WorkDescription", shTO.WorkDescription);
-                   dict.Add("DogDate", satTo.DataDogovora.HasValue? satTo.DataDogovora.Value.ToString("dd.MM.yyyy"):"");
+                   dict.Add("DogDate", satTo.PriceListDate.HasValue?satTo.PriceListDate.Value.ToString("dd.MM.yyyy"): satTo.DataDogovora.HasValue? satTo.DataDogovora.Value.ToString("dd.MM.yyyy"):"");
                    dict.Add("Subcontractor", satTo.SubContractor);
                    dict.Add("porFile", string.IsNullOrEmpty(porFileName) ? "" : porFileName);
                    var shSubcontractor = context.SubContractors.FirstOrDefault(s => s.Name == satTo.SubContractor || s.ShName == satTo.SubContractor);

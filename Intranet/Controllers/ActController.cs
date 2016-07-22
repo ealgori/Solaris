@@ -239,8 +239,8 @@ namespace Intranet.Controllers
                         var file = ExcelParser.EpplusInteract.CreateAct.CreateActFile(Id);
                         if (file != null)
                         {
-                            Response.AddHeader("Content-Disposition", "attachment; filename=\"" + string.Format("ACT-{0}.xlsm", act.ActName));
-                            return File(file, ".xlsx");
+                            Response.AddHeader("Content-Disposition", "attachment; filename=\"" + string.Format("ACT-{0}.zip", act.ActName));
+                            return File(file, ".zip");
                         }
                     }
                     catch (Exception exc)

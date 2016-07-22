@@ -280,11 +280,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
                     case WIHInteract.Constants.InternalMailTypeAVRGR:
                         {
-                            GRResult.Add(new ClearFaktVipolneniyaPodtv
-                            {
-                                AvrId = shRequest.AVRId,
+                            //GRResult.Add(new ClearFaktVipolneniyaPodtv
+                            //{
+                            //    AvrId = shRequest.AVRId,
                                
-                            });
+                            //});
                             PORResult.Add(new ShWIHRequest
                             {
                                 WIHrequests = shRequest.WIHrequests,

@@ -173,6 +173,12 @@ namespace DbModels.DomainModels.ShClone
 
         public DateTime? SendToSubc { get; set; }
 
+        public string Source { get; set; }
+        public String SourceNo { get; set; }
+        public string AVRType2 { get; set; }
+
+        public string CreatedBy { get; set; }
+
 
 
     }

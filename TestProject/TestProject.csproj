@@ -41,6 +41,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EFCache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=46c4868af4307d2c, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.Cache.1.0.0\lib\net45\EFCache.dll</HintPath>
       <Private>True</Private>
@@ -81,6 +85,8 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.XML" />
     <Reference Include="UnidecodeSharpFork">
       <HintPath>\\RU00112284\p\Libs\UnidecodeSharpFork.dll</HintPath>
@@ -100,6 +106,7 @@
     <Compile Include="GR_TO_Test\SendWIHGRTORequestTest.cs" />
     <Compile Include="GR_TO_Test\ShItemSelect\BaseShItemSelectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedemptionTest\UnitTest1.cs" />
     <Compile Include="RepositoryTest\PriceListRepositoryTest.cs" />
     <Compile Include="RepositoryTest\AVRRepositoryTest.cs" />
     <Compile Include="RepositoryTest\VCRequestTest.cs" />
@@ -109,6 +116,10 @@
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\EDiadocApi\EDiadocApi\EDiadocApi.csproj">
+      <Project>{7dca0394-7cb4-48d5-afff-f772f27e667f}</Project>
+      <Name>EDiadocApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj">
       <Project>{a6550831-f322-4fbb-bede-831ae9492ac1}</Project>
       <Name>AutoImport.Rev3</Name>
@@ -126,7 +137,7 @@
       <Name>WIHInteract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj">
-      <Project>{a4b0d29a-b2eb-481f-a9ca-29f3d07f2848}</Project>
+      <Project>{A4B0D29A-B2EB-481F-A9CA-29F3D07F2848}</Project>
       <Name>RedemptionInteract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SHInteract\SHInteract\SHInteract.csproj">

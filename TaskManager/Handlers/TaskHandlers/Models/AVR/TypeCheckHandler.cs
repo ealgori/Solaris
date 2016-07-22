@@ -40,7 +40,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             // выделяем те, которые за рамками лимита
             // те же действия
             var importModels1 = new List<TypeCheckClass>();
-            var eMailModels = new List<TypeCheckClass>();
+            var eMailModels = new Dictionary<string,List<EmailModel>>();
             var avr2016 = TaskParameters.Context.ShAVRs.Where(a =>
               !string.IsNullOrEmpty(a.Year)
               && a.ObjectCreateDate>minCreateDate
@@ -76,11 +76,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                 {
                     if (string.IsNullOrEmpty(avr.TypeCheck))
                     {
-                        importModels1.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType00, TypeCheck = bidChecked });
+                        // 22.07.2016 - решили больше не менять типы авр
+                        //importModels1.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType00, TypeCheck = bidChecked });
                     }
                     else
                     {
-                        eMailModels.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType00, TypeCheck = bidChecked });
+                        AddOrUpdateEmailDict(eMailModels, avr, $"Требует изменения на '{bidType00}'");
+                       
                     }
 
                 }
@@ -100,11 +102,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
                 {
                     if (string.IsNullOrEmpty(avr.TypeCheck))
                     {
-                        importModels1.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType04, TypeCheck = bidChecked });
+                       // importModels1.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType04, TypeCheck = bidChecked });
                     }
                     else
                     {
-                        eMailModels.Add(new TypeCheckClass { AVR = avr.AVRId, AVRType = bidType04, TypeCheck = bidChecked });
+                        AddOrUpdateEmailDict(eMailModels, avr, $"Требует изменения на '{bidType04}'");
                     }
 
                 }
@@ -129,15 +131,49 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             }
             if (eMailModels.Count > 0)
             {
-                var emailParam = new EmailParams(new List<string>() { DistributionConstants.EalgoriEmail, "dmitriy.b.egorov@ericsson.com" }, "AVR type change missmatch");
-                emailParam.DataTables.Add("avr.xls",eMailModels.ToDataTable());
-                emailParam.HtmlBody = "Тип этих АВР требует изменения, однако их анализ уже был произведен.";
-                TaskParameters.EmailHandlerParams.EmailParams.Add(emailParam);
+                foreach (var kvp in eMailModels)
+                {
+                    var emailParam = new EmailParams(new List<string>() { kvp.Key }, "AVR type change missmatch");
+                    emailParam.DataTables.Add("avr.xls", kvp.Value.ToDataTable());
+                    emailParam.HtmlBody = "Тип этих АВР требует изменения.";
+                    TaskParameters.EmailHandlerParams.EmailParams.Add(emailParam);
+                }
+
+              
             }
               
 
             return true;
 
+
+        }
+
+
+        private void AddOrUpdateEmailDict(Dictionary<string,List<EmailModel>> dict, ShAVRs avr, string message)
+        {
+            var emailModel = new EmailModel { AVR = avr.AVRId, Message = message };
+            if (!string.IsNullOrEmpty(avr.CreatedByEmail))
+            {
+                if(dict.Keys.Contains(avr.CreatedByEmail))
+                {
+                    dict[avr.CreatedByEmail].Add(emailModel);
+                }
+                else
+                {
+                    dict.Add(avr.CreatedByEmail, new List<EmailModel> { emailModel });
+                }
+            }
+            if (!string.IsNullOrEmpty(avr.RukOtdelaEmail))
+            {
+                if (dict.Keys.Contains(avr.RukOtdelaEmail))
+                {
+                    dict[avr.RukOtdelaEmail].Add(emailModel);
+                }
+                else
+                {
+                    dict.Add(avr.RukOtdelaEmail, new List<EmailModel> { emailModel });
+                }
+            }
 
         }
 
@@ -150,6 +186,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             public string AVR { get; set; }
             public string TypeCheck { get; set; }
             public string AVRType { get; set; }
+        }
+
+        public class EmailModel
+        {
+            public string AVR { get; set; }
+           
+            public string Message { get; set; }
         }
 
     }

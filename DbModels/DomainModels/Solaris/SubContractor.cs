@@ -14,6 +14,7 @@ namespace DbModels.Models
         public string SAPNumber { get; set; }
         public string SAPName { get; set; }
         public string NameRef { get; set; }
+        public string DiadocNameRef { get; set; }
         public virtual Project Project { get; set; }
 
         public override string ToString()

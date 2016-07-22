@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OHDBServiceProxy", "OHDBSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{B72171F7-DD6C-4606-A8C7-87A3B94697AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDiadocApi", "..\..\..\..\Documents\Visual Studio 2015\Projects\EDiadocApi\EDiadocApi\EDiadocApi.csproj", "{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -292,6 +294,22 @@ Global
 		{B72171F7-DD6C-4606-A8C7-87A3B94697AD}.Release|x64.Build.0 = Release|Any CPU
 		{B72171F7-DD6C-4606-A8C7-87A3B94697AD}.Release|x86.ActiveCfg = Release|x86
 		{B72171F7-DD6C-4606-A8C7-87A3B94697AD}.Release|x86.Build.0 = Release|x86
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|x64.Build.0 = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|x64.ActiveCfg = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|x64.Build.0 = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7DCA0394-7CB4-48D5-AFFF-F772F27E667F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

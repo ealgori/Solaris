@@ -105,6 +105,7 @@
     <Compile Include="Handlers\TaskHandlers\Abstract\ATaskHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Acts\ActsInvoiceLinkingHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Acts\SendToSubcontractor.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Acts\SubcontrActUploadHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAIQuantifier.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AutoImport\SOLAutoReport.Rev2.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORDelRequest.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHPORRequests.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\SendWIHSAPCodeRequest.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\WIH\TestWIHHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\WIHAnalyzer.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WIH\WIHTrashCleaner.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\WoTotal\WoTotalHandler.cs" />

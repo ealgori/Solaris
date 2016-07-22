@@ -38,6 +38,7 @@ namespace DbModels.DomainModels.SAT
         public DateTime CreateUserDate { get; set; }
         public virtual ICollection<SATTOItem> SATTOItems { get; set; }
         public string ProceListNumbers { get; set; }
+        public DateTime? PriceListDate { get; set; }
 
         public string NomerDogovora { get; set; }
         public DateTime? DataDogovora { get; set; }

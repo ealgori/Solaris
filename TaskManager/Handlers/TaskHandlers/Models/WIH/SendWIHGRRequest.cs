@@ -30,7 +30,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         {
             bool test = false;
             bool jogging = false;
-            string testAvr = "207149";
+            List<string> testAvrs =  new List<string> {  "206993" };
             List<string> poList = new List<string>();
 
             // текущая дата больше, чем эта и два месяца и первое число.
@@ -43,15 +43,15 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
              && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
             && (a.Year == "2016" || a.Year == "2017")
             && !a.GRCreated.HasValue
-            //&& (
-            //a.PurchaseOrderNumber == "4513135611" ||
-            //a.PurchaseOrderNumber == "4513170177" ||
+           // && (
+           // a.PurchaseOrderNumber == "4513135611" ||
+           // a.PurchaseOrderNumber == "4513345514"
             //a.PurchaseOrderNumber == "4513170184" ||
             //a.PurchaseOrderNumber == "4513170167" ||
             //a.PurchaseOrderNumber == "4513186035" 
 
 
-            //)
+           // )
 
 
 
@@ -67,8 +67,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
             if (test)
             {
-                var _confGrAVRs = confGrAVRs.Where(a => a.AVRId == testAvr).ToList();
-                confGrAVRs = TaskParameters.Context.ShAVRs.Where(a => a.AVRId == testAvr).ToList();
+                var _confGrAVRs = confGrAVRs.Where(a => testAvrs.Contains(a.AVRId)).ToList();
+                confGrAVRs = TaskParameters.Context.ShAVRs.Where(a => testAvrs.Contains(a.AVRId)).ToList();
                 var res = confGrAVRs.FirstOrDefault().WorkEnd.TwoMonthRange(DateTime.Now);
 
             }

@@ -35,8 +35,7 @@ using UnidecodeSharpFork;
 using ShClone.UniReport;
 using System.Data;
 using TaskManager.Handlers.TaskHandlers.Models.WIH;
-
-
+using System.Globalization;
 
 namespace TestProject
 {
@@ -48,6 +47,34 @@ namespace TestProject
     public class TestTasks
     {
 
+        [TestMethod]
+        public void CreateAct()
+        {
+            try
+            {
+                var context = new Context();
+            }
+            catch (Exception exc)
+            {
+
+                throw;
+            }
+            var bytes = ExcelParser.EpplusInteract.CreateAct.CreateActFile(1290, true);
+            CommonFunctions.StaticHelpers.ByteArrayToFile( @"C:\Temp\actArhive.zip", bytes);
+        }
+
+        [TestMethod]
+        public void GetSubcs()
+        {
+           
+                var eapi = new EDiadocApi.EDiadocApi();
+                var orgs = eapi.GetOrganizationList();
+                var dt = orgs.ToDataTable();
+                var bytes = NpoiInteract.DataTableToExcel(dt);
+                CommonFunctions.StaticHelpers.ByteArrayToFile(@"C:\Temp\Orgs.xls", bytes);
+            
+         
+        }
 
 
 
@@ -354,16 +381,36 @@ namespace TestProject
         public void TestTOItemApproveHandler()
         {
 
-            var attachment = new AutoImport.Rev3.DomainModels.Attachment();
+          
+
+
+
+                var attachment = new AutoImport.Rev3.DomainModels.Attachment();
             attachment.Id = 0;
             attachment.Mail = new AutoImport.Rev3.DomainModels.Mail();
             attachment.Mail.Sender = "aleksey.gorin@ericsson.com";
-            attachment.FilePath = @"C:\Temp\Logs\22.10.2015\TestTOItemApprove - Copy.xlsx";
+            attachment.FilePath = @"C:\Temp\Temp\29062016_2.xlsx";
 
             TOItemApproveAiHandler handler = new TOItemApproveAiHandler();
             handler.Handle(attachment);
 
         }
+
+        [TestMethod]
+        public void TestTOImportHandler()
+        {
+
+            var attachment = new AutoImport.Rev3.DomainModels.Attachment();
+            attachment.Id = 0;
+            attachment.Mail = new AutoImport.Rev3.DomainModels.Mail();
+            attachment.Mail.Sender = "aleksey.gorin@ericsson.com";
+            attachment.FilePath = @"C:\Temp\Temp\29062016_2.xlsx";
+
+            TOImportHandler handler = new TOImportHandler();
+            handler.Handle(attachment);
+
+        }
+
 
         [TestMethod]
         public void EpplusImageTest()
@@ -872,7 +919,8 @@ namespace TestProject
         public void TestSize()
         {
 
-            RedemptionMailProcessor proc = new RedemptionMailProcessor("LTE");
+            RedemptionMailProcessor proc = new RedemptionMailProcessor("SOLARIS");
+
           //  proc.GetFolderSize("");
 
         }
@@ -1056,9 +1104,13 @@ namespace TestProject
         [TestMethod]
         public void TestPORDEl()
         {
-          
+
             //var bytes2 = ExcelParser.EpplusInteract.CreateTORequestDel.Create("TEST", true, out error);
             //StaticHelpers.ByteArrayToFile(@"C:\Temp\deltor.xlsx", bytes2);
+
+            var bytes3 = ExcelParser.EpplusInteract.CreateTORequest.CreateTORequestFile(809);
+            StaticHelpers.ByteArrayToFile(@"C:\Temp\tor.xlsx", bytes3);
+
 
             using (Context context = new Context())
             {
@@ -1627,7 +1679,7 @@ namespace TestProject
         {
             //RedemptionMailProcessor processor2 = new RedemptionMailProcessor("VCSRS");
             //var mails2 = processor2.GetMails(new List<string> { " created" });
-            RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
+            RedemptionMailProcessor processor = new RedemptionMailProcessor("VCSRS");
             var mails = processor.GetMails(new List<string> { " created" });
             List<string> WIH = new List<string>();
             foreach (var mail in mails)
@@ -1644,12 +1696,37 @@ namespace TestProject
    [TestMethod]
         public void TestRedemption()
         {
-            RedemptionMailProcessor processor = new RedemptionMailProcessor("VCSRS");
+            RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
             var mail = new AutoMail();
             mail.Email = "aleksey.gorin@ericsson.com";
             mail.Body = "test";
             processor.SendMail(mail);
         }
+[TestMethod]
+        public void TestRedemption2()
+        {
+          
+            var rSession = new RDOSession();
+            //rSession.Logon();
+            // UserName подменяется в Options.cs в конце.
+
+            rSession.Logon();
+            var box = rSession.GetSharedMailbox("VIMPELCOM ADMIN 02");
+
+            RDOFolder outbox = box.GetDefaultFolder(Redemption.rdoDefaultFolders.olFolderOutbox);
+            RDOMail mail = outbox.Items.Add(rdoItemType.olMailItem);
+          
+            mail.Recipients.Add("aleksey.gorin@ericsson.com");
+           // mail.SenderEmailAddress = "vimpelcom.admin.02@ericsson.com";
+            mail.SentOnBehalfOfName = "vimpelcom.admin.02@ericsson.com";
+           
+            mail.Subject = "test";
+            mail.Send();
+
+
+        }
+
+
         //       [TestMethod]
         //       public void testFileUpload()
         //       {
@@ -1714,13 +1791,12 @@ namespace TestProject
         [TestMethod]
         public void SendTemplateMail2()
         {
-            var templatePath = @"\\RU00112284\Solaris AVR documentation\205779_20151202144349\205779_20151202144349.msg";
             RedemptionMailProcessor processor = new RedemptionMailProcessor("SOLARIS");
             AutoMail mail = new AutoMail();
 
             mail.Email = ("aleksey.gorin@ericsson.com");//;aleksey.chekalin@ericsson.com");
             mail.Subject = "TestSubject";
-            processor.SendMailByTemplate(mail, templatePath,true);
+            processor.SendMail(mail);
 
         }
 

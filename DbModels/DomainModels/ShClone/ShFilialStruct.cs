@@ -12,6 +12,6 @@ namespace DbModels.DomainModels.ShClone
         [Key]
         public string Name { get; set; }
         public string  RukFills { get; set; }
-        public string  Engineers { get; set; }
+       // public string  Engineers { get; set; }
     }
 }

@@ -182,10 +182,14 @@ namespace Intranet.Controllers
                         var sumService = 0M;
                         var SumMaterials = 0M;
                         satTo.SATTOItems = new List<SATTOItem>();
-                        satTo.NomerDogovora = shTO.NomerDogovora;
+                        satTo.NomerDogovora = shTO.NomerDogovora; 
                         satTo.DataDogovora = shTO.DataDogovora;
+
+                        
                         var plistNames = toItems.Select(i => i.PLRI.PriceListRevision.PriceList.PriceListNumber).Distinct();
+                        var plistDate = toItems.FirstOrDefault().PLRI.PriceListRevision.SignDate;
                         satTo.ProceListNumbers = string.Join(";", plistNames);
+                        satTo.PriceListDate = plistDate;
                         satTo.WOVAT = shContact.WithOutVAT;
                         foreach (var item in toItems)
                         {
