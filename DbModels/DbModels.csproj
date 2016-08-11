@@ -98,6 +98,7 @@
     <Compile Include="DomainModels\Metadata\FKAttribute.cs" />
     <Compile Include="DomainModels\Metadata\ExcludeAttribute.cs" />
     <Compile Include="DomainModels\SAT\VCRequestToCreate.cs" />
+    <Compile Include="DomainModels\ShClone\ShCar.cs" />
     <Compile Include="DomainModels\ShClone\ShFilialStruct.cs" />
     <Compile Include="DomainModels\ShClone\ShAct.cs" />
     <Compile Include="DomainModels\ShClone\ShAddAgreement.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="DomainModels\ShClone\ShVCRequest.cs" />
     <Compile Include="DomainModels\ShClone\ShVidTO.cs" />
     <Compile Include="DomainModels\ShClone\ShVidTOItem.cs" />
+    <Compile Include="DomainModels\ShClone\ShWaylist.cs" />
     <Compile Include="DomainModels\ShClone\ShWIHRequest.cs" />
     <Compile Include="DomainModels\ShClone\ShInvoice.cs" />
     <Compile Include="DomainModels\Solaris\Activity.cs" />

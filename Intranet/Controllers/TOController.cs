@@ -140,7 +140,7 @@ namespace Intranet.Controllers
                         PriceListRepository priceListRepository = new PriceListRepository(context);
                         var activePrices = priceListRepository.GetActivePriceListsRevisionItems(subcontractor.Id, 4, toItems.Min(i => i.TOPlanDate), toItems.Max(i => i.TOPlanDate));
 
-                        ///TODO Этот код до ввода ФОЛОВ. Корректный, Переписан ниже на репозиторий
+                        /// Этот код до ввода ФОЛОВ. Корректный, Переписан ниже на репозиторий
 
                         /// айтемы сджойненные с инфой с формы по тоайтемИД
                         //  var test = toItems

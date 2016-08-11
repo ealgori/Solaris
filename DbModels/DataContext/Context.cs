@@ -101,6 +101,9 @@ namespace DbModels.DataContext
 
         public DbSet<ShFilialStruct> ShFilialStruct { get; set; }
 
+        public DbSet<ShCar> ShCars { get; set; }
+        public DbSet<ShWaylist> ShWaylists { get; set; }
+
         #endregion
 
         //#region WO

@@ -67,8 +67,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\bins\Microsoft.Office.Interop.Outlook.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>\\RU00112284\p\Soft\Libs\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=2.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>\\RU00112284\p\Libs\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>\\RU00112284\p\Soft\Libs\NPOI.dll</HintPath>
@@ -179,6 +180,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\APrintOutHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerSupplement.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerWorkOrder.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Putevie\PutevieImportHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\ActPrintToSHHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\ActToSHHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\TOToSHHandler.cs" />

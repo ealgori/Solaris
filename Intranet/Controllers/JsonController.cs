@@ -120,7 +120,7 @@ namespace Intranet.Controllers
         {
             using (Context context = new Context())
             {
-                //TODO: Требуется новая выборка
+                //: Требуется новая выборка
                 // var avrs = AVRRepository.GetReadyPorAvrs(context).Select(a => new { avr = a.AVRId, conf = a.RukFiliala, workStart = a.WorkStart, workEnd = a.WorkEnd }).ToList();
                 var avrs = AVRRepository.GetNeedPriceAvrs(context)
                     .Where(av => string.IsNullOrEmpty(av.PurchaseOrderNumber))

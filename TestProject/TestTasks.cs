@@ -25,17 +25,18 @@ using TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomFiHandlers;
 using EpplusInteract;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
-using Redemption;
+//using Redemption;
 using System.Reflection;
 using AutoImport.Rev3.AutoImportHandlers.Models;
 using EFCache;
 using TaskManager.Handlers.ImportHandler.Models.ExcelExport;
-using CommonFunctions.Extentions;
-using UnidecodeSharpFork;
+//using CommonFunctions.Extentions;
+//using UnidecodeSharpFork;
 using ShClone.UniReport;
 using System.Data;
 using TaskManager.Handlers.TaskHandlers.Models.WIH;
 using System.Globalization;
+using System.Net;
 
 namespace TestProject
 {
@@ -76,7 +77,16 @@ namespace TestProject
          
         }
 
+      [TestMethod]
+        public void FolderAccess()
+        {
 
+            NetworkCredential theNetworkCredential = new NetworkCredential(@"aleksyg", "Ericsson");
+            CredentialCache theNetCache = new CredentialCache();
+            theNetCache.Add(new Uri(@"\\sde.internal.ericsson.com"), "Basic", theNetworkCredential);
+            string[] theFolders = Directory.GetDirectories(@"https://sde.internal.ericsson.com/Sde.Template/api/SirInstanceApi/DownloadPulledSirReport?instanceId=53803");
+
+        }
 
 
         [TestMethod]
@@ -119,8 +129,9 @@ namespace TestProject
         public void PropisTest()
         {
 
-
-
+           // var upl = WayListUpload.Upload("TESTLIST", @"C:\Temp\avrPORTest2.xlsx");
+            StringBuilder builder;
+          //  var res2 = SHInteract.Handlers.FileUploader.Upload("SOLARIS","TESTLIST", "Путевые листы admin", @"C:\Temp\avrPORTest2.xlsx", 520830, 1253,out builder);
             var number=   13452.22M;
             MoneyToStr ds = new MoneyToStr("UAH", "UKR", "");
 
@@ -230,9 +241,9 @@ namespace TestProject
                 //var s5 = s4 && a.Items != null && a.Items.Any();
             }
 
-            var mail = new RDOMail();
-            mail.Subject = "test";
-            mail.SaveAs(@"c:\temp\mail.msg");  
+         //   var mail = new RDOMail();
+          //  mail.Subject = "test";
+         //   mail.SaveAs(@"c:\temp\mail.msg");  
      //using(Context context = new Context())
             //{
             //    var avr = context.ShAVRs
@@ -305,21 +316,21 @@ namespace TestProject
 
         }
 
-        [TestMethod]
-        public void GetCellvalueTest() 
-        {
-            var path = @"C:\Temp\Logs\09.10.2015\ShTOItem_2015-10-09_08.31.27_44511.1.xls";
-            var workBook = NpoiInteract.ConnectExlFile(path);
-            var sheet = workBook.GetSheetAt(0);
-            var row = sheet.GetRow(1);
-            var cell = row.GetCell(7);
-            var cellValue = NpoiInteract.GetCellObjectValueExt(cell, typeof(DateTime?));
+        //[TestMethod]
+        //public void GetCellvalueTest() 
+        //{
+        //    var path = @"C:\Temp\Logs\09.10.2015\ShTOItem_2015-10-09_08.31.27_44511.1.xls";
+        //    var workBook = NpoiInteract.ConnectExlFile(path);
+        //    var sheet = workBook.GetSheetAt(0);
+        //    var row = sheet.GetRow(1);
+        //    var cell = row.GetCell(7);
+        //    var cellValue = NpoiInteract.GetCellObjectValueExt(cell, typeof(DateTime?));
 
 
 
 
 
-        }
+        //}
         
         
         //[TestMethod]
@@ -412,107 +423,107 @@ namespace TestProject
         }
 
 
-        [TestMethod]
-        public void EpplusImageTest()
-        {
+        //[TestMethod]
+        //public void EpplusImageTest()
+        //{
 
-            using (EpplusService service = new EpplusService(@"C:\TEMP\RAN VC_2 (2).xlsx"))
-            {
-                var ws = service.GetSheet("Installation");
-                var imgMask = "Img";
-                List<ExcelRangeBase> headersList = new List<ExcelRangeBase>();
-                List<ExcelRangeBase> imageHeadersList = ws.Cells.Where(c => c.Text.Trim().StartsWith(imgMask)).ToList();
-                List<ImageClass> images = new List<ImageClass>();
+        //    using (EpplusService service = new EpplusService(@"C:\TEMP\RAN VC_2 (2).xlsx"))
+        //    {
+        //        var ws = service.GetSheet("Installation");
+        //        var imgMask = "Img";
+        //        List<ExcelRangeBase> headersList = new List<ExcelRangeBase>();
+        //        List<ExcelRangeBase> imageHeadersList = ws.Cells.Where(c => c.Text.Trim().StartsWith(imgMask)).ToList();
+        //        List<ImageClass> images = new List<ImageClass>();
 
-                foreach (OfficeOpenXml.Drawing.ExcelPicture draw in ws.Drawings.Where(d => d is OfficeOpenXml.Drawing.ExcelPicture))
-                {
-                    var image = new ImageClass();
-                    string imageHeader = string.Empty;
-                    byte[] bytes;
-                    if (draw.From.Row > 0)
-                    {
+        //        foreach (OfficeOpenXml.Drawing.ExcelPicture draw in ws.Drawings.Where(d => d is OfficeOpenXml.Drawing.ExcelPicture))
+        //        {
+        //            var image = new ImageClass();
+        //            string imageHeader = string.Empty;
+        //            byte[] bytes;
+        //            if (draw.From.Row > 0)
+        //            {
 
-                        image.HeaderCell = ws.Cells[draw.From.Row, draw.From.Column + 1];
-
-
-                    }
-                    image.Picture = draw;
-                    images.Add(image);
-
-                }
+        //                image.HeaderCell = ws.Cells[draw.From.Row, draw.From.Column + 1];
 
 
-                var sectGroups = images.GroupBy(i => i.Section).ToList();
+        //            }
+        //            image.Picture = draw;
+        //            images.Add(image);
 
-                foreach (var group in sectGroups)
-                {
-                    string section = string.Empty;
-                    var minSectCell = group.FirstOrDefault(i => i.HeaderText == group.Min(m => m.HeaderText));
-                    if(minSectCell.HeaderCell!=null)
-                        section = ws.Cells[minSectCell.HeaderCell.Start.Row - 3, minSectCell.HeaderCell.Start.Column + 3].Text.Trim();
+        //        }
+
+
+        //        var sectGroups = images.GroupBy(i => i.Section).ToList();
+
+        //        foreach (var group in sectGroups)
+        //        {
+        //            string section = string.Empty;
+        //            var minSectCell = group.FirstOrDefault(i => i.HeaderText == group.Min(m => m.HeaderText));
+        //            if(minSectCell.HeaderCell!=null)
+        //                section = ws.Cells[minSectCell.HeaderCell.Start.Row - 3, minSectCell.HeaderCell.Start.Column + 3].Text.Trim();
                                        
-                    var subSectGroup = group.GroupBy(i => i.SubSection).ToList();
-                    foreach (var sgroup in subSectGroup)
-                    {
+        //            var subSectGroup = group.GroupBy(i => i.SubSection).ToList();
+        //            foreach (var sgroup in subSectGroup)
+        //            {
 
 
-                        var minsubSectCell = sgroup.FirstOrDefault(i => i.HeaderText == group.Min(m => m.HeaderText));
-                        if (minsubSectCell != null)
-                        {
-                            try
-                            {
-                                if (minsubSectCell.HeaderCell != null)
-                                {
-                                    if (minsubSectCell.HeaderCell.Start.Row - 4 > 0)
-                                    {
+        //                var minsubSectCell = sgroup.FirstOrDefault(i => i.HeaderText == group.Min(m => m.HeaderText));
+        //                if (minsubSectCell != null)
+        //                {
+        //                    try
+        //                    {
+        //                        if (minsubSectCell.HeaderCell != null)
+        //                        {
+        //                            if (minsubSectCell.HeaderCell.Start.Row - 4 > 0)
+        //                            {
 
 
-                                        string questionary = ws.Cells[minsubSectCell.HeaderCell.Start.Row - 1, minsubSectCell.HeaderCell.Start.Column].Text.Trim();
-                                        string answer = ws.Cells[minsubSectCell.HeaderCell.Start.Row - 1, minsubSectCell.HeaderCell.Start.Column + 3].Text.Trim();
-                                         foreach (var item in group)
-                                        {
-                                            item.Questionary = questionary;
-                                            item.QuestionaryAnswer = answer;
-                                            item.SectionText = section;
-                                        }
+        //                                string questionary = ws.Cells[minsubSectCell.HeaderCell.Start.Row - 1, minsubSectCell.HeaderCell.Start.Column].Text.Trim();
+        //                                string answer = ws.Cells[minsubSectCell.HeaderCell.Start.Row - 1, minsubSectCell.HeaderCell.Start.Column + 3].Text.Trim();
+        //                                 foreach (var item in group)
+        //                                {
+        //                                    item.Questionary = questionary;
+        //                                    item.QuestionaryAnswer = answer;
+        //                                    item.SectionText = section;
+        //                                }
 
 
 
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
+        //                            }
+        //                        }
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
 
-                                throw;
-                            }
-                        }
-                    }
-                }
-                //var image = ws.Drawings.FirstOrDefault(d=>d.From.Row==28&&d.From.Column==2);
-                //var imagedr = ((OfficeOpenXml.Drawing.ExcelPicture)image);
-                //byte[] bytes;
-                //using (var ms = new MemoryStream())
-                //{
-                //    try
-                //    {
-                //        imagedr.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                //        bytes = ms.ToArray();
-                //    }
-                //    catch (Exception)
-                //    {
+        //                        throw;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        //var image = ws.Drawings.FirstOrDefault(d=>d.From.Row==28&&d.From.Column==2);
+        //        //var imagedr = ((OfficeOpenXml.Drawing.ExcelPicture)image);
+        //        //byte[] bytes;
+        //        //using (var ms = new MemoryStream())
+        //        //{
+        //        //    try
+        //        //    {
+        //        //        imagedr.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+        //        //        bytes = ms.ToArray();
+        //        //    }
+        //        //    catch (Exception)
+        //        //    {
 
-                //        throw;
-                //    }
+        //        //        throw;
+        //        //    }
 
-                //}
-                //CommonFunctions.StaticHelpers.ByteArrayToFile(@"c:\temp\test.jpg",bytes);
-                //var cell261 = ws.Cells[28,2];
-                //var cell262 = ws.Cells[29,10];
+        //        //}
+        //        //CommonFunctions.StaticHelpers.ByteArrayToFile(@"c:\temp\test.jpg",bytes);
+        //        //var cell261 = ws.Cells[28,2];
+        //        //var cell262 = ws.Cells[29,10];
 
-            }
+        //    }
 
-        }
+        //}
 
         private class ImageClass
         {
@@ -1133,17 +1144,20 @@ namespace TestProject
             //    var task = TaskFactory.GetTask(paramsdd, context);
             //    task.Process();
             //}
-            //var b2 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8443, false);
-            //File.WriteAllBytes(@"c:\temp\avrPORTest.xlsx", b2);
+            var b1 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(10206, false);
+            File.WriteAllBytes(@"c:\temp\205915.xlsx", b1);
 
-            //var b3 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8444, false);
-            //File.WriteAllBytes(@"c:\temp\avrPORTest2.xlsx", b3);
+            var b2 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(10207, false);
+            File.WriteAllBytes(@"c:\temp\205916.xlsx", b2);
 
-            var b4 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(8453, false);
-            File.WriteAllBytes(@"c:\temp\avrPORTest2.xlsx", b4);
+            var b3 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(10208, false);
+            File.WriteAllBytes(@"c:\temp\206564.xlsx", b3);
 
-            var b = ExcelParser.EpplusInteract.CreateTOPOR.CreatePorFile(581,true);
-            File.WriteAllBytes(@"c:\temp\toPORTest.xlsx", b);
+            var b4 = ExcelParser.EpplusInteract.CreatePor.CreatePorFile(10209, false);
+            File.WriteAllBytes(@"c:\temp\206565.xlsx", b4);
+
+            //var b = ExcelParser.EpplusInteract.CreateTOPOR.CreatePorFile(581,true);
+            //File.WriteAllBytes(@"c:\temp\toPORTest.xlsx", b);
 
         }
         //       [TestMethod]
@@ -1586,6 +1600,18 @@ namespace TestProject
                 task.Process();
             }
         }
+      
+        [TestMethod]
+        public void PutevieImportHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "PutevieImportHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
         [TestMethod]
         public void GetTable()
         {
@@ -1706,22 +1732,22 @@ namespace TestProject
         public void TestRedemption2()
         {
           
-            var rSession = new RDOSession();
-            //rSession.Logon();
-            // UserName подменяется в Options.cs в конце.
+           // var rSession = new RDOSession();
+           // //rSession.Logon();
+           // // UserName подменяется в Options.cs в конце.
 
-            rSession.Logon();
-            var box = rSession.GetSharedMailbox("VIMPELCOM ADMIN 02");
+           // rSession.Logon();
+           // var box = rSession.GetSharedMailbox("VIMPELCOM ADMIN 02");
 
-            RDOFolder outbox = box.GetDefaultFolder(Redemption.rdoDefaultFolders.olFolderOutbox);
-            RDOMail mail = outbox.Items.Add(rdoItemType.olMailItem);
+           // RDOFolder outbox = box.GetDefaultFolder(Redemption.rdoDefaultFolders.olFolderOutbox);
+           // RDOMail mail = outbox.Items.Add(rdoItemType.olMailItem);
           
-            mail.Recipients.Add("aleksey.gorin@ericsson.com");
-           // mail.SenderEmailAddress = "vimpelcom.admin.02@ericsson.com";
-            mail.SentOnBehalfOfName = "vimpelcom.admin.02@ericsson.com";
+           // mail.Recipients.Add("aleksey.gorin@ericsson.com");
+           //// mail.SenderEmailAddress = "vimpelcom.admin.02@ericsson.com";
+           // mail.SentOnBehalfOfName = "vimpelcom.admin.02@ericsson.com";
            
-            mail.Subject = "test";
-            mail.Send();
+           // mail.Subject = "test";
+           // mail.Send();
 
 
         }

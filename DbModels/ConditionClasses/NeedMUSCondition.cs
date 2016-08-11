@@ -25,7 +25,7 @@ namespace DbModels.AVRConditions
         {
             if(!AVRRepository.IsES(shAvr))
             {
-                //TODO: если забит нетворк полученый с муса, то ничего этого не надо.
+                //: если забит нетворк полученый с муса, то ничего этого не надо.
                 var wihRequests = context.ShWIHRequests.Where(r => r.AVRId == shAvr.AVRId).ToList();
                 var canBeSend = WIHService.RequestCanBeSended(wihRequests, WIHInteract.Constants.InternalMailTypeAVRMUS);
                 if(canBeSend)

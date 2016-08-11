@@ -119,7 +119,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
           
             #endregion
 
-            //TODO: А что если в сх ввести поле статус, и прогружать в него статус по этим коднишнам.
+            //: А что если в сх ввести поле статус, и прогружать в него статус по этим коднишнам.
             // а так же добавить проверку их пересечения, для проверки корректности кондишнов
             var doubles = changesStatuses.GroupBy(g => g.AvrId).Where(g => g.Count() > 1).Select(s=>s.Select(sa=>sa)).ToList();
             return true;

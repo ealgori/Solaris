@@ -181,7 +181,7 @@ namespace Intranet.Controllers
                 if (shAVRs == null)
                     return Json(false);
                 string shVCRequestName = string.Format("{0}:{1}", model.avrId, DateTime.Now.ToString("yyyyMMddHHmmss"));
-                //TODO: Теперь работаем с другими объектами
+                //: Теперь работаем с другими объектами
                 foreach (var item in model.items)
                 {
                     var musItem = new SatMusItem();

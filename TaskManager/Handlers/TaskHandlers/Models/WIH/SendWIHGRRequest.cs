@@ -30,7 +30,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         {
             bool test = false;
             bool jogging = false;
-            List<string> testAvrs =  new List<string> {  "206993" };
+            List<string> testAvrs =  new List<string> {  "208178" };
             List<string> poList = new List<string>();
 
             // текущая дата больше, чем эта и два месяца и первое число.

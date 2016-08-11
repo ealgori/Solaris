@@ -45,11 +45,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
                         dict.Add("AVR", avr.AVRId);
                         dict.Add("Subregion", avr.Subregion);
                         dict.Add("Subcontractor", avr.Subcontractor);
-                        dict.Add("AVRType", avr.AVRType);
-                        dict.Add("AVRType2", avr.AVRType2);
+                        dict.Add("TaskSubcontractorNumber", avr.TaskSubcontractorNumber);
+                        dict.Add("AddingsInfo", avr.AddingsInfo);
                         dict.Add("Source", avr.Source);
                         dict.Add("SourceNo", avr.SourceNo);
-
+                        dict.Add("CreatedBy", avr.CreatedBy);
                         dict.Add("Total", avr.TotalAmount.Value.ToString("C"));
                         dict.Add("StartDate", avr.WorkStart.Value.ToShortDateString());
                         dict.Add("EndDate", avr.WorkEnd.Value.ToShortDateString());

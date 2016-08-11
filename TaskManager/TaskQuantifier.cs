@@ -24,6 +24,7 @@ using TaskManager.Handlers.TaskHandlers.Models.BackUps;
 using TaskManager.Handlers.TaskHandlers.Models.AVR;
 using TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers;
 using TaskManager.Handlers.TaskHandlers.Models.Limits;
+using TaskManager.Handlers.TaskHandlers.Models.Putevie;
 //using TaskManager.Handlers.TaskHandlers.Models.POR;
 //using TaskManager.Handlers.TaskHandlers.Models.MUSForms;
 //using TaskManager.Handlers.TaskHandlers.Models.PO;
@@ -359,6 +360,16 @@ namespace TaskManager
                 //        task.EmailHandler = null;
                 //        break;
                 //    }
+                case "PutevieImportHandler":
+                {
+                    task.TaskHandler = new PutevieImportHandler(task.TaskParameters);
+                    task.FileIOSubHandler = null;
+                    task.ImportHandler = new ImportHandler(task.TaskParameters); ;
+                    task.ConvertHandler = null;
+                    task.EmailHandler = null;
+                    break;
+                }
+
                 case "AVRUnfreezeHandler":
                     {
                         task.TaskHandler = new AVRUnfreezeHandler(task.TaskParameters);

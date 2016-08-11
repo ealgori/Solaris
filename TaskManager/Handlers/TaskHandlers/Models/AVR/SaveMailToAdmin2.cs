@@ -26,7 +26,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR
             // // Это уведомления в вымпел об использовании лимитов. Вообще они должны отправляться автоматом
             // находим реквесты которые в базовом состоянии и с лимитами в рамках лимита
             // которым не требуется предопрайсовка
-            //TODO: подготовим уведмление в вк об использовании лимитов
+            //: подготовим уведмление в вк об использовании лимитов
             List<ShVCRequestImport> shVCRequestImport = new List<ShVCRequestImport>();
             List<UploadVCReqToCreateHandler.ImportPathToAVR> avrPathsList = new List<UploadVCReqToCreateHandler.ImportPathToAVR>();
 

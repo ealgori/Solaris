@@ -39,6 +39,7 @@ namespace ExcelParser.EpplusInteract
                     var shTO = context.ShTOes.Find(act.TO);
 
                     string subcFace = "please fill in SH";
+                    string subcFIO = "please fill SH";
                     var shSubcontractor = context.SubContractors.FirstOrDefault(s => s.Name == act.SubContractor || s.ShName == act.SubContractor);
                     if (shSubcontractor != null)
                     {
@@ -46,6 +47,7 @@ namespace ExcelParser.EpplusInteract
                         if (shContact != null && !string.IsNullOrWhiteSpace(shContact.SubcFace))
                         {
                             subcFace = shContact.SubcFace;
+                            subcFace = shContact.ActFIO;
                         }
 
                     }
@@ -70,13 +72,13 @@ namespace ExcelParser.EpplusInteract
                             throw new Exception($"Позиция {_firstItem.Id} не привязана ни к сайту ни к фолу");
                     }
 
-
+                  
 
 
                     List <IActGenerator> actGens = new List<IActGenerator>();
                     actGens.Add(new OldFormatActGen(TemplatePath, act, shTO.WorkDescription, subcFace, siteBranch));
                     if(createXML)
-                        actGens.Add(new XLSFormatActGen(shSubcontractor.ShName,act,shTO.WorkDescription,siteAddress));
+                        actGens.Add(new XLSFormatActGen(shSubcontractor.DiadocNameRef,act,shTO.WorkDescription,siteAddress,subcFIO));
 
                     var fileStreams = new List<Tuple<string,Stream>>();
 
