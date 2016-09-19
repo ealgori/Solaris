@@ -25,7 +25,10 @@ namespace TestProject.GR_TO_Test
                         {
 
                             DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHGRTORequestsHandler") };
-                            var task = TaskFactory.GetTaskTest(paramsdd, context);
+                            var task = TaskFactory.GetTaskTest(paramsdd, context,new TestTaskParams { PathParam= 
+                               // @"\\RU00112284\Archive\SOLARIS\zzpomon\2016\8\19\1219"
+                                 @"\\RU00112284\Archive\SOLARIS\zzpomon" 
+                            });
                             task.Process();
 
                         }

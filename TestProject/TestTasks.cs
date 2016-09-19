@@ -1568,12 +1568,23 @@ namespace TestProject
             }
         }
         [TestMethod]
-        public void EmptyAVRDistrHandler()
+        public void EmptyAVRDitstHandlerManagers()
         {
             using (Context context = new Context())
             {
 
-                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "EmptyAVRDistrHandler") };
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "EmptyAVRDitstHandlerManagers") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+        [TestMethod]
+        public void EmptyAVRDistHandlerResponsibles()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "EmptyAVRDistHandlerResponsibles") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }
@@ -1585,6 +1596,17 @@ namespace TestProject
             {
 
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "NewAVRDistrHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+        [TestMethod]
+        public void PutevieNotifierHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "PutevieNotifierHandler") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }
@@ -1825,6 +1847,63 @@ namespace TestProject
             processor.SendMail(mail);
 
         }
+
+
+
+   [TestMethod]
+        public void TestCircuit()
+        {
+
+            TimeSpan span = new TimeSpan();
+            DateTime now = DateTime.Now;
+            DateTime startDate =  DateTime.Now;
+            var lastWork = DateTime.Now;
+            // если непонятное значение в таймспан, то сработать
+            if (TimeSpan.TryParse("3", out span))
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                     now = now.AddDays(1);
+
+                    // если непонятно когда обновлялось, то сработать
+                    if (lastWork != null)
+                    {
+                        var nextForecastDate = startDate;
+                      
+                        // считаем теоретическое время след срабатывания
+                        while (nextForecastDate < now)
+                        {
+                            nextForecastDate = nextForecastDate.Add(span);
+                        }
+
+                        var lastForecastDate = nextForecastDate.Add(-span);
+
+                        if (lastWork < lastForecastDate)
+                        {
+                            // сейчас
+                        }
+                        else
+                        {
+                           // в след раз
+                        }
+
+
+
+                    }
+                    else // не выполнялось еще
+                    {
+                       // сейчас
+                    }
+                }
+            }
+            else// кривой таймспан
+            {
+               
+            }
+
+        }
+
+
 
         [TestMethod]
         public void SendTemplateMail()

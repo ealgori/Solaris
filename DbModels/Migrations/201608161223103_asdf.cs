@@ -3,7 +3,7 @@ namespace DbModels.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class fdfdasdf : DbMigration
+    public partial class asdf : DbMigration
     {
         public override void Up()
         {

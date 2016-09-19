@@ -20,9 +20,18 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
     public class SendWIHGRTORequestsHandler : ATaskHandler
     {
+
+        public string zzpomonPath { get; set; }
         public SendWIHGRTORequestsHandler(TaskParameters taskParams) : base(taskParams)
         {
-
+            if(taskParams.TestTaskParams!=null)
+            {
+                if (!string.IsNullOrEmpty(taskParams.TestTaskParams.PathParam))
+                {
+                    zzpomonPath = taskParams.TestTaskParams.PathParam;
+                }
+                   
+            }
         }
 
         public override bool Handle()
@@ -71,18 +80,18 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                 toItems = toItems.Where(t =>
 
 
-               t.Key == "4513150421"
-//|| t.Key == "4512630069"
-//|| t.Key == "4512826552"
-//|| t.Key == "4512826651"
-//|| t.Key == "4512826721"
-//|| t.Key == "4512826771"
-//|| t.Key == "4512920101"
-//|| t.Key == "4512920140"
-//|| t.Key == "4512920427"
-//|| t.Key == "4512974646"
-//|| t.Key == "4512974674"
-//|| t.Key == "4512975149"
+               t.Key == "4513118046"
+                //|| t.Key == "4512630069"
+                //|| t.Key == "4512826552"
+                //|| t.Key == "4512826651"
+                //|| t.Key == "4512826721"
+                //|| t.Key == "4512826771"
+                //|| t.Key == "4512920101"
+                //|| t.Key == "4512920140"
+                //|| t.Key == "4512920427"
+                //|| t.Key == "4512974646"
+                //|| t.Key == "4512974674"
+                //|| t.Key == "4512975149"
 
 
 
@@ -93,7 +102,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             }
 
             // чтение сап файла
-            var reportFolder = TaskParameters.DbTask.EmailSendFolder;
+            var reportFolder = string.IsNullOrEmpty(zzpomonPath)?TaskParameters.DbTask.EmailSendFolder:zzpomonPath;
             if (!Directory.Exists(reportFolder))
             {
                 TaskParameters.TaskLogger.LogError($"Папка недоступна:{reportFolder}");

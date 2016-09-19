@@ -36,13 +36,15 @@ namespace TaskManager.TaskModel
         public AEmailHandler EmailHandler { get; set; }
         public AConvertSubHandler ConvertHandler { get; set; }
 
+      
+
         #endregion
 
         #region общие свойства
         //public FileSubHandlerParams Parameters { get; set; }
         #endregion
 
-        public TaskBase(DbTask dbTask, string userName, FileHandlerParams parameters, Context context)
+        public TaskBase(DbTask dbTask, string userName, FileHandlerParams parameters, Context context,TestTaskParams param=null)
         {
            
             
@@ -56,6 +58,7 @@ namespace TaskManager.TaskModel
             this.TaskParameters.Context = context;
             this.TaskParameters.FileHandlerParams = parameters;
             this.TaskParameters.TaskLogger = new TaskLogger(taskLog, context) { TaskName=dbTask.Name};
+            this.TaskParameters.TestTaskParams = param;
         }
 
    

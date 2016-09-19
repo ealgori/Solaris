@@ -130,61 +130,9 @@
     <Compile Include="DomainModels\Solaris\PriceListMap.cs" />
     <Compile Include="DomainModels\Solaris\PurchaseRequest.cs" />
     <Compile Include="DomainModels\WIH\WIHRequest.cs" />
-    <Compile Include="Migrations\201606010958311_fadf.cs" />
-    <Compile Include="Migrations\201606010958311_fadf.Designer.cs">
-      <DependentUpon>201606010958311_fadf.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606070734048_fdfa.cs" />
-    <Compile Include="Migrations\201606070734048_fdfa.Designer.cs">
-      <DependentUpon>201606070734048_fdfa.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606071314277_fdfal.cs" />
-    <Compile Include="Migrations\201606071314277_fdfal.Designer.cs">
-      <DependentUpon>201606071314277_fdfal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606081026562_fdfa1.cs" />
-    <Compile Include="Migrations\201606081026562_fdfa1.Designer.cs">
-      <DependentUpon>201606081026562_fdfa1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606100943166_fdfad.cs" />
-    <Compile Include="Migrations\201606100943166_fdfad.Designer.cs">
-      <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606161007548_fdfdfa.cs" />
-    <Compile Include="Migrations\201606161007548_fdfdfa.Designer.cs">
-      <DependentUpon>201606161007548_fdfdfa.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606161110466_fdfdfa2.cs" />
-    <Compile Include="Migrations\201606161110466_fdfdfa2.Designer.cs">
-      <DependentUpon>201606161110466_fdfdfa2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606170656318_fdfdf.cs" />
-    <Compile Include="Migrations\201606170656318_fdfdf.Designer.cs">
-      <DependentUpon>201606170656318_fdfdf.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606170735021_fdfdff.cs" />
-    <Compile Include="Migrations\201606170735021_fdfdff.Designer.cs">
-      <DependentUpon>201606170735021_fdfdff.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606171003046_fdfdffg.cs" />
-    <Compile Include="Migrations\201606171003046_fdfdffg.Designer.cs">
-      <DependentUpon>201606171003046_fdfdffg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606171116596_fdfdffgо.cs" />
-    <Compile Include="Migrations\201606171116596_fdfdffgо.Designer.cs">
-      <DependentUpon>201606171116596_fdfdffgо.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606200736337_fdfdffgоа.cs" />
-    <Compile Include="Migrations\201606200736337_fdfdffgоа.Designer.cs">
-      <DependentUpon>201606200736337_fdfdffgоа.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606210654048_fdfdffgоаs.cs" />
-    <Compile Include="Migrations\201606210654048_fdfdffgоаs.Designer.cs">
-      <DependentUpon>201606210654048_fdfdffgоаs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606301126435_fdfdasdf.cs" />
-    <Compile Include="Migrations\201606301126435_fdfdasdf.Designer.cs">
-      <DependentUpon>201606301126435_fdfdasdf.cs</DependentUpon>
+    <Compile Include="Migrations\201608161223103_asdf.cs" />
+    <Compile Include="Migrations\201608161223103_asdf.Designer.cs">
+      <DependentUpon>201608161223103_asdf.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -228,47 +176,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606010958311_fadf.resx">
-      <DependentUpon>201606010958311_fadf.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606070734048_fdfa.resx">
-      <DependentUpon>201606070734048_fdfa.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606071314277_fdfal.resx">
-      <DependentUpon>201606071314277_fdfal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606081026562_fdfa1.resx">
-      <DependentUpon>201606081026562_fdfa1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606100943166_fdfad.resx">
-      <DependentUpon>201606100943166_fdfad.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606161007548_fdfdfa.resx">
-      <DependentUpon>201606161007548_fdfdfa.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606161110466_fdfdfa2.resx">
-      <DependentUpon>201606161110466_fdfdfa2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606170656318_fdfdf.resx">
-      <DependentUpon>201606170656318_fdfdf.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606170735021_fdfdff.resx">
-      <DependentUpon>201606170735021_fdfdff.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606171003046_fdfdffg.resx">
-      <DependentUpon>201606171003046_fdfdffg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606171116596_fdfdffgо.resx">
-      <DependentUpon>201606171116596_fdfdffgо.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606200736337_fdfdffgоа.resx">
-      <DependentUpon>201606200736337_fdfdffgоа.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606210654048_fdfdffgоаs.resx">
-      <DependentUpon>201606210654048_fdfdffgоаs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606301126435_fdfdasdf.resx">
-      <DependentUpon>201606301126435_fdfdasdf.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608161223103_asdf.resx">
+      <DependentUpon>201608161223103_asdf.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

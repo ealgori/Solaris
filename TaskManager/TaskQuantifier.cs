@@ -463,11 +463,20 @@ namespace TaskManager
                         break;
                     }
 
-                case "EmptyAVRDistrHandler":
+                case "EmptyAVRDitstHandlerManagers":
                     {
-                        task.TaskHandler = new EmptyAVRDistrHandler(task.TaskParameters);
+                        task.TaskHandler = new EmptyAVRDitstHandlerManagers(task.TaskParameters);
                         task.FileIOSubHandler = null;
                         //task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
+                case "EmptyAVRDistHandlerResponsibles":
+                    {
+                        task.TaskHandler = new EmptyAVRDistHandlerResponsibles(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                        task.ImportHandler = new ImportHandler(task.TaskParameters);
                         task.ConvertHandler = null;
                         task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
@@ -498,6 +507,15 @@ namespace TaskManager
                        // task.ImportHandler = new ImportHandler(task.TaskParameters);
                         task.ConvertHandler = null;
                        // task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
+                case "PutevieNotifierHandler":
+                    {
+                        task.TaskHandler = new PutevieNotifierHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                       // task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
                     }
                 default:

@@ -14,7 +14,19 @@ namespace Service
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     public class Service1 : IService1
     {
-        public static Task ShCloneTask = Task.Factory.StartNew(() => { ShClone.Model.SHCloneBulkCopy.Instance.DoWork(); });
+        public static Task ShCloneTask = Task.Factory.StartNew(() => {
+            try
+            {
+                ShClone.Model.SHCloneBulkCopy.Instance.DoWork();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine($"{exc.Message} - {exc.InnerException.Message}");
+                throw;
+            }
+           
+
+        });
         public static Task TaskManagerTask = Task.Factory.StartNew(() => {TaskManager.TaskManager.Instance.ProcessTasks(); });
         public string GetStatus()
         {

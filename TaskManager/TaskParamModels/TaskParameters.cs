@@ -26,7 +26,9 @@ namespace TaskManager.TaskParamModels
 
         public EmailHandlerParams EmailHandlerParams { get; set; }
 
-       
+        public TestTaskParams TestTaskParams { get; set; }
+
+
         #endregion
 
         public TaskParameters()

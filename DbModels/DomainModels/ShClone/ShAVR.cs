@@ -179,7 +179,9 @@ namespace DbModels.DomainModels.ShClone
 
         public string CreatedBy { get; set; }
         public string  AddingsInfo { get; set; }
-
+        public string RefAVR { get; set; }
+        public string AVRType3 { get; set; }
+        public DateTime? SendToResp { get; set; }
 
 
     }

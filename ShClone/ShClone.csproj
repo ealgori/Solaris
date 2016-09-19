@@ -76,8 +76,9 @@
     <Reference Include="Ionic.Zip">
       <HintPath>\\RU00112284\p\Soft\Libs\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>\\RU00112284\p\Soft\Libs\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=2.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>\\RU00112284\p\Libs\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>\\RU00112284\p\Soft\Libs\NPOI.dll</HintPath>

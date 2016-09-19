@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Handlers.TaskHandlers.Models.Email;
 using TaskManager.TaskParamModels;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
@@ -21,7 +22,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
 
         public override bool Handle()
         {
+            var now = DateTime.Now;
             var waylistImport = new List<WaylistImport>();
+            var waylistRequiredImport = new List<WaylistRequiredImport>();
             var redemption = new RedemptionMailProcessor("SOLARIS");
             var mails = redemption.GetMails(new List<string> { "#путевой#" });
             foreach (var mail in mails)
@@ -41,21 +44,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                 }
                 var carPart = parts[0];
                 var datePart = new string(parts[1].Where(c=>Char.IsDigit(c)).Take(7).ToArray());
-
-                string carNum = string.Empty;
+                // машину определяем по первым трем цифрам
+                string carNum = GetCarNum(carPart);
                 bool letBool = true;
                 bool digbool = true;
 
-                // машину определяем по первым трем цифрам
-                foreach (var ch in carPart.Where(c=>c!=' '))
-                {
-                    if(char.IsDigit(ch))
-                    {
-                        carNum += ch;
-                    }
-                    if (carNum.Length > 2)
-                        break;
-                }
+              
+               
 
                 var shCar = TaskParameters.Context.ShCars.FirstOrDefault(c => c.CarId.Contains(carNum));
                 if (shCar == null)
@@ -69,17 +64,19 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                   continue;
                 }
 
-                var wayListName = $"{carNum} {date.ToString("yyyy.MM")}";
+                var wayListName = GetWaylistName(carNum,date);
                 var shWaylist = TaskParameters.Context.ShWaylists.FirstOrDefault(w=>w.Waylist==wayListName);
                 if(shWaylist==null)
                 {
                     var import = new WaylistImport();
+                    
                     import.Car = shCar.CarId;
-                    import.Name = fileName;
-                    import.Date = date;
+                    import.Name = wayListName;
+                    import.Date = now;
                     waylistImport.Add(import);
                     continue;
                 }
+                
 
                 List<string> fileFields = new List<string> {"Файл1","Файл2","Файл3","Файл4" };
                 int index = 0;
@@ -93,7 +90,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                     index++;
                 }    
                     
-
+                if(shWaylist.Required=="Yes")
+                {
+                    var import = new WaylistRequiredImport();
+                    import.Name = wayListName;
+                    waylistRequiredImport.Add(import);
+                    continue;
+                }
 
                 
                 
@@ -105,7 +108,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                     redemption.SendMail(
                         new AutoMail
                         {
-                            Email = mail.Email,
+                            Email = DistributionConstants.EgorovEmail,
                             Body = $"Файлы по '{shCar.CarId}' за '{date.ToString("MM.yyyy")}' успешно прогружены.",
                             Subject = "Re. Путевые"
 
@@ -118,7 +121,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
 
             }
             if (waylistImport.Count > 0)
-                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName3, Objects = new ArrayList(waylistImport) });
+                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(waylistImport) });
+            if (waylistRequiredImport.Count > 0)
+                TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName2, Objects = new ArrayList(waylistRequiredImport) });
 
             return true;
         }
@@ -129,6 +134,34 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
             public string Car { get; set; }
             public DateTime? Date { get; set; }
 
+        }
+
+        class WaylistRequiredImport
+        {
+            public string Name { get; set; }
+            public string Required { get; set; }
+
+        }
+
+        public static string GetWaylistName(string carNum,DateTime date)
+        {
+
+            return $"{carNum} {date.ToString("MMyyyy")}";
+        }
+
+        public static string GetCarNum(string carName)
+        {
+            string carNum = string.Empty;
+            foreach (var ch in carName.Where(c => c != ' '))
+            {
+                if (char.IsDigit(ch))
+                {
+                    carNum += ch;
+                }
+                if (carNum.Length > 2)
+                    break;
+            }
+            return carNum;
         }
     }
 }

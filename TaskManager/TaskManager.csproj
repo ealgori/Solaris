@@ -59,15 +59,17 @@
     <Reference Include="Ionic.Zip">
       <HintPath>\\RU00112284\p\Soft\Libs\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\bins\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <HintPath>..\..\..\..\..\.nuget\packages\Microsoft.Office.Interop.Excel\15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\bins\Microsoft.Office.Interop.Outlook.dll</HintPath>
+      <HintPath>..\..\..\..\..\.nuget\packages\Microsoft.Office.Interop.Outlook\15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Outlook.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=2.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>\\RU00112284\p\Libs\NLog.dll</HintPath>
     </Reference>
@@ -134,7 +136,9 @@
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\AVRStatusImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\ImportClasses\ShVCRequestImport.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDistrHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDistHandlerResponsibles.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\NewAVRDistrHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDitstHandlerManagers.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitAI\FileReader.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitCalc.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\NotifyHandler.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerSupplement.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerWorkOrder.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Putevie\PutevieImportHandler.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Putevie\PutevieNotifierHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\ActPrintToSHHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\ActToSHHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\TOToSHHandler.cs" />
@@ -225,6 +230,7 @@
     <Compile Include="TaskParamModels\EmailHandlerParams\EmailParams.cs" />
     <Compile Include="TaskParamModels\TaskParameters.cs" />
     <Compile Include="TaskParamModels\TaskParams\TaskHandlerParams.cs" />
+    <Compile Include="TaskParamModels\TestTaskParams.cs" />
     <Compile Include="TaskQuantifier.cs" />
   </ItemGroup>
   <ItemGroup>

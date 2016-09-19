@@ -146,7 +146,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="OHDBServiceHost_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Service.CompositeType.datasource" />
     <Content Include="NLog.config">

@@ -12,6 +12,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
 {
     public class NewAVRDistrHandler : ATaskHandler
     {
+
         public NewAVRDistrHandler(TaskParameters taskParams) : base(taskParams)
         {
         }
@@ -24,7 +25,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
         {
             
 
-            bool test = true;
+            bool test = false;
             var testRecipints = DistributionConstants.EalgoriEmail+";"+DistributionConstants.EgorovEmail;
 
             var startDate = new DateTime(2016, 6, 23);
@@ -33,6 +34,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
             var avrs = TaskParameters.Context.ShAVRs
                 .Where(a => a.ObjectCreateDate > startDate)
                 .Where(a => !a.SendToSubc.HasValue)
+                .Where(a=>a.WorkStart.HasValue&&a.WorkEnd.HasValue&&!string.IsNullOrEmpty(a.AddingsInfo))
                 .Where(a => a.Subregion == "VC MS Siberia Novosibirsk") //тест
                 .ToList();
             foreach (var avr in avrs)
@@ -57,7 +59,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
                         var path = Path.Combine(TaskParameters.DbTask.EmailSendFolder, $"{avr.AVRId}.xlsx");
                         service.CreateFolderAndSaveBook(path);
                         var recip = recipients.EMailAddress.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        TaskParameters.EmailHandlerParams.Add(recip, null, $"New AVR {avr.AVRId}", false, "Hi", new List<string> { path }, test ? testRecipints : null);
+                        TaskParameters.EmailHandlerParams.Add(recip, new List<string> { avr.CreatedByEmail, DistributionConstants.EgorovEmail }, $"New AVR {avr.AVRId}", false,
+                            @"<pre>
+Добрый день,
+
+Во вложении к письму находится информация о заявке АВР.
+В случае любых вопросов необходимо связаться с ответственным сотрудником Эрикссон.
+
+///Ericsson
+</pre>"
+                            , new List<string> { path }, test ? testRecipints : null);
                         importModels.Add(new ImportModel { AVR = avr.AVRId, SendToSbcr = now });
 
 

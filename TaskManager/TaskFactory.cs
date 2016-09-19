@@ -40,7 +40,7 @@ namespace TaskManager
             return GetTask(dbTask, userName, context);
         }
 
-        public static TaskBase GetTaskTest(DbTaskParams dbTask, Context context)
+        public static TaskBase GetTaskTest(DbTaskParams dbTask, Context context, TestTaskParams param=null )
         {
 
             //if (dbTask.DbTask != null)
@@ -64,7 +64,7 @@ namespace TaskManager
             //    return null;
 
             string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            return GetTaskTest(dbTask, userName, context);
+            return GetTaskTest(dbTask, userName, context,param);
         }
 
 
@@ -93,14 +93,14 @@ namespace TaskManager
 
         }
 
-        public static TaskBase GetTaskTest(DbTaskParams dbTask, string userName, Context context)
+        public static TaskBase GetTaskTest(DbTaskParams dbTask, string userName, Context context,TestTaskParams param)
         {
 
             if (dbTask.DbTask != null)
             {
                 TaskBase task;
                 //if (dbTask.DbTask.Active)
-                    task = new TaskBase(dbTask.DbTask, userName, dbTask.FileHandlerParams, context);
+                    task = new TaskBase(dbTask.DbTask, userName, dbTask.FileHandlerParams, context,param);
                // else
                // {
                     //taskLogger.LogWarn(string.Format("Task:{0}; Active state:{1}", dbTask.Name, dbTask.Active));

@@ -12,5 +12,7 @@ namespace DbModels.DomainModels.ShClone
         [Key]
         public string CarId { get; set; }
         public string Macroregion { get; set; }
+        public string Responsible { get; set; }
+        public string Manager { get; set; }
     }
 }
