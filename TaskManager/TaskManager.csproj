@@ -184,6 +184,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\APrintOutHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerSupplement.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\PrintOut\PrintOutHandlerWorkOrder.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\Putevie\FuelListNotifier.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Putevie\PutevieImportHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Putevie\PutevieNotifierHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\SAT\ActPrintToSHHandler.cs" />

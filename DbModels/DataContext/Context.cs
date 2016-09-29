@@ -103,6 +103,7 @@ namespace DbModels.DataContext
 
         public DbSet<ShCar> ShCars { get; set; }
         public DbSet<ShWaylist> ShWaylists { get; set; }
+        public DbSet<ShFuelList> ShFuelLists { get; set; }
 
         #endregion
 

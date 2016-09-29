@@ -16,7 +16,7 @@ namespace ExcelParser.EpplusInteract
 {
     public static class CreatePorDel
     {
-        private static readonly string TemplatePath = @"\\RU00112284\SolarisTemplates\POR-DEL.xlsx";
+        private static readonly string TemplatePath = @"\\RU00112284\p\OrderTemplates\PORTemplates\PORRecallV2-Template.xlsx";
         public static byte[] GenerateDelPOR(string agreement, bool draft, out string error)
         {
 
@@ -96,50 +96,52 @@ namespace ExcelParser.EpplusInteract
                     using (var service = new EpplusService(TemplatePath))
                     {
                         Dictionary<string, string> dict = new Dictionary<string, string>();
-                        dict.Add("Activity", satPor.Activity);
-                        dict.Add("PorId", string.Format("SH TO Id:{0}", satPor.TO));
+                        //dict.Add("Activity", satPor.Activity);
+                        //dict.Add("PorId", string.Format("SH TO Id:{0}", satPor.TO));
 
-                        dict.Add("SubContractorName", satPor.SubContractor);
+                        //dict.Add("SubContractorName", satPor.SubContractor);
 
-                        dict.Add("SAPNumber", satPor.SubContractorSapNumber);
+                        //dict.Add("SAPNumber", satPor.SubContractorSapNumber);
 
-                        dict.Add("SubContractorAddress", satPor.SubContractorAddress);
-
-
-                        dict.Add("PriceListNumbers", satPor.ProceListNumbers);
-                        var startDate = intersectedItems.Min(a => a.Plandate);
-                        var endDate = intersectedItems.Max(a => a.Plandate);
-                        if (startDate.Value.Date == endDate.Value.Date)
-                            startDate = startDate.Value.AddDays(-1);
-                        dict.Add("StartDate", startDate.Value.ToString("dd.MM.yyyy"));
+                        //dict.Add("SubContractorAddress", satPor.SubContractorAddress);
 
 
+                        //dict.Add("PriceListNumbers", satPor.ProceListNumbers);
+                        //var startDate = intersectedItems.Min(a => a.Plandate);
+                        //var endDate = intersectedItems.Max(a => a.Plandate);
+                        //if (startDate.Value.Date == endDate.Value.Date)
+                        //    startDate = startDate.Value.AddDays(-1);
+                        //dict.Add("StartDate", startDate.Value.ToString("dd.MM.yyyy"));
 
 
 
-                        dict.Add("EndDate", endDate.Value.ToString("dd.MM.yyyy"));
-                        dict.Add("today", DateTime.Now.ToString("dd.MM.yyyy"));
 
 
-                        dict.Add("Network", satPor.Network);
-                        var sampleItem = items.FirstOrDefault();
+                        //dict.Add("EndDate", endDate.Value.ToString("dd.MM.yyyy"));
+                        //dict.Add("today", DateTime.Now.ToString("dd.MM.yyyy"));
 
-                        dict.Add("Region", satPor.Region);
-                        dict.Add("POType", satPor.ToType);
-                        //dict.Add("Signum", satTo.CreateUserName);???????
-                        var networkNum = int.Parse(satPor.Network);
-                        var pr = context.PurchaseRequests.FirstOrDefault(p => p.Activity.Activity == shTo.ActivityCode && p.Network.Network2014 == networkNum);
-                        if (pr != null)
-                        {
-                            dict.Add("PurchaseRequest", pr.PurchReqNo);
-                            dict.Add("PRItem", pr.PRItem);
-                        }
+
+                        //dict.Add("Network", satPor.Network);
+                        //var sampleItem = items.FirstOrDefault();
+
+                        //dict.Add("Region", satPor.Region);
+                        //dict.Add("POType", satPor.ToType);
+                        ////dict.Add("Signum", satTo.CreateUserName);???????
+                        //var networkNum = int.Parse(satPor.Network);
+                        //var pr = context.PurchaseRequests.FirstOrDefault(p => p.Activity.Activity == shTo.ActivityCode && p.Network.Network2014 == networkNum);
+                        //if (pr != null)
+                        //{
+                        //    dict.Add("PurchaseRequest", pr.PurchReqNo);
+                        //    dict.Add("PRItem", pr.PRItem);
+                        //}
+
+                        dict.Add("PORRecallComments" , "PO was not signed, additional agreement is not needed");
                         dict.Add("PONumber", shTo.PONumber);
 
                         var sites = string.Join(", ", items.Select(s => s.Site).ToList());
 
                         var all = string.Join(", ", new List<string>() { sites, }.Where(t => !string.IsNullOrWhiteSpace(t)));
-                        dict.Add("Site", all);
+                       // dict.Add("Site", all);
 
                         foreach (var attach in intersectedItems)
                         {
@@ -154,7 +156,7 @@ namespace ExcelParser.EpplusInteract
 
                         
                         service.ReplaceDataInBook(dict);
-                        service.InsertTableToPatternCellInWorkBook("table", dataTable, new EpplusService.InsertTableParams() { PrintHeaders = true, StyledHeaders = true, TableStyle = TableStyles.Medium7, ShowRowStripes = true, EmptyRowAfterHeaders = true });
+                        service.InsertTableToPatternCellInWorkBook("Table", dataTable, new EpplusService.InsertTableParams() { PrintHeaders = true, StyledHeaders = true, TableStyle = TableStyles.Medium7, ShowRowStripes = true, EmptyRowAfterHeaders = true });
 
                         if (draft)
                             service.Draft();

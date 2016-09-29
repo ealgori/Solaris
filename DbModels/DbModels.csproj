@@ -109,6 +109,8 @@
     <Compile Include="DomainModels\ShClone\ShContact.cs" />
     <Compile Include="DomainModels\ShClone\ShFIX.cs" />
     <Compile Include="DomainModels\ShClone\ShFOL.cs" />
+    <Compile Include="DomainModels\ShClone\ShFuelList.cs" />
+    <Compile Include="DomainModels\ShClone\ShGenerators.cs" />
     <Compile Include="DomainModels\ShClone\ShLimit.cs" />
     <Compile Include="DomainModels\ShClone\ShMatToItem.cs" />
     <Compile Include="DomainModels\ShClone\ShPriceListItem.cs" />
@@ -133,6 +135,10 @@
     <Compile Include="Migrations\201608161223103_asdf.cs" />
     <Compile Include="Migrations\201608161223103_asdf.Designer.cs">
       <DependentUpon>201608161223103_asdf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609280755097_adfa.cs" />
+    <Compile Include="Migrations\201609280755097_adfa.Designer.cs">
+      <DependentUpon>201609280755097_adfa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -178,6 +184,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201608161223103_asdf.resx">
       <DependentUpon>201608161223103_asdf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609280755097_adfa.resx">
+      <DependentUpon>201609280755097_adfa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

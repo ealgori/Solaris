@@ -7,12 +7,12 @@ using TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomFiHandlers;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport
 {
-    public class SOLFIQuantifier:IFileImportQuantifier
+    public class SOLFIQuantifier : IFileImportQuantifier
     {
         public global::AutoImport.Rev3.FileImportHandlers.IFileImportHandler Quantify(string project, global::Models.AutoMail amail)
         {
             var parts = amail.Subject.Split(new string[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
-           // if (parts.Count() < 2)
+            // if (parts.Count() < 2)
             //    return null;
             // вторым параметром будет передавать тип атоимпорта
             string fiType = parts[1].ToUpper();
@@ -33,13 +33,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport
             switch
                 (poType)
             {
-                case"PO":
+                case "PO":
                     {
                         return new AVRFIHandler();
                     }
             }
             return null;
-           
+
         }
     }
 }

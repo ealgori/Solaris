@@ -132,7 +132,8 @@ namespace DbModels.DataContext.Repositories
             var toes = GetTOWithPONumber(year).ToList().Where(t =>
                
              t.ObichniyRegulyarniyTO != "Регулярный без подтверждения выполнения работ").ToList();
-           
+
+            var exist = toes.Where(t => t.TO == "2016_ПЕРМЬ_ТО-2_ПСКВ").ToList();
             var debugTO = toes.Select(t => t.TO).ToList();
             var readyToes = new List<ShTO>();
              foreach (var to in toes)

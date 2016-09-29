@@ -264,9 +264,13 @@ namespace TaskManager
             }
         }
 
-        private bool ShouldStart(DbTask dbtask)
+        public bool ShouldStart(DbTask dbtask, DateTime? currentDateTime = null)
         {
 
+            if (!currentDateTime.HasValue)
+            {
+                currentDateTime = DateTime.Now;
+            }
             // если не указан интервал, то всегда срабатывать
             if (!string.IsNullOrEmpty(dbtask.Interval) && (dbtask.StartDate.HasValue))
             {
@@ -274,7 +278,7 @@ namespace TaskManager
                 // если непонятное значение в таймспан, то сработать
                 if (TimeSpan.TryParse(dbtask.Interval, out span))
                 {
-                    if (dbtask.StartDate.Value > DateTime.Now)
+                    if (dbtask.StartDate.Value > currentDateTime)
                         return false;
                     //var test = Context.ShCloneUpdateLogs.Where(l => l.Task.Id == dbtask.Id && l.EndTime.HasValue).OrderByDescending(i => i.Id).ToList();
                     //var test1 = Context.ShCloneUpdateLogs.Where(l => l.Task.Id == dbtask.Id && l.EndTime.HasValue).OrderByDescending(i => i.StartTime).ToList();
@@ -284,9 +288,9 @@ namespace TaskManager
                     if (lastWork != null)
                     {
                         var nextForecastDate = dbtask.StartDate.Value;
-                        var now = DateTime.Now;
+                        var now = currentDateTime;
                         // считаем теоретическое время след срабатывания
-                        while (nextForecastDate < DateTime.Now)
+                        while (nextForecastDate < currentDateTime)
                         {
                             nextForecastDate = nextForecastDate.Add(span);
                         }

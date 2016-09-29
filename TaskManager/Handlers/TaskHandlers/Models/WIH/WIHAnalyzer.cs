@@ -7,6 +7,7 @@ using MailProcessing;
 using WIHInteract;
 using DbModels.DomainModels.ShClone;
 using System.Collections;
+using TaskManager.Handlers.TaskHandlers.Models.Email;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
@@ -292,6 +293,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 RejectedComment = RejectReason
                             });
 
+                            TaskParameters.EmailHandlerParams.Add(new List<string>() {DistributionConstants.EgorovEmail},new List<string>(),$"AVR GR Rejected {shRequest.AVRId}",true,RejectReason,null);
+
                             break;
 
                         }
@@ -309,6 +312,8 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 RejectedByOD = DateTime.Now,
                                 RejectedComment = RejectReason
                             });
+
+                            TaskParameters.EmailHandlerParams.Add(new List<string>() { DistributionConstants.EgorovEmail }, new List<string>(), $"TO GR Rejected {shRequest.TOid}", true, RejectReason, null);
 
                             break;
 

@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NPOI.HSSF.Record;
 using SHInteract;
+using SHInteract.Handlers;
 using TaskManager.Handlers.TaskHandlers.Models.Email;
 using TaskManager.TaskParamModels;
 
@@ -19,52 +21,55 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
 
         public override bool Handle()
         {
-           
+
             var shCars = TaskParameters.Context.ShCars.ToList();
-            DateTime startDate = new DateTime(2016,7,1);
+            DateTime startDate = new DateTime(2016, 7, 1);
             DateTime endDate = DateTime.Now;
-            var dateRange = CommonFunctions.Dates.GetMonthsRange(startDate,endDate);
+            var dateRange = CommonFunctions.Dates.GetMonthsRange(startDate, endDate);
 
-            //foreach (var shCar in shCars)
-            //{
-            //    foreach (var date in dateRange)
-            //    {
-            //        var carNum = PutevieImportHandler.GetCarNum(shCar.CarId);
-            //        var putevoiName = PutevieImportHandler.GetWaylistName(carNum, date);
-            //        var waylist = TaskParameters.Context.ShWaylists.FirstOrDefault(p => p.Waylist == putevoiName);
-            //        if (waylist==null)
-            //        {
-            //            // рассылка
-            //            AddToDelivery(new List<string> { shCar.Responsible }, shCar.CarId, date);
-            //        }
-            //    } 
-            //}
+            var fDownloadParams = new FileDownloadParams()
+            {
+                objectListObjectId = "524622",
+                objectListObjectType = "1253",
+                formName = "Путевые листы admin",
+                c_dyntype = "1",
+                currentMainObjType = "1253",
+                currentSectionObjType = "1253",
+                project = "SOLARIS",
+                sectionNum = "4"
 
+            };
+
+            FileDownloader fileDownloader = new FileDownloader(fDownloadParams);
             var requiredPutevie = TaskParameters.Context.ShWaylists.Where(w => w.Required == "Yes").ToList();
-          //  requiredPutevie = requiredPutevie.Where(p => p.Car.Contains("371")|| p.Car.Contains("352")).ToList();
-         //   requiredPutevie = TaskParameters.Context.ShWaylists.Where(p => p.Waylist == "976 072016").ToList();
+            //  requiredPutevie = requiredPutevie.Where(p => p.Car.Contains("371")|| p.Car.Contains("352")).ToList();
+            //   requiredPutevie = TaskParameters.Context.ShWaylists.Where(p => p.Waylist == "976 072016").ToList();
             foreach (var waylist in requiredPutevie)
             {
                 // рассылка
-                var shCar = shCars.FirstOrDefault(c=>c.CarId==waylist.Car);
+                var shCar = shCars.FirstOrDefault(c => c.CarId == waylist.Car);
                 if (shCar != null)
                 {
                     var date = ExtractDateFromWaylistName(waylist.Waylist);
 
                     if (date.HasValue)
-                        AddToDelivery(shCar.Responsible.Split(new string[] {";"} ,StringSplitOptions.RemoveEmptyEntries).ToList(), shCar.CarId, date.Value, waylist);
+                        AddToDelivery(
+                            shCar.Responsible.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                            shCar.Manager.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                            shCar.CarId, date.Value, waylist, fileDownloader);
                 }
             }
 
             return true;
         }
 
-        void AddToDelivery(List<string> recipients, string car, DateTime date, ShWaylist waylist )
+        void AddToDelivery(List<string> recipients, List<string> ccRecipients,   string car, DateTime date, ShWaylist waylist,
+            FileDownloader fileDownloader)
         {
             EmailParams param = new EmailParams(recipients, "#путевой#");
             {
                 param.Recipients = recipients;
-                param.CCRecipients = new List<string> { DistributionConstants.EgorovEmail };
+                param.CCRecipients = ccRecipients; // new List<string> { DistributionConstants.EgorovEmail };
             }
             //param.TestRecipients = $"{DistributionConstants.EgorovEmail}";
             param.AllowWithoutAttachments = true;
@@ -73,21 +78,45 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
             if (waylist != null && !string.IsNullOrEmpty(waylist.Comment))
                 commentText = string.Format("Комментарий:{0}", waylist.Comment);
             var carNum = PutevieImportHandler.GetCarNum(car);
-            var files = Directory.GetFiles(TaskParameters.DbTask.EmailSendFolder, $"*{carNum}*_{date.ToString("MMyyyy")}*",SearchOption.TopDirectoryOnly);
-            foreach (var file in files)
+
+            // брали файлы из папки и загружали их в сх.
+            //var files = Directory.GetFiles(TaskParameters.DbTask.EmailSendFolder, $"*{carNum}*_{date.ToString("MMyyyy")}*",SearchOption.TopDirectoryOnly);
+            //foreach (var file in files)
+            //{
+            //    var newPath = CommonFunctions.StaticHelpers.GetDatedPath(TaskParameters.DbTask.EmailSendFolder);
+
+            //    if (!Directory.Exists(newPath))
+            //    {
+            //        Directory.CreateDirectory(newPath);
+            //    }
+            //    var newFilePath = Path.Combine(newPath, Path.GetFileName(file));
+            //    var result = SHInteract.Handlers.Solaris.WayListUpload.Upload(waylist.Waylist, file, "Исходный Файл");
+
+
+            //    File.Move(file,newFilePath);
+            //    param.FilePaths.Add(newFilePath);
+            //}
+
+
+            // теперь задача обратная. взять файл из сх и добавить его в рассылку
+            var newPath = CommonFunctions.StaticHelpers.GetDatedPath(TaskParameters.DbTask.EmailSendFolder);
+            try
             {
-                var newPath = CommonFunctions.StaticHelpers.GetDatedPath(TaskParameters.DbTask.EmailSendFolder);
-
-                if (!Directory.Exists(newPath))
+                var files = fileDownloader.Download(waylist.Waylist, new List<string> { "Исходный Файл" }, "", true);
+                if (files != null && files.Any())
                 {
-                    Directory.CreateDirectory(newPath);
+                    foreach (var file in files)
+                    {
+                        var newFilePath = Path.Combine(newPath, file.Key);
+                        CommonFunctions.StaticHelpers.ByteArrayToFile(newFilePath, file.Value);
+                        param.FilePaths.Add(newFilePath);
+                    }
                 }
-                var newFilePath = Path.Combine(newPath, Path.GetFileName(file));
-                var result = SHInteract.Handlers.Solaris.WayListUpload.Upload(waylist.Waylist, file, "Исходный Файл");
-                
+            }
+            catch (Exception)
+            {
 
-                File.Move(file,newFilePath);
-                param.FilePaths.Add(newFilePath);
+               return;
             }
 
             param.HtmlBody += string.Format(@"
@@ -116,11 +145,12 @@ pre {{
 </pre>
 "
 , car
-,date.ToString("MM.yyyy")
+, date.ToString("MM.yyyy")
 
-,commentText);
+, commentText);
             param.HtmlBody += @"<br>";
-
+            param.TestRecipients = DistributionConstants.EalgoriEmail;
+           
             TaskParameters.EmailHandlerParams.EmailParams.Add(param);
         }
 

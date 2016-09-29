@@ -122,6 +122,7 @@ namespace TaskManager
                         task.FileIOSubHandler = null;
                         task.ImportHandler = new ImportHandler(task.TaskParameters);
                         task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
                         break;
                     }
                 case "WIHTrashCleaner":
@@ -512,6 +513,15 @@ namespace TaskManager
                 case "PutevieNotifierHandler":
                     {
                         task.TaskHandler = new PutevieNotifierHandler(task.TaskParameters);
+                        task.FileIOSubHandler = null;
+                       // task.ImportHandler = new ImportHandler(task.TaskParameters);
+                        task.ConvertHandler = null;
+                        task.EmailHandler = new BaseEmailHandler(task.TaskParameters);
+                        break;
+                    }
+                case "FuelListNotifierHandler":
+                    {
+                        task.TaskHandler = new FuelListNotifierHandler(task.TaskParameters);
                         task.FileIOSubHandler = null;
                        // task.ImportHandler = new ImportHandler(task.TaskParameters);
                         task.ConvertHandler = null;

@@ -37,6 +37,7 @@ table, th, td {{
   <thead>
  <tr>
 <th>№ Заявки</th>
+<th>Заявка создана</th>
 <th>№ Заявки подрядчика</th>
 <th>Филиал</th> 
 <th>Подрядчик</th>
@@ -75,6 +76,8 @@ table, th, td {{
 <td>{9}</td>
 <td>{10}</td>
 <td>{11}</td>
+<td>{12}</td>
+
   </tr>
  ";
 
@@ -90,7 +93,7 @@ table, th, td {{
                 , DistributionConstants.EgorovEmail
             };
 
-            var startDate = new DateTime(2016, 6, 22);
+            var startDate = new DateTime(2016, 9 , 19);
             var emptyAVRs = TaskParameters.Context.ShAVRs
                 .Where(c => c.ObjectCreateDate > startDate)
                 .Where(c => c.Items.Count == 0)
@@ -119,7 +122,15 @@ table, th, td {{
                 // фильтр по типу
                 if (!string.IsNullOrEmpty(avr.AVRType3))
                 {
-                    filtered = filtered.Where(a => a.Column3 == avr.AVRType3).ToList();
+                    var _filtered = filtered.Where(a => a.Column3 == avr.AVRType3).ToList();
+                    if (_filtered.Count == 0)
+                    {
+                        filtered = filtered.Where(r => string.IsNullOrEmpty(r.Column3)).ToList();
+                    }
+                    else
+                    {
+                        filtered = _filtered;
+                    }
                 }
                 else
                 {
@@ -129,12 +140,20 @@ table, th, td {{
                 //фильтр по подрядчику
                 if (!string.IsNullOrEmpty(avr.Subcontractor))
                 {
-                    filtered = filtered.Where(a => a.Column2 == avr.Subcontractor).ToList();
+                    var _filtered = filtered.Where(a => a.Column2 == avr.Subcontractor).ToList();
+                    if(_filtered.Count==0)
+                        filtered = filtered.Where(r => string.IsNullOrEmpty(r.Column2)).ToList();
+                    else
+                    {
+                        filtered = _filtered;
+                    }
                 }
                 else
                 {
                     filtered = filtered.Where(r => string.IsNullOrEmpty(r.Column2)).ToList();
                 }
+                if (filtered.Count == 0)
+                    filtered = wsObjs.Where(r => string.IsNullOrEmpty(r.Column1)).ToList();
 
                 var rows = filtered;
                 if (rows.Count > 0)
@@ -166,19 +185,21 @@ table, th, td {{
                         case "managers":
                         {
 
-                                var managerStr = string.Join(";", rows.Select(s => s.Column5));
-                                var managers = managerStr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
-                                if (managers.Any())
-                                {
-                                    var manager = String.Join(";", managers);
-                                    foreach (var manag in managers)
-                                    {
-                                        if (!emailList.Any(l => l.Email == manag && l.ShAvRs.AVRId == avr.AVRId))
-                                        {
-                                            emailList.Add(new DistrItem { ShAvRs = avr, Email = manag, Responsible = responsible });
-                                        }
-                                    }
-                                }
+                                //var managerStr = string.Join(";", rows.Select(s => s.Column5));
+                                //var managers = managerStr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
+                                //if (managers.Any())
+                                //{
+                                //    var manager = String.Join(";", managers);
+                                //    foreach (var manag in managers)
+                                //    {
+                                //        if (!emailList.Any(l => l.Email == manag && l.ShAvRs.AVRId == avr.AVRId))
+                                //        {
+                                //            emailList.Add(new DistrItem { ShAvRs = avr, Email = manag, Responsible = responsible });
+                                //        }
+                                //    }
+                                //}
+
+                                emailList.Add(new DistrItem { ShAvRs = avr, Email = DistributionConstants.EalgoriEmail});
                                 break;
                         }
 
@@ -198,6 +219,7 @@ table, th, td {{
                 {
                     builder.AppendLine(string.Format(rowTemplate
                       , avr.ShAvRs.AVRId
+                       , avr.ShAvRs.ObjectCreateDate
                        , avr.ShAvRs.TaskSubcontractorNumber
                         , avr.ShAvRs.Subregion
                         , avr.ShAvRs.Subcontractor

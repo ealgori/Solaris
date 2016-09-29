@@ -76,7 +76,17 @@ namespace TestProject
             
          
         }
+     [TestMethod]
+        public void TestPorDel()
+     {
 
+            string error;
+            var porBytes = ExcelParser.EpplusInteract.CreatePorDel.GenerateDelPOR("2016_ЕКАТЕРИНБУРГ_ТО-1_ПСКВ_ДС№1", false, out error);
+         var path = @"C:\Temp\testporDEL.xlsx";
+         CommonFunctions.StaticHelpers.ByteArrayToFile(path, porBytes);
+
+
+     }
       [TestMethod]
         public void FolderAccess()
         {
@@ -623,6 +633,19 @@ namespace TestProject
         }
 
 
+        [TestMethod]
+        public void FuelListNotifierHandlerTest()
+        {
+
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "FuelListNotifierHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+
+        }
     
 
         [TestMethod]
@@ -1573,8 +1596,19 @@ namespace TestProject
             using (Context context = new Context())
             {
 
+
+
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "EmptyAVRDitstHandlerManagers") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
+                var should1 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(1));
+                var should2 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(2));
+                var should3 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(3));
+                var should4 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(4));
+                var should5 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(5));
+                var should6 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(6));
+                var should7 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(7));
+                var should8 = TaskManager.TaskManager.Instance.ShouldStart(paramsdd.DbTask, DateTime.Now.AddDays(8));
+
                 task.Process();
             }
         }
