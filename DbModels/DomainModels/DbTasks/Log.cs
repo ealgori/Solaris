@@ -13,6 +13,7 @@ namespace DbModels.DomainModels.DbTasks
         public string Status { get; set; }
         public string Message { get; set; }
         public byte[] File { get; set; }
+      
 
         public Log()
         {

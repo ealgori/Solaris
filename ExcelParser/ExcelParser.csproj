@@ -50,17 +50,15 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EPPlus, Version=3.1.3.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\RU00112284\p\Libs\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>\\RU00112284\p\Libs\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI, Version=1.2.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\RU00112284\p\Libs\NPOI.dll</HintPath>
+    <Reference Include="NPOI">
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -103,17 +101,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\EDiadocApi\EDiadocApi\EDiadocApi.csproj">
-      <Project>{7dca0394-7cb4-48d5-afff-f772f27e667f}</Project>
-      <Name>EDiadocApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
       <Project>{cd807a95-25eb-4f71-a017-e537d58de0af}</Project>
       <Name>NpoiInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\EDiadocApi\EDiadocApi\EDiadocApi.csproj">
+      <Project>{7dca0394-7cb4-48d5-afff-f772f27e667f}</Project>
+      <Name>EDiadocApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\DbModels\DbModels.csproj">
       <Project>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</Project>

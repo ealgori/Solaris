@@ -113,7 +113,7 @@ namespace TaskManager
             try
             {
 
-                Log log = new Log() { Message = message, Status = "Error", TaskLog = TaskLog, File = file };
+                Log log = new Log() { Message = message, Status = "Error", TaskLog = TaskLog};//, File = file };
                 context.Logs.Add(log);
                 context.SaveChanges();
             }
@@ -132,7 +132,7 @@ namespace TaskManager
             try
             {
 
-                Log log = new Log() { Message = message, Status = "Debug", TaskLog = TaskLog, File = file };
+                Log log = new Log() { Message = message, Status = "Debug", TaskLog = TaskLog};//, File = file };
                 context.Logs.Add(log);
                 context.SaveChanges();
             }
@@ -151,7 +151,7 @@ namespace TaskManager
             try
             {
 
-                Log log = new Log() { Message = message, Status = "Warn", TaskLog = TaskLog, File = file };
+                Log log = new Log() { Message = message, Status = "Warn", TaskLog = TaskLog};//, File = file };
                 context.Logs.Add(log);
                 context.SaveChanges();
             }

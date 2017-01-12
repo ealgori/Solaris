@@ -21,11 +21,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport
             if (DateTime.Now.Hour < 17 && DateTime.Now.Hour > 5)
                 mailMasks = new List<string> {"autoimport"};
 
-            MainWorker.AutoImport(
-                "SOLARIS"
-                , new List<global::AutoImport.Rev3.ImportQuantifiers.IImportQuantifier>() { new SOLAIQuantifier() }
-                , new List<IFileImportQuantifier> { new SOLFIQuantifier() }
-                , mailMasks);
+            //MainWorker.AutoImport(
+            //    "SOLARIS"
+            //    , new List<global::AutoImport.Rev3.ImportQuantifiers.IImportQuantifier>() { new SOLAIQuantifier() }
+            //    , new List<IFileImportQuantifier> { new SOLFIQuantifier() }
+            //    , mailMasks);
+
+            MainWorker.AutoImport("SOLARIS", new List<global::AutoImport.Rev3.ImportQuantifiers.IImportQuantifier>() { new SOLAIQuantifier() }, new List<IFileImportQuantifier> { new SOLFIQuantifier() });
             return true;
         }
     }

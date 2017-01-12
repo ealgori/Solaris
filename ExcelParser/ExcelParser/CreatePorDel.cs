@@ -9,6 +9,7 @@ using System.Text;
 using CommonFunctions.Extentions;
 using System.IO;
 using CommonFunctions;
+using DbModels.Models.Pors;
 using OfficeOpenXml.Table;
 
 
@@ -16,7 +17,7 @@ namespace ExcelParser.EpplusInteract
 {
     public static class CreatePorDel
     {
-        private static readonly string TemplatePath = @"\\RU00112284\p\OrderTemplates\PORTemplates\PORRecallV2-Template.xlsx";
+        private static readonly string TemplatePath = @"\\RU00112284\OrderTemplates\PORTemplates\PORRecallV2-Template.xlsx";
         public static byte[] GenerateDelPOR(string agreement, bool draft, out string error)
         {
 
@@ -84,13 +85,14 @@ namespace ExcelParser.EpplusInteract
                         error = string.Format("Некоторые из выбранных позиций отсутствуют в выпущеном поре");
                         return null;
                     }
-                    int index = 0;
-                    foreach (var item in intersectedItems)
-                    {
-                        index++;
-                        item.No = index;
-                    }
+                    //int index = 0;
+                    //foreach (var item in intersectedItems)
+                    //{
+                    //    index++;
+                    //    item.No = index;
+                    //}
 
+                    
 
 
                     using (var service = new EpplusService(TemplatePath))
@@ -147,7 +149,46 @@ namespace ExcelParser.EpplusInteract
                         {
                             attach.Description = string.Format("{0} ({1})", attach.Description, attach.Description.CUnidecode());
                         }
-                        var dataTable = intersectedItems.ToList().ToDataTable();
+
+                    var grouppedItemModels = new List<PORTOItem>();
+
+                    var grouppdedModels = intersectedItems.GroupBy(g => g.Code);
+                    foreach (var groupModel in grouppdedModels)
+                    {
+                        int index = 0;
+                        var itemForProps = groupModel.FirstOrDefault();
+                        if (itemForProps != null)
+                        {
+                            var item = new PORTOItem()
+                            {
+                                No = index + 1,
+                                Cat = itemForProps.Cat,
+                                Code = itemForProps.Code,
+                                Plant = itemForProps.Plant,
+                                NetQty = groupModel.Sum(s => s.NetQty),
+                                ItemCat = itemForProps.ItemCat,
+                                PRtype = itemForProps.PRtype,
+                                POrg = itemForProps.POrg,
+                                GLacc = itemForProps.GLacc,
+                                Price = itemForProps.Price,
+                                PRUnit = itemForProps.PRUnit,
+                                Vendor = itemForProps.Vendor,
+                                Plandate = itemForProps.Plandate,
+                                //Description = i.PriceListRevisionItem.Name,
+                                // PriceListRevisionItem = i.PriceListRevisionItem,
+                                // ItemId = i.TOItemId
+                            };
+
+
+                            grouppedItemModels.Add(item);
+                        }
+
+                    }
+
+
+
+
+                    var dataTable = grouppedItemModels.ToList().ToDataTable();
                         dataTable.Columns.Remove("POR");
                         dataTable.Columns.Remove("Id");
                         dataTable.Columns.Remove("PriceListRevisionItem");

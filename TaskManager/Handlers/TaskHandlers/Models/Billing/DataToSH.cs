@@ -150,12 +150,14 @@ order by [item id] ";
 
 
            var InvoiceVymManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<InvoiceVymManSer>("MAStorage", command1);
-           //avr
+            var invoiceTest = InvoiceVymManSerResult.Where(i => i.PO == "4512585989").ToList();
+            
+            //avr
             var POVympelcomManSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<POVympelcomManSer>("MAStorage", command2);
             
             //to
             var TOVympelcommanSerResult = CommonFunctions.StaticHelpers.GetStoredProcDataFromServer<TOVympelcomManSer>("MAStorage", command3);
-            TOVympelcommanSerResult = TOVympelcommanSerResult.Where(r => r.PurchasingDocument == "4512965927").ToList();
+        //    TOVympelcommanSerResult = TOVympelcommanSerResult.Where(r => r.PurchasingDocument == "4512585989").ToList();
 
             //var InvoiceVymManSerResult =new List<InvoiceVymManSer>();
             //var POVympelcomManSerResult = new List<POVympelcomManSer>();
@@ -186,7 +188,11 @@ order by [item id] ";
 
 
                 });
-          
+
+            var TOPayVympelcommanSerResultTest =
+                TOPayVympelcommanSerResult.Where(p => p.PONumber == "4512585989").ToList();
+
+
             foreach (var item in InvoiceVymManSerResult)
             {
               

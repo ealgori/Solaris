@@ -18,7 +18,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
         {
         }
 
-      
+
 
         public override bool Handle()
         {
@@ -27,96 +27,114 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
             var waylistRequiredImport = new List<WaylistRequiredImport>();
             var redemption = new RedemptionMailProcessor("SOLARIS");
             var mails = redemption.GetMails(new List<string> { "#путевой#" });
+            TaskParameters.TaskLogger.LogDebug($"Писем : {mails.Count}");
+
             foreach (var mail in mails)
             {
 
-                // берем первый файл из письма. условились что на одну машину и одну дату одно письмо
-                // из этого первого файла узнаем машину и дату и пытаемся их обработать
-                bool mailHandled = true;
-                var testAttachment = mail.Attachments.FirstOrDefault(a=>a.File.Contains("_"));
-                if (testAttachment == null)
-                    continue;
-                var fileName = Path.GetFileNameWithoutExtension(testAttachment.File);
-                var parts = fileName.Split(new char[] {'_' });
-                if (parts.Count() != 2)
+                try
                 {
-                    continue;
-                }
-                var carPart = parts[0];
-                var datePart = new string(parts[1].Where(c=>Char.IsDigit(c)).Take(7).ToArray());
-                // машину определяем по первым трем цифрам
-                string carNum = GetCarNum(carPart);
-                bool letBool = true;
-                bool digbool = true;
 
-              
-               
 
-                var shCar = TaskParameters.Context.ShCars.FirstOrDefault(c => c.CarId.Contains(carNum));
-                if (shCar == null)
-                {
-                    continue;
+                    // берем первый файл из письма. условились что на одну машину и одну дату одно письмо
+                    // из этого первого файла узнаем машину и дату и пытаемся их обработать
+                    bool mailHandled = true;
+                    var testAttachment = mail.Attachments.FirstOrDefault(a => a.File.Contains("_"));
+                    if (testAttachment == null)
+                        continue;
+                    TaskParameters.TaskLogger.LogDebug($"{mail.Author} - {Path.GetFileName(testAttachment.File)}");
 
-                }
-                DateTime date;
-                if (!DateTime.TryParseExact(datePart, "MMyyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
-                {
-                  continue;
-                }
+                    var fileName = Path.GetFileNameWithoutExtension(testAttachment.File);
+                    var parts = fileName.Split(new char[] { '_' });
+                    if (parts.Count() != 2)
+                    {
+                        TaskParameters.TaskLogger.LogError($"неверный формат письма");
+                        continue;
+                    }
+                    var carPart = parts[0];
+                    var datePart = new string(parts[1].Where(c => Char.IsDigit(c)).Take(7).ToArray());
+                    // машину определяем по первым трем цифрам
+                    string carNum = GetCarNum(carPart);
+                    bool letBool = true;
+                    bool digbool = true;
 
-                var wayListName = GetWaylistName(carNum,date);
-                var shWaylist = TaskParameters.Context.ShWaylists.FirstOrDefault(w=>w.Waylist==wayListName);
-                if(shWaylist==null)
-                {
-                    var import = new WaylistImport();
-                    
-                    import.Car = shCar.CarId;
-                    import.Name = wayListName;
-                    import.Date = now;
-                    waylistImport.Add(import);
-                    continue;
-                }
-                
 
-                List<string> fileFields = new List<string> {"Файл1","Файл2","Файл3","Файл4" };
-                int index = 0;
-                StringBuilder results = new StringBuilder();
-                foreach (var attach in mail.Attachments)
-                {
-                    var field = fileFields[index];
-                    var result = SHInteract.Handlers.Solaris.WayListUpload.Upload(wayListName, attach.FilePath, field);
-                    results.AppendLine(result);
-                    // прогружаем файл
-                    index++;
-                }    
-                    
-                if(shWaylist.Required=="Yes")
-                {
-                    var import = new WaylistRequiredImport();
-                    import.Name = wayListName;
-                    waylistRequiredImport.Add(import);
-                    continue;
-                }
 
-                
-                
 
-                if (mailHandled)
-                {
-                    redemption.MoveToSuccess(mail.ConversationId);
-                    // ответить
-                    redemption.SendMail(
-                        new AutoMail
+                    var shCar = TaskParameters.Context.ShCars.FirstOrDefault(c => c.CarId.Contains(carNum));
+                    if (shCar == null)
+                    {
+                        TaskParameters.TaskLogger.LogError($"Авто '{carNum}' не найдено");
+                        continue;
+
+                    }
+                    DateTime date;
+                    if (!DateTime.TryParseExact(datePart, "MMyyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                    {
+                        continue;
+                    }
+
+                    var wayListName = GetWaylistName(carNum, date);
+                    if(!string.IsNullOrEmpty(wayListName))
+                    { 
+                    var shWaylist = TaskParameters.Context.ShWaylists.FirstOrDefault(w => w.Waylist == wayListName);
+                    if (shWaylist == null)
+                    {
+                        var import = new WaylistImport();
+
+                        import.Car = shCar.CarId;
+                        import.Name = wayListName;
+                        import.Date = now;
+                        waylistImport.Add(import);
+                        continue;
+                    }
+
+
+                    List<string> fileFields = new List<string> { "Файл1", "Файл2", "Файл3", "Файл4" };
+                    int index = 0;
+                    StringBuilder results = new StringBuilder();
+                    foreach (var attach in mail.Attachments)
+                    {
+                        var field = fileFields[index];
+                        var result = SHInteract.Handlers.Solaris.WayListUpload.Upload(wayListName, attach.FilePath, field);
+                        results.AppendLine(result);
+                        // прогружаем файл
+                        index++;
+                    }
+
+                    if (shWaylist.Required == "Yes")
+                    {
+                        var import = new WaylistRequiredImport();
+                        import.Name = wayListName;
+                        waylistRequiredImport.Add(import);
+                        continue;
+                    }
+
+
+
+
+                        if (mailHandled)
                         {
-                            Email = DistributionConstants.EgorovEmail,
-                            Body = $"Файлы по '{shCar.CarId}' за '{date.ToString("MM.yyyy")}' успешно прогружены.",
-                            Subject = "Re. Путевые"
+                            redemption.MoveToSuccess(mail.ConversationId);
+                            // ответить
+                            redemption.SendMail(
+                                new AutoMail
+                                {
+                                    Email = DistributionConstants.EgorovEmail,
+                                    Body =
+                                        $"Файлы по '{shCar.CarId}' за '{date.ToString("MM.yyyy")}' успешно прогружены.",
+                                    Subject = "Re. Путевые"
 
 
+                                }
+
+                            );
                         }
-
-                        );
-
+                    }
+                }
+                catch (Exception exc)
+                {
+                    TaskParameters.TaskLogger.LogError($"{exc.Message} - {exc.StackTrace}");
                 }
 
             }
@@ -143,7 +161,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
 
         }
 
-        public static string GetWaylistName(string carNum,DateTime date)
+        public static string GetWaylistName(string carNum, DateTime date)
         {
 
             return $"{carNum} {date.ToString("MMyyyy")}";

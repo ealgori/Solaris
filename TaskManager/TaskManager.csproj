@@ -50,7 +50,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus">
-      <HintPath>\\RU00112284\p\Soft\Libs\EPPlus.dll</HintPath>
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Redemption">
       <HintPath>\\RU00112284\p\Soft\Libs\Interop.Redemption.dll</HintPath>
@@ -74,7 +74,7 @@
       <HintPath>\\RU00112284\p\Libs\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
-      <HintPath>\\RU00112284\p\Soft\Libs\NPOI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -243,25 +243,25 @@
     <None Include="Templates\PrintOutWorkOrder.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\AutoImport.Rev3\AutoImport.Rev3\AutoImport.Rev3.csproj">
       <Project>{a6550831-f322-4fbb-bede-831ae9492ac1}</Project>
       <Name>AutoImport.Rev3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\NpoiInteract\NpoiInteract\NpoiInteract.csproj">
       <Project>{cd807a95-25eb-4f71-a017-e537d58de0af}</Project>
       <Name>NpoiInteract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj">
+      <Project>{a4b0d29a-b2eb-481f-a9ca-29f3d07f2848}</Project>
+      <Name>RedemptionInteract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\OHDB_Rev_2\WIHInteract\WIHInteract.csproj">
       <Project>{246412b6-b831-4de2-99c3-535473383c5d}</Project>
       <Name>WIHInteract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RedemptionInteract\RedemptionInteract\RedemptionInteract.csproj">
-      <Project>{a4b0d29a-b2eb-481f-a9ca-29f3d07f2848}</Project>
-      <Name>RedemptionInteract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SHInteract\SHInteract\SHInteract.csproj">
       <Project>{b6678255-e5b3-4270-b604-d51adf577d4c}</Project>

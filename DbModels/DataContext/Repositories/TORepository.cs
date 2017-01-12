@@ -669,15 +669,8 @@ namespace DbModels.DataContext.Repositories
                     }
                 }
 
-                // а теперь сгруппируем то что получилось, но только сервисы... вот бред то...
-
-             
-            //    groupped.AddRange(itemModels.Where(t=>t.Cat=="Material"));
-            //  for (int i = 0; i < groupped.Count(); i++)
-            //{
-            //    groupped[i].No=i+1;
-            //}
-
+            
+              
 
                 return itemModels.ToList();
             }

@@ -23,6 +23,8 @@ namespace DbModels.DomainModels.ShClone
         public string StartRide { get; set; }
         public string EndRide { get; set; }
         public string Comment { get; set; }
+        public string Manager { get; set; }
+        public string Responsible { get; set; }
 
     }
 }

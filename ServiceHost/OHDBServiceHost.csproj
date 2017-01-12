@@ -125,10 +125,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
-      <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
-      <Name>CommonFunctions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OHDBServiceProxy\OHDBServiceProxy.csproj">
       <Project>{b621f84e-b95c-42cc-8629-fe49b73c5011}</Project>
       <Name>OHDBServiceProxy</Name>

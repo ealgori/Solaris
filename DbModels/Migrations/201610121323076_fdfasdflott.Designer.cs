@@ -7,18 +7,18 @@ namespace DbModels.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class adfa : IMigrationMetadata
+    public sealed partial class fdfasdflott : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(adfa));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(fdfasdflott));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609280755097_adfa"; }
+            get { return "201610121323076_fdfasdflott"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

@@ -22,8 +22,10 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AVR.ConditionHandlers
         public override bool Handle()
         {
             
-            var freezedAvrs = TaskParameters.Context.ShAVRs.Where(AVRRepository.Base)
-                //.Where(a => a.AVRId == "205806")
+            var freezedAvrs = TaskParameters.Context.ShAVRs
+                .Where(a => a.AVRId == "208554")
+                .Where(AVRRepository.Base)
+                
                 .ToList();
             var inCalcAvrs = freezedAvrs.Where(AVRRepository.InCalculations).ToList();
             var reexposeAVRs = inCalcAvrs.Where(AVRRepository.NeedReexpose).ToList();

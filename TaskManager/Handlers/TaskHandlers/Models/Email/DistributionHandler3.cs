@@ -41,6 +41,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Email
             var unApprovedOwnersGroup = 
                 satSubregions.GroupJoin(
                 avrs.Where(a => a.RukOtdela!=approved
+                && a.TotalAmount.HasValue&& a.TotalAmount>0
                     // исключаем заявки отклоненные обоими руководителями
                 &&!(a.RukOtdela==declined&&a.RukFiliala==declined)
                 //&& a.RukFiliala!=declined

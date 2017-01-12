@@ -54,12 +54,15 @@ responsibles:{2}; managers:{3}
                 if(plParts.Length<2)
                     continue;
                 var plDate = $"{plParts[1].Substring(0,2)}.{plParts[1].Substring(2, 4)}";
-            
 
-                if (responsibles!=null&& (responsibles.Any()) ||(managers!=null && managers.Any()))
+
+                if (responsibles != null && (responsibles.Any()) || (managers != null && managers.Any()))
+                {
+                    TaskParameters.TaskLogger.LogInfo($"{city} - {fList.Responsible} - {fList.Manager}");
                     TaskParameters.EmailHandlerParams.Add(responsibles, managers, $"Отчет по генерации {city}", true
-                        , string.Format(mailText, plDate, city, fList.Responsible??"None", fList.Manager??"None")
+                        , string.Format(mailText, plDate, city, fList.Responsible ?? "None", fList.Manager ?? "None")
                         , null);
+                }
             }
 
             return true;

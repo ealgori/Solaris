@@ -132,13 +132,13 @@
     <Compile Include="DomainModels\Solaris\PriceListMap.cs" />
     <Compile Include="DomainModels\Solaris\PurchaseRequest.cs" />
     <Compile Include="DomainModels\WIH\WIHRequest.cs" />
-    <Compile Include="Migrations\201608161223103_asdf.cs" />
-    <Compile Include="Migrations\201608161223103_asdf.Designer.cs">
-      <DependentUpon>201608161223103_asdf.cs</DependentUpon>
+    <Compile Include="Migrations\201610121323076_fdfasdflott.cs" />
+    <Compile Include="Migrations\201610121323076_fdfasdflott.Designer.cs">
+      <DependentUpon>201610121323076_fdfasdflott.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609280755097_adfa.cs" />
-    <Compile Include="Migrations\201609280755097_adfa.Designer.cs">
-      <DependentUpon>201609280755097_adfa.cs</DependentUpon>
+    <Compile Include="Migrations\201610271228069_fdfdfa.cs" />
+    <Compile Include="Migrations\201610271228069_fdfdfa.Designer.cs">
+      <DependentUpon>201610271228069_fdfdfa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -172,7 +172,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\OHDB\OHDB_Core\CommonFunctions\CommonFunctions\CommonFunctions.csproj">
       <Project>{521a9edb-4dca-4610-add7-088a8b3e19f5}</Project>
       <Name>CommonFunctions</Name>
     </ProjectReference>
@@ -182,11 +182,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608161223103_asdf.resx">
-      <DependentUpon>201608161223103_asdf.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610121323076_fdfasdflott.resx">
+      <DependentUpon>201610121323076_fdfasdflott.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609280755097_adfa.resx">
-      <DependentUpon>201609280755097_adfa.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610271228069_fdfdfa.resx">
+      <DependentUpon>201610271228069_fdfdfa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

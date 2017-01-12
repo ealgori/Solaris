@@ -294,16 +294,18 @@ namespace TaskManager
                         {
                             nextForecastDate = nextForecastDate.Add(span);
                         }
-
+                        // проверяем, когда он должыен был сработать в пред раз
                         var lastForecastDate = nextForecastDate.Add(-span);
-
+                        // если предыдущий раз раньше 
                         if (lastWork.EndTime.Value < lastForecastDate)
+
                         {
+                            logger.Info($"==> last:{lastWork?.EndTime?.ToString()} int:{dbtask.Interval}  ==>{dbtask.Name} - Выполняем ");
                             return true;
                         }
                         else
                         {
-                            logger.Info(string.Format("{0} - через {1} ", dbtask.Name, (nextForecastDate - now).ToString()));
+                            logger.Debug($"==> last:{lastWork?.EndTime?.ToString()} int:{dbtask.Interval}  ==>{dbtask.Name} - через {(nextForecastDate - now).ToString()} ");
                             return false;
                         }
 

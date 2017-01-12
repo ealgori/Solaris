@@ -46,24 +46,49 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
             //   requiredPutevie = TaskParameters.Context.ShWaylists.Where(p => p.Waylist == "976 072016").ToList();
             foreach (var waylist in requiredPutevie)
             {
-                // рассылка
-                var shCar = shCars.FirstOrDefault(c => c.CarId == waylist.Car);
-                if (shCar != null)
-                {
-                    var date = ExtractDateFromWaylistName(waylist.Waylist);
+                //// рассылка
+                //var shCar = shCars.FirstOrDefault(c => c.CarId == waylist.Car);
+                //if (shCar != null)
+                //{
+                var date = ExtractDateFromWaylistName(waylist.Waylist);
 
-                    if (date.HasValue)
-                        AddToDelivery(
-                            shCar.Responsible.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
-                            shCar.Manager.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
-                            shCar.CarId, date.Value, waylist, fileDownloader);
+                //    if (date.HasValue)
+                //        try
+                //        {
+                //            AddToDelivery(
+                //          shCar.Responsible?.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                //          shCar.Manager?.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                //          shCar.CarId, date.Value, waylist, fileDownloader);
+                //        }
+                //        catch (Exception exc)
+                //        {
+
+                //            TaskParameters.TaskLogger.LogError(exc.Message);
+                //        }
+
+                //}
+                // ответственного перенесли прямо на путевой лист
+
+                try
+                {
+                    AddToDelivery(
+                                      waylist.Responsible?.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                                      waylist.Manager?.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                                      waylist.Waylist, date.Value, waylist, fileDownloader);
+
                 }
+                catch (Exception exc)
+                {
+
+                    TaskParameters.TaskLogger.LogError(exc.Message);
+                }
+
             }
 
             return true;
         }
 
-        void AddToDelivery(List<string> recipients, List<string> ccRecipients,   string car, DateTime date, ShWaylist waylist,
+        void AddToDelivery(List<string> recipients, List<string> ccRecipients, string car, DateTime date, ShWaylist waylist,
             FileDownloader fileDownloader)
         {
             EmailParams param = new EmailParams(recipients, "#путевой#");
@@ -116,7 +141,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
             catch (Exception)
             {
 
-               return;
+                return;
             }
 
             param.HtmlBody += string.Format(@"
@@ -149,8 +174,8 @@ pre {{
 
 , commentText);
             param.HtmlBody += @"<br>";
-            param.TestRecipients = DistributionConstants.EalgoriEmail;
-           
+            //  param.TestRecipients = DistributionConstants.EalgoriEmail;
+
             TaskParameters.EmailHandlerParams.EmailParams.Add(param);
         }
 

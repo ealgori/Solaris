@@ -185,21 +185,21 @@ table, th, td {{
                         case "managers":
                         {
 
-                                //var managerStr = string.Join(";", rows.Select(s => s.Column5));
-                                //var managers = managerStr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
-                                //if (managers.Any())
-                                //{
-                                //    var manager = String.Join(";", managers);
-                                //    foreach (var manag in managers)
-                                //    {
-                                //        if (!emailList.Any(l => l.Email == manag && l.ShAvRs.AVRId == avr.AVRId))
-                                //        {
-                                //            emailList.Add(new DistrItem { ShAvRs = avr, Email = manag, Responsible = responsible });
-                                //        }
-                                //    }
-                                //}
+                                var managerStr = string.Join(";", rows.Select(s => s.Column5));
+                                var managers = managerStr.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
+                                if (managers.Any())
+                                {
+                                    var manager = String.Join(";", managers);
+                                    foreach (var manag in managers)
+                                    {
+                                        if (!emailList.Any(l => l.Email == manag && l.ShAvRs.AVRId == avr.AVRId))
+                                        {
+                                            emailList.Add(new DistrItem { ShAvRs = avr, Email = manag, Responsible = responsible });
+                                        }
+                                    }
+                                }
 
-                                emailList.Add(new DistrItem { ShAvRs = avr, Email = DistributionConstants.EalgoriEmail});
+                                //emailList.Add(new DistrItem { ShAvRs = avr, Email = DistributionConstants.EalgoriEmail});
                                 break;
                         }
 
@@ -211,7 +211,7 @@ table, th, td {{
             }
 
 
-            var distrGroup = emailList.GroupBy(g => new { g.Email, g.ShAvRs.Subregion }).ToList();
+            var distrGroup = emailList.GroupBy(g => new {g.Email}).ToList();
             foreach (var group in distrGroup)
             {
                 var builder = new StringBuilder();
@@ -236,7 +236,7 @@ table, th, td {{
                         );
                 }
                 var message = string.Format(mailTemplate, builder.ToString());
-                TaskParameters.EmailHandlerParams.Add(new List<string> { group.Key.Email }, addtest ? testRecipints : null, $"Заявки без состава работ ({group.Key.Subregion})", true, message, null);
+                TaskParameters.EmailHandlerParams.Add(new List<string> { group.Key.Email }, addtest ? testRecipints : null, $"Заявки без состава работ", true, message, null);
 
             }
 

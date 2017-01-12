@@ -112,27 +112,42 @@ namespace TestProject
         [TestMethod]
         public void Combinatoric()
         {
-            //Combinations combs = new Combinations(new List<int> { 1, 2, 3, 4, 5 },3);
-            //while (combs.MoveNext())
-            //{
 
-            //    Array thisComb = (Array)combs.Current;
-
-            //    //for (int i = 0; i < thisComb.Length; i++)
-            //    //{
-            //    //    // Just access the value. This requres boxing.
-            //    //    int nVal00 = (int)thisComb.GetValue(i);
-            //    //    // Just access the value. This requres no boxing.
-            //    //    Object nVal01 = thisComb.GetValue(i);
-            //    //}
-
-            //}
-            var list = new List<int> { 1, 2, 3, 4, 5 };
-            var combs = list.GetKCombs(3).ToList();
-            foreach (var comb in combs)
+            var fileName = "449_путевой лист_01.2015.xls";
+            var parts = fileName.Split(new char[] { '_' });
+            if (parts.Count() != 2)
             {
-                var a = comb.ToList();
+               
             }
+            var carPart = parts[0];
+            var datePart = new string(parts[1].Where(c => Char.IsDigit(c)).Take(7).ToArray());
+            // машину определяем по первым трем цифрам
+            string carNum = GetCarNum(carPart);
+            bool letBool = true;
+            bool digbool = true;
+
+
+            //var list = new List<int> { 1, 2, 3, 4, 5 };
+            //var combs = list.GetKCombs(3).ToList();
+            //foreach (var comb in combs)
+            //{
+            //    var a = comb.ToList();
+            //}
+        }
+
+        public static string GetCarNum(string carName)
+        {
+            string carNum = string.Empty;
+            foreach (var ch in carName.Where(c => c != ' '))
+            {
+                if (char.IsDigit(ch))
+                {
+                    carNum += ch;
+                }
+                if (carNum.Length > 2)
+                    break;
+            }
+            return carNum;
         }
 
         [TestMethod]
@@ -607,12 +622,12 @@ namespace TestProject
         public void TOFIHandler()
         {
 
-            var handler = new TOIFIHandler();
-            var amail = new global::Models.AutoMail() { Attachments = new List<Models.Attachment>() };
-            amail.Subject = "FileImport#TOI#ТЮМЕНЬ_ТО-1_СКВ#72509";
-            var attachment = new Models.Attachment() { FilePath = @"C:\temp\ТО-1 СКВ Сыктывкар.xlsx", File = "ТО-1 СКВ Сыктывкар.xlsx" };
-            amail.Attachments.Add(attachment);
-            handler.Handle(amail);
+            //var handler = new TOIFIHandler();
+            //var amail = new global::Models.AutoMail() { Attachments = new List<Models.Attachment>() };
+            //amail.Subject = "FileImport#TOI#ТЮМЕНЬ_ТО-1_СКВ#72509";
+            //var attachment = new Models.Attachment() { FilePath = @"C:\temp\ТО-1 СКВ Сыктывкар.xlsx", File = "ТО-1 СКВ Сыктывкар.xlsx" };
+            //amail.Attachments.Add(attachment);
+            //handler.Handle(amail);
 
 
         }
@@ -1142,16 +1157,56 @@ namespace TestProject
             //var bytes2 = ExcelParser.EpplusInteract.CreateTORequestDel.Create("TEST", true, out error);
             //StaticHelpers.ByteArrayToFile(@"C:\Temp\deltor.xlsx", bytes2);
 
-            var bytes3 = ExcelParser.EpplusInteract.CreateTORequest.CreateTORequestFile(809);
-            StaticHelpers.ByteArrayToFile(@"C:\Temp\tor.xlsx", bytes3);
-
-
-            using (Context context = new Context())
+            try
             {
 
-                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "SendWIHPORDelRequests") };
-                var task = TaskFactory.GetTaskTest(paramsdd, context);
-                task.Process();
+//                var path2 = @"\\RU00112284\p\OrderTemplates\SolarisTemplates\TORequest - Copy (2).xlsm";
+//                var path1 = @"\\RU00112284\p\OrderTemplates\SolarisTemplates\TORequest.xlsm";
+//                var path4 = @"\\RU00112284\p\OrderTemplates\SolarisTemplates\TORequest.xlsx";
+//                var path3 = @"\\RU00112284\p\OrderTemplates\SolarisTemplates\POR.xlsx";
+//                var package = new ExcelPackage(new FileInfo(path1), true);
+//                var sheet0 = package.Workbook.Worksheets.ToList()[0];
+//                var sheet1 = package.Workbook.Worksheets.ToList()[1];
+//                var testText = @"3. Стоимость Работ составляет #ServiceTotalWONDS# (#ServiceTotalWONDSp#)  #ServiceNDSText#.
+//Кроме того, Заказчик дополнительно оплачивает Подрядчику стоимость дополнительных материалов, запасных частей и транспортных расходов в соответствии и п. 5 настоящего Заказа, что составляет #MatTotalWONDS# (#MatTotalWONDSp#)  #MaterialNDSText#.
+//Общая стоимость Работ с материалами, запасными частями составляет #TotalWONDS# (#TotalWONDSp#)  #TotalNDSText#.";
+//                for (int i = 1; i < 16; i++)
+//                {
+//                    ExcelRangeBase cell = sheet0.Cells["A"+i.ToString()];
+//                    cell.Value = "test";
+//                    if (!string.IsNullOrEmpty(cell.Value.ToString()))
+//                    {
+                        
+//                    }
+//                }
+
+                //ExcelRangeBase cell = sheet0.Cells["A7"];
+                //cell.Value = "test";
+                //ExcelRangeBase cell2 = sheet0.Cells["A8"];
+                //cell.Value = "test";
+                //ExcelRangeBase cell1 = sheet1.Cells["A7"];
+                //cell1.Value = "test";
+
+                var bytes3 = ExcelParser.EpplusInteract.CreateTORequest.CreateTORequestFile(1005);
+                StaticHelpers.ByteArrayToFile(@"C:\Temp\tor.xlsm", bytes3);
+
+
+                //using (Context context = new Context())
+                //{
+
+                //    DbTaskParams paramsdd = new DbTaskParams
+                //                                {
+                //                                    DbTask =
+                //                                        context.DbTasks.FirstOrDefault(
+                //                                            t => t.Name == "SendWIHPORDelRequests")
+                //                                };
+                //    var task = TaskFactory.GetTaskTest(paramsdd, context);
+                //    task.Process();
+                //}
+            }
+            catch(Exception exc)
+            {
+
             }
 
         }
@@ -1644,6 +1699,7 @@ namespace TestProject
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }
+            
         }  
         [TestMethod]
         public void ItemPrepriceUploadHandler()
@@ -1664,6 +1720,18 @@ namespace TestProject
             {
 
                 DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "PutevieImportHandler") };
+                var task = TaskFactory.GetTaskTest(paramsdd, context);
+                task.Process();
+            }
+        }
+
+        [TestMethod]
+        public void FuelListNotifierHandler()
+        {
+            using (Context context = new Context())
+            {
+
+                DbTaskParams paramsdd = new DbTaskParams { DbTask = context.DbTasks.FirstOrDefault(t => t.Name == "FuelListNotifierHandler") };
                 var task = TaskFactory.GetTaskTest(paramsdd, context);
                 task.Process();
             }

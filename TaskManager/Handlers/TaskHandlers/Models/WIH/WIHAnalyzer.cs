@@ -293,7 +293,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 RejectedComment = RejectReason
                             });
 
-                            TaskParameters.EmailHandlerParams.Add(new List<string>() {DistributionConstants.EgorovEmail},new List<string>(),$"AVR GR Rejected {shRequest.AVRId}",true,RejectReason,null);
+                            var shAvr = TaskParameters.Context.ShAVRs.FirstOrDefault(a => a.AVRId == shRequest.AVRId);
+                            if(shAvr!=null)
+                                TaskParameters.EmailHandlerParams.Add(
+                                    new List<string>() {DistributionConstants.BorshevEmail, DistributionConstants.EksenazEmail, DistributionConstants.PodoruevEmail}
+                                    ,new List<string>()
+                                    ,$"AVR GR Rejected {shRequest.AVRId} - {shAvr.PurchaseOrderNumber}"
+                                    ,true
+                                    ,$"{shAvr.PurchaseOrderNumber} - {RejectReason}"
+                                    ,null
+                                    );
 
                             break;
 
@@ -313,7 +322,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                                 RejectedComment = RejectReason
                             });
 
-                            TaskParameters.EmailHandlerParams.Add(new List<string>() { DistributionConstants.EgorovEmail }, new List<string>(), $"TO GR Rejected {shRequest.TOid}", true, RejectReason, null);
+                            var shTo = TaskParameters.Context.ShTOes.FirstOrDefault(t => t.TO == shRequest.TOid);
+                            if(shTo!=null)
+                                TaskParameters.EmailHandlerParams.Add(
+                                    new List<string>() { DistributionConstants.BorshevEmail,  DistributionConstants.PodoruevEmail ,DistributionConstants.EgorovEmail }
+                                    , new List<string>()
+                                    , $"TO GR Rejected {shRequest.TOid} -{shTo.PONumber}"
+                                    , true
+                                    , $"{shTo.PONumber} - {RejectReason}"
+                                    , null
+                                    );
 
                             break;
 
