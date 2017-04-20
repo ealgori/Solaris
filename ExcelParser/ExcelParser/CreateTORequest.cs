@@ -117,83 +117,83 @@ namespace ExcelParser.EpplusInteract
                    var serviceTotalWNDS = satTo.TotalServices + serviceTotalNDS;
                     dict.Add("NDSText", string.Format("{0:P0}", ndskoeff));
                     dict.Add("ServiceNDSText", servicendsText);//!!!!!!!
-                    //dict.Add("MaterialNDSText", materialndsText);
-                    //dict.Add("TotalNDSText", totalndsText);
-                    //dict.Add("CardNDSText", cardNDSText);
-                    //dict.Add("TO", satTo.TO);
-                    //dict.Add("ServiceTotalWONDS", satTo.TotalServices.ToString("F"));
-                    //dict.Add("ServiceTotalNDS", serviceTotalNDS.ToString("F"));
-                    //dict.Add("ServiceTotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(satTo.TotalServices, CommonFunctions.InWords.Заглавные.Первая));
-                    //dict.Add("ServiceTotalWNDS", serviceTotalWNDS.ToString("F"));
+                    dict.Add("MaterialNDSText", materialndsText);
+                    dict.Add("TotalNDSText", totalndsText);
+                    dict.Add("CardNDSText", cardNDSText);
+                    dict.Add("TO", satTo.TO);
+                    dict.Add("ServiceTotalWONDS", satTo.TotalServices.ToString("F"));
+                    dict.Add("ServiceTotalNDS", serviceTotalNDS.ToString("F"));
+                    dict.Add("ServiceTotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(satTo.TotalServices, CommonFunctions.InWords.Заглавные.Первая));
+                    dict.Add("ServiceTotalWNDS", serviceTotalWNDS.ToString("F"));
 
-                    //var matTotalNDS = satTo.TotalMaterials * ndskoeff;
-                    //var matTotalWNDS = satTo.TotalMaterials + matTotalNDS;
-                    //dict.Add("MatTotalWONDS", satTo.TotalMaterials.ToString("F"));
-                    //dict.Add("MatTotalNDS", matTotalNDS.ToString("F"));
-                    //dict.Add("MatTotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(satTo.TotalMaterials, CommonFunctions.InWords.Заглавные.Первая));
-                    //dict.Add("MatTotalWNDS", matTotalWNDS.ToString("F"));
+                    var matTotalNDS = satTo.TotalMaterials * ndskoeff;
+                    var matTotalWNDS = satTo.TotalMaterials + matTotalNDS;
+                    dict.Add("MatTotalWONDS", satTo.TotalMaterials.ToString("F"));
+                    dict.Add("MatTotalNDS", matTotalNDS.ToString("F"));
+                    dict.Add("MatTotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(satTo.TotalMaterials, CommonFunctions.InWords.Заглавные.Первая));
+                    dict.Add("MatTotalWNDS", matTotalWNDS.ToString("F"));
 
-                    //dict.Add("TotalWONDS", totalwoNDS.ToString("F"));
-                    //dict.Add("TotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(totalwoNDS, CommonFunctions.InWords.Заглавные.Первая));
-                    //dict.Add("TotalNDS", nds.ToString("F"));
-                    //dict.Add("TotalWNDS", totalWNDS.ToString("F"));
-                    //dict.Add("DogNum", satTo.ProceListNumbers);
-                    // var shTO = context.ShTOes.Find(satTo.TO);
-                    // if(shTO!=null)
-                    //  dict.Add("WorkDescription", shTO.WorkDescription);
-                    // dict.Add("DogDate", satTo.PriceListDate.HasValue?satTo.PriceListDate.Value.ToString("dd.MM.yyyy"): satTo.DataDogovora.HasValue? satTo.DataDogovora.Value.ToString("dd.MM.yyyy"):"");
-                    // dict.Add("Subcontractor", satTo.SubContractor);
-                    // dict.Add("porFile", string.IsNullOrEmpty(porFileName) ? "" : porFileName);
-                    // var shSubcontractor = context.SubContractors.FirstOrDefault(s => s.Name == satTo.SubContractor || s.ShName == satTo.SubContractor);
-                    // if (shSubcontractor != null)
-                    // {
+                    dict.Add("TotalWONDS", totalwoNDS.ToString("F"));
+                    dict.Add("TotalWONDSp", CommonFunctions.InWords.Валюта.Рубли.Пропись(totalwoNDS, CommonFunctions.InWords.Заглавные.Первая));
+                    dict.Add("TotalNDS", nds.ToString("F"));
+                    dict.Add("TotalWNDS", totalWNDS.ToString("F"));
+                    dict.Add("DogNum", satTo.ProceListNumbers);
+                    var shTO = context.ShTOes.Find(satTo.TO);
+                    if (shTO != null)
+                        dict.Add("WorkDescription", shTO.WorkDescription);
+                    dict.Add("DogDate", satTo.PriceListDate.HasValue ? satTo.PriceListDate.Value.ToString("dd.MM.yyyy") : satTo.DataDogovora.HasValue ? satTo.DataDogovora.Value.ToString("dd.MM.yyyy") : "");
+                    dict.Add("Subcontractor", satTo.SubContractor);
+                    dict.Add("porFile", string.IsNullOrEmpty(porFileName) ? "" : porFileName);
+                    var shSubcontractor = context.SubContractors.FirstOrDefault(s => s.Name == satTo.SubContractor || s.ShName == satTo.SubContractor);
+                    if (shSubcontractor != null)
+                    {
 
-                    //     var shContact = context.ShContacts.FirstOrDefault(s => s.Contact == shSubcontractor.ShName);
-                    //     if (shContact != null && !string.IsNullOrWhiteSpace(shContact.SubcFace))
-                    //     {
-                    //         dict.Add("SubcFace", shContact.SubcFace);
-                    //     }
-                    //     else
-                    //     {
-                    //         dict.Add("SubcFace", @"""please fill in SH""");
-                    //     }
+                        var shContact = context.ShContacts.FirstOrDefault(s => s.Contact == shSubcontractor.ShName);
+                        if (shContact != null && !string.IsNullOrWhiteSpace(shContact.SubcFace))
+                        {
+                            dict.Add("SubcFace", shContact.SubcFace);
+                        }
+                        else
+                        {
+                            dict.Add("SubcFace", @"""please fill in SH""");
+                        }
+                    }
+                    var _firstItem = _itemObjectCardTable.FirstOrDefault();
+                    // нефига печатать пор, если там трабл с сервис айтемами. А то он еще отправится автоматом...
+                    //if (_firstItem != null)
+                    //{
+                    var shSite = context.ShSITEs.FirstOrDefault(s => s.Site == _firstItem.Site);
+
+                    if (shSite != null)
+                    {
+                        dict.Add("SiteBranch", shSite.Branch);
+                    }
+                    else
+                    {
+                        var shFol = context.ShFOLs.FirstOrDefault(s => s.FOL == _firstItem.FOL);
+                        if (shFol != null)
+                        {
+                            dict.Add("SiteBranch", shFol.Branch);
+                        }
+                    }
+
                     // }
-                    // var _firstItem = _itemObjectCardTable.FirstOrDefault();
-                    // // нефига печатать пор, если там трабл с сервис айтемами. А то он еще отправится автоматом...
-                    // //if (_firstItem != null)
-                    // //{
-                    //     var shSite = context.ShSITEs.FirstOrDefault(s=>s.Site== _firstItem.Site);
-
-                    //     if (shSite != null)
-                    //     {
-                    //         dict.Add("SiteBranch", shSite.Branch);
-                    //     }
-                    //     else
-                    //      {
-                    //          var shFol = context.ShFOLs.FirstOrDefault(s => s.FOL == _firstItem.FOL);
-                    //          if(shFol!=null)
-                    //          {
-                    //              dict.Add("SiteBranch", shFol.Branch);
-                    //          }
-                    //      }
-
-                    //// }
 
 
 
-                    //     if (sostavRabot != null && sostavRabot.Count > 0&& shTO.PrintSOW)
-                    //     {
+                    if (sostavRabot != null && sostavRabot.Count > 0 && shTO.PrintSOW)
+                    {
 
-                    //         string text = string.Format("Подрядчик выполняет на каждом Объекте следующие работы:");
-                    //         dict.Add("SOWText", text);
-                    //         service.InsertTableToPatternCellInWorkBook("SOWTable", sostavRabot.Select(s => new { desc = s.Description, merge = "#merger(1,7)" }).ToList().ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, MinSeparatedRows = 0, CopyFirstRowStyle=true });
-                    //     }
-                    //     else
-                    //     {
-                    //         dict.Add("SOWText", "");
-                    //         dict.Add("SOWTable", "");
+                        string text = string.Format("Подрядчик выполняет на каждом Объекте следующие работы:");
+                        dict.Add("SOWText", text);
+                        service.InsertTableToPatternCellInWorkBook("SOWTable", sostavRabot.Select(s => new { desc = s.Description, merge = "#merger(1,7)" }).ToList().ToDataTable(), new EpplusService.InsertTableParams() { PrintHeaders = false, StyledHeaders = false, MinSeparatedRows = 0, CopyFirstRowStyle = true });
+                    }
+                    else
+                    {
+                        dict.Add("SOWText", "");
+                        dict.Add("SOWTable", "");
 
-                    //     }
+                    }
 
 
 

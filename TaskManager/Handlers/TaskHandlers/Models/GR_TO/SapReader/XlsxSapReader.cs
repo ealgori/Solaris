@@ -28,9 +28,20 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.SapReader
         public void Read()
         {
             var wsObjs = EpplusSimpleUniReport.ReadFile(FilePath, null, 2);
-            if(wsObjs==null||wsObjs.Count==0)
+            var filterObjs = EpplusSimpleUniReport.ReadFile(FilePath, "table", 2);
+            if (wsObjs==null||wsObjs.Count==0)
             {
                 throw new Exception($"Не удается прочитать файл {FilePath}");
+            }
+
+            if((filterObjs!=null)&&(filterObjs.Count>0))
+            {
+                // сджойним строки по нетворку и активности.
+                wsObjs = wsObjs.Join(
+                    filterObjs,
+                    ws => new {netw = ws.Column12, act = ws.Column16 },
+                    f => new {netw = f.Column2, act = f.Column4 },
+                    (ws, f) => ws).ToList();
             }
           
             int index = 0;
@@ -38,6 +49,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.SapReader
            
             foreach (var r in wsObjs)
             {
+                //12 - network
+                //16 - act
+
                 index++;
                 var sapRow = new SAPRow();
                 sapRow.PO = r.Column2.Trim();
@@ -92,7 +106,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.SapReader
                 {
                     sapRow.GRQty = grQty;
                 }
-
+                sapRow.Act = r.Column16;
                 Rows.Add(sapRow);
 
 

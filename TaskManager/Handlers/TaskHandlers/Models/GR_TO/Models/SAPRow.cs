@@ -16,5 +16,6 @@ namespace TaskManager.Handlers.TaskHandlers.Models.GR_TO.Models
         public decimal GRQty { get; set; }
         public string MaterialCode { get; set; }
         public string PODeletionIndicator { get; set;}
+        public string Act { get; set; }
     }
 }

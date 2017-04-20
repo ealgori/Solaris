@@ -38,6 +38,7 @@ namespace Intranet.Controllers
             using (Context context = new Context())
             {
 
+               // context.Database.Log += (l) => { System.Diagnostics.Debug.WriteLine(l); };
                 var cachedShAVR = context.ShAVRs.Where(AVRRepository.Base).ToList();
                 var pors = context.PORs.OrderByDescending(p => p.PrintDate).ToList().Select(por => new
                 SATPorModel
@@ -56,7 +57,7 @@ namespace Intranet.Controllers
                    
                 }).ToList();
                 var result = new List<SATPorModel>();
-                foreach (var por in pors)
+                foreach (var por in pors.OrderByDescending(p=>p.PrintDate).ToList())
                 {
                     if (!string.IsNullOrEmpty(por.AVR))
                     {

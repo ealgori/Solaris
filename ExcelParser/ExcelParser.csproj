@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExcelParser</RootNamespace>
     <AssemblyName>ExcelParser</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -53,9 +53,9 @@
     <Reference Include="EPPlus">
       <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\RU00112284\p\Libs\Ionic.Zip.dll</HintPath>
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\Unofficial.Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
@@ -114,7 +114,7 @@
       <Name>EDiadocApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\DbModels\DbModels.csproj">
-      <Project>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</Project>
+      <Project>{64972b1c-8e39-49fa-9a91-ea384d990df9}</Project>
       <Name>DbModels</Name>
     </ProjectReference>
   </ItemGroup>

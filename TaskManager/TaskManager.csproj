@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TaskManager</RootNamespace>
     <AssemblyName>TaskManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -73,7 +73,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>\\RU00112284\p\Libs\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
+    <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\OHDB\libs\nugetpackages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -139,6 +140,7 @@
     <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDistHandlerResponsibles.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\NewAVRDistrHandler.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Email\EmptyAVRDitstHandlerManagers.cs" />
+    <Compile Include="Handlers\TaskHandlers\Models\GR_TO\Models\FilterRow.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitAI\FileReader.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\Limits\LimitCalc.cs" />
     <Compile Include="Handlers\TaskHandlers\Models\AVR\NotifyHandler.cs" />
@@ -272,11 +274,11 @@
       <Name>SurfaceImporter</Name>
     </ProjectReference>
     <ProjectReference Include="..\DbModels\DbModels.csproj">
-      <Project>{64972B1C-8E39-49FA-9A91-EA384D990DF9}</Project>
+      <Project>{64972b1c-8e39-49fa-9a91-ea384d990df9}</Project>
       <Name>DbModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExcelParser\ExcelParser.csproj">
-      <Project>{2BB1ECEC-2250-42E4-BC13-3708BD47B365}</Project>
+      <Project>{2bb1ecec-2250-42e4-bc13-3708bd47b365}</Project>
       <Name>ExcelParser</Name>
     </ProjectReference>
   </ItemGroup>

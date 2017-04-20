@@ -104,25 +104,6 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                 commentText = string.Format("Комментарий:{0}", waylist.Comment);
             var carNum = PutevieImportHandler.GetCarNum(car);
 
-            // брали файлы из папки и загружали их в сх.
-            //var files = Directory.GetFiles(TaskParameters.DbTask.EmailSendFolder, $"*{carNum}*_{date.ToString("MMyyyy")}*",SearchOption.TopDirectoryOnly);
-            //foreach (var file in files)
-            //{
-            //    var newPath = CommonFunctions.StaticHelpers.GetDatedPath(TaskParameters.DbTask.EmailSendFolder);
-
-            //    if (!Directory.Exists(newPath))
-            //    {
-            //        Directory.CreateDirectory(newPath);
-            //    }
-            //    var newFilePath = Path.Combine(newPath, Path.GetFileName(file));
-            //    var result = SHInteract.Handlers.Solaris.WayListUpload.Upload(waylist.Waylist, file, "Исходный Файл");
-
-
-            //    File.Move(file,newFilePath);
-            //    param.FilePaths.Add(newFilePath);
-            //}
-
-
             // теперь задача обратная. взять файл из сх и добавить его в рассылку
             var newPath = CommonFunctions.StaticHelpers.GetDatedPath(TaskParameters.DbTask.EmailSendFolder);
             try
@@ -138,11 +119,16 @@ namespace TaskManager.Handlers.TaskHandlers.Models.Putevie
                     }
                 }
             }
+           
+
             catch (Exception)
             {
 
                 return;
             }
+            if(File.Exists(TaskParameters.DbTask.TemplatePath))
+                param.FilePaths.Add(TaskParameters.DbTask.TemplatePath);
+            param.FilePaths.Add(TaskParameters.DbTask.TemplatePath2);
 
             param.HtmlBody += string.Format(@"
 <style>
@@ -158,13 +144,14 @@ pre {{
 
 Прошу ответным письмом предоставить путевой лист за период {1} по автомобилю {0}, для этого необходимо:
 
-1.       Заполнить путевой лист(включая страницу СЗ о расходе топлива)  в формате excel, название файла БЦЦЦББ_ММГГГГ.xls (где БЦЦЦББ – номер автомобиля, ММГГГГ – отчетные месяц и год)
+1.       Заполнить путевой лист(включая страницу СЗ о расходе топлива)  в формате excel файла приложенного к письму, название файла БЦЦЦББ_ММГГГГ.xls (где БЦЦЦББ – номер автомобиля, ММГГГГ – отчетные месяц и год)
 2.       Распечатать путевой лист, добавить страницу с чеками ГСМ, на первой странице рядом с подписью отвественного написать фразу от руки «Путевой лист отправлен в бухгалтерию Эрикссон *указать число, месяц, год отправки и номер накладной*»
 3.       Отсканировать путевой лист и лист с чеками ГСМ в формате pdf, название файла БЦЦЦББ_ММГГГГ.pdf (где БЦЦЦББ – номер автомобиля, ММГГГГ – отчетные месяц и год)
 4.       Отправить на адрес technical.box.for.solaris@ericsson.com письмо с темой #путевой# вложив в него два файла: БЦЦЦББ_ММГГГГ.xls и БЦЦЦББ_ММГГГГ .pdf
 5.       Отправить оригинал путевого листа в бумажном виде в бухгалтерию
 
 
+Документ регламентирующий предоставление отчетных документов за топливо приложен к письму.
 
 Спасибо!
 </pre>

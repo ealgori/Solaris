@@ -8,6 +8,8 @@ using System.IO;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomFiHandlers
 {
+    using UniReportN;
+
     public class TOItemFilesDownloadHandler : IFileImportHandler
     {
 
@@ -28,9 +30,9 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomFiHandler
             {
                 foreach (var attach in attachments)
                 {
-                    UniReport.UniReportBulkCopy<ToItemModel> report = new UniReport.UniReportBulkCopy<ToItemModel>(attach.FilePath);
+                   // UniReport.UniReportBulkCopy<ToItemModel> report = new UniReport.UniReportBulkCopy<ToItemModel>(attach.FilePath);
                     // считали объекты из эксель файла
-                    var _obj = report.ReadFile();
+                    var _obj = UniReport.Read<ToItemModel>(attach.FilePath, new UniReportParams());
                     if (_obj == null || _obj.Count == 0)
                     {
                         result.ErrorsList.Add(string.Format("Из файла не удалось считать ни одного элемента"));

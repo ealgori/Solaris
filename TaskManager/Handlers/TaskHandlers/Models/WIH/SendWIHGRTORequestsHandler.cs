@@ -48,9 +48,12 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             // ничего не отправляем
             bool jugging = false;
 
-            var toItems = TaskParameters.Context.ShTOes.Where(t => t.Year == "2016" && !string.IsNullOrEmpty(t.PONumber)).
+            var toItems = TaskParameters.Context.ShTOes.Where(t => (t.Year == "2016"||t.Year=="2017") && !string.IsNullOrEmpty(t.PONumber)).
                 Join(TaskParameters.Context.SubContractors, t => t.Subcontractor, i => i.ShName, (t, v) => new { TO = t, Vendor = v }).// джойним с подрядчиками
-                Join(TaskParameters.Context.ShTOItems, t => t.TO.TO, i => i.TOId, (t, i) => new { TO = t.TO, Item = i, Vendor = t.Vendor }). // джойним ТО с позициями
+                Join(
+                    TaskParameters.Context.ShTOItems.Where(i => (!i.ExcludeWork.HasValue) || (!i.ExcludeWork.Value))
+                    // 06.02.2017. почему то в выборку попадаются эти позиции. попробуем от них избавиться
+                    , t => t.TO.TO, i => i.TOId, (t, i) => new { TO = t.TO, Item = i, Vendor = t.Vendor }). // джойним ТО с позициями
                 Join(TaskParameters.Context.PriceListRevisionItems, t => t.Item.IDItemFromPL, p => p.Id, (t, p) =>
                     new ShItemModel
                     {

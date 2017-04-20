@@ -13,6 +13,8 @@ using WIHInteract;
 
 namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 {
+    using global::TaskManager.Handlers.TaskHandlers.Models.Email;
+
     /// <summary>
     /// 03.03.2016 написана, и изначально не используется. Причина- необохдимость наличия фактур в запросах GR
     /// Типа тогда ЛАС делает двойную работу, так как и фактуры и GR забивает он.
@@ -32,6 +34,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
             bool jogging = false;
             List<string> testAvrs =  new List<string> { "208794" };
             List<string> poList = new List<string>();
+            var sendGRNotifymodels = new List<SendGRNotifyModel>();
 
             // текущая дата больше, чем эта и два месяца и первое число.
             List<ShWIHRequest> requestList = new List<ShWIHRequest>();
@@ -43,26 +46,23 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
              && !string.IsNullOrEmpty(a.PurchaseOrderNumber)
             && (a.Year == "2016" || a.Year == "2017")
             && !a.GRCreated.HasValue
-           // && (
-           // a.PurchaseOrderNumber == "4513135611" ||
-           // a.PurchaseOrderNumber == "4513345514"
-            //a.PurchaseOrderNumber == "4513170184" ||
-            //a.PurchaseOrderNumber == "4513170167" ||
-            //a.PurchaseOrderNumber == "4513186035" 
+            // && (
+            // a.PurchaseOrderNumber == "4514953615" ||
+            // a.PurchaseOrderNumber == "4514954530" ||
+            //a.PurchaseOrderNumber == "4514954517"
+            ////||
+            ////a.PurchaseOrderNumber == "4513170167" ||
+            ////a.PurchaseOrderNumber == "4513186035" 
 
 
-           // )
+            //)
 
 
 
 
             )
-            // смотрим, что позже, дата выпуска по или время окончания работ, и от этого позднего высчитываем TwoMonthRange
             .ToList()
-            //.Where(a =>
-                ////Max(a.WorkEnd, a.DataVipuskaPO) // это не включать
-                //a.WorkEnd.TwoMonthRange(now)) // 02.06.2016 - решено отменить эту практику
-              //.ToList()
+         
               ;
 
             if (test)
@@ -127,6 +127,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
                             {
 
                                 requestList.Add(new ShWIHRequest() { AVRId = avr.AVRId, WIHrequests = grFileName, RequestSentToODdate = now, Type = WIHInteract.Constants.InternalMailTypeAVRGR });
+                                sendGRNotifymodels.Add(new SendGRNotifyModel { AVR = avr.AVRId });
                             }
                         }
 
@@ -140,9 +141,13 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
 
             if (requestList.Count > 0)
             {
-
-
                 TaskParameters.ImportHandlerParams.ImportParams.Add(new ImportParams { ImportFileNearlyName = TaskParameters.DbTask.ImportFileName1, Objects = new ArrayList(requestList) });
+            }
+            if (sendGRNotifymodels.Any())
+            {
+                EmailParams param = new EmailParams(new List<string> { DistributionConstants.EgorovEmail }, "Sent AVR GR");
+                param.DataTables.Add("GR AVR "+DateTime.Now.ToString("dd.MM.yyyy")+".xls",sendGRNotifymodels.ToDataTable());
+                TaskParameters.EmailHandlerParams.EmailParams.Add(param);
             }
             return true;
         }
@@ -150,6 +155,11 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         private string GenerateGRName(string avrId, string po, bool jogging)
         {
             return string.Format("GR-{0}-{1}-{3}{4}{2}", avrId, po, Path.GetExtension(TaskParameters.DbTask.TemplatePath), DateTime.Now.ToString("ddMMyyyy"),jogging?"-N":"");
+        }
+
+        private class SendGRNotifyModel
+        {
+            public string AVR { get; set; }
         }
 
 

@@ -12,7 +12,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.WIH
         public WIHTrashCleaner(TaskParameters taskParameters) : base(taskParameters) { }
         public override bool Handle()
         {
-            List<string> trashMasks = new List<string> { "Fixed", "received", "failed" };
+            List<string> trashMasks = TaskParameters.DbTask.Params.Split(new string[1] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(s=>s.Trim()).ToList();//new List<string> { "Fixed", "received", "failed", "Undeliverable", "Delivery delayed" };
             RedemptionMailProcessor redemtion = new RedemptionMailProcessor("SOLARIS");
             {
                 var trashMails = redemtion.GetMails(trashMasks);

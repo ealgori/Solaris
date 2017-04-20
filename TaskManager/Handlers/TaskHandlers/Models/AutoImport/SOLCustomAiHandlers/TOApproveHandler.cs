@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using AutoImport.Rev3.ImportHandlers.Abstract;
 using CommonFunctions.Extentions;
+using System.ComponentModel;
+
 namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandlers
 {
    // 100% нельзя пускать без обновления
@@ -16,9 +18,21 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
 
             string savePath = Path.Combine(global::AutoImport.Rev3.Constants.HandledFilesFolder, DateTime.Now.ToString(@"yyyy\\MM\\dd\\"));
             // экземпляр юнирепорта
-            UniReport.UniReportBulkCopy<ApproveModel> report = new UniReport.UniReportBulkCopy<ApproveModel>(attachment.FilePath);
+            // UniReport.UniReportBulkCopy<ApproveModel> report = new UniReport.UniReportBulkCopy<ApproveModel>(attachment.FilePath);
             // считали объекты из эксель файла
-            var _obj = report.ReadFile();
+            var _obj = new List<ApproveModel>();
+            try
+            {
+                _obj = UniReportN.UniReport.Read<ApproveModel>(attachment.FilePath, new UniReportN.UniReportParams()).ToList();
+            }
+            catch (Exception exc)
+            {
+
+                hr.ErrorsList.Add($"Ошибка работы с файлом. Отсутствует колонка: {exc.Message}");
+                return hr;
+                //throw;
+            }
+           
             if(_obj==null)
             {
                 hr.ErrorsList.Add("Ошибка работы с файлом. Проверьте его формат и содержимое. Заголовки являются обязатльными.");
@@ -57,6 +71,7 @@ namespace TaskManager.Handlers.TaskHandlers.Models.AutoImport.SOLCustomAiHandler
 
         private class ApproveModel
         {
+            [DisplayName("Номер позиции")]
             public string TOItemId { get; set; }
          //   public string TRUE { get; set; }
         }

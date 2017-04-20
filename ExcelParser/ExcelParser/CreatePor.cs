@@ -47,8 +47,21 @@ namespace ExcelParser.EpplusInteract
            
                 Dictionary<string,string> dict = new Dictionary<string,string>();
                 string porIds = string.Empty;
+                string requestorName = "Николай Евстафьев";
                 if (por is AVRPOR)
                 {
+                    var avr = context.ShAVRs.Find(((AVRPOR)por).AVRId);
+                    if(avr!=null)
+                    {
+                        if(avr.Region=="Ural")
+                        {
+                             requestorName = "Валерий Подоруев";
+                        }
+                        else if(avr.Region =="Siberia")
+                        {
+                             requestorName = "Алексей Борщёв";
+                        }
+                    }
                     porIds = string.Format("SH AVR Id:{0}",((AVRPOR)por).AVRId).ToString();
                     dict.Add("PorId", porIds );
 
@@ -74,7 +87,7 @@ namespace ExcelParser.EpplusInteract
 
                  dict.Add("WBS", "");
                 
-                dict.Add("RequestorName", "Николай Евстафьев");
+                dict.Add("RequestorName", requestorName);
                 dict.Add("RequestorSignum", "enikevs");
                
                 if (por is AVRPOR)
